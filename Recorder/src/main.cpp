@@ -579,7 +579,8 @@ void update_dimensions() {
 }
 
 void draw_cursor() {
-	if (!IsWindow(source_window) || IsIconic(source_window)) {
+  HWND window = fullscreen ? GetDesktopWindow() : source_window;
+	if (!IsWindow(window) || IsIconic(window)) {
 		return;
 	}
 	if (!video_options.draw_cursor) {
@@ -603,7 +604,7 @@ void draw_cursor() {
 	if (icon_info.hbmColor == NULL && icon_info.hbmMask == NULL) {
 		return;
 	}
-	screen_to_window(source_window, &cursor_info.ptScreenPos);
+	screen_to_window(window, &cursor_info.ptScreenPos);
 	if (video_source == VIDEO_SOURCE_RECTANGLE) {
 		cursor_info.ptScreenPos.x -= source_rect.left;
 		cursor_info.ptScreenPos.y -= source_rect.top;
@@ -2339,7 +2340,7 @@ int real_main() {
 	wc.lpszClassName = L"Scabture Window Class";
 	wc.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
 	RegisterClass(&wc);
-	CreateWindow(wc.lpszClassName, L"Scabture v1.1", WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, NULL, NULL);
+	CreateWindow(wc.lpszClassName, L"Scabture v1.2", WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, NULL, NULL);
 	init_settings();
 	init_config();
 	logging_mode = settings.logging;
