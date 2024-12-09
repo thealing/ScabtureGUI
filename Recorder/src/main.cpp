@@ -2329,6 +2329,7 @@ LRESULT CALLBACK window_proc(HWND window, UINT message, WPARAM wparam, LPARAM lp
 }
 
 int real_main() {
+	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 	main_font = CreateFont(16, 0, 0, 0, FW_REGULAR, FALSE, FALSE, FALSE, 0, 0, 0, 0, 0, L"Segoe UI");
 	fps_font = CreateFont(60, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE, 0, 0, 0, 0, 0, L"Consolas");
 	display_font = CreateFont(25, 0, 0, 0, FW_REGULAR, FALSE, FALSE, FALSE, 0, 0, 0, 0, 0, L"Verdana");
