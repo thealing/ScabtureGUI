@@ -138,6 +138,7 @@ bool lock_controls;
 bool recording_paused;
 bool recording_running;
 bool resample_audio;
+bool using_capture;
 Capture_Interface* current_capture;
 CRITICAL_SECTION update_section;
 double meas_capture_fps;
@@ -668,6 +669,7 @@ DWORD WINAPI capture_proc(LPDWORD) {
 	GetSystemTimeAsFileTime((FILETIME*)&due_time);
 	SetWaitableTimer(timer, &due_time, 0, NULL, NULL, FALSE);
 	double meas_time = get_time();
+	double last_capture_time = get_time();
 	int meas_count = 0;
 	HANDLE capture_events[] = { stop_event, timer };
 	while (WaitForMultipleObjects(_countof(capture_events), capture_events, FALSE, INFINITE) != 0) {
@@ -675,6 +677,12 @@ DWORD WINAPI capture_proc(LPDWORD) {
 		SetWaitableTimer(timer, &due_time, 0, NULL, NULL, FALSE);
 		double current_time = get_time();
 		bool captured = current_capture->get(source_buffer, &capture_lock);
+		if (captured) {
+			last_capture_time = current_time;
+		}
+		else if (current_time - last_capture_time > 1.0 && (!recording_running || settings.stop_on_close) && IsWindow(source_window)) {
+			SetEvent(update_event);
+		}
 		if (captured) {
 			draw_cursor();
 		}
@@ -704,7 +712,7 @@ DWORD WINAPI capture_proc(LPDWORD) {
 			}
 		}
 		SetEvent(frame_event);
-		if (captured) {
+		if (captured || recording_running || meas_capture_fps == 0) {
 			static double last_time = 0;
 			if (current_time > last_time + 1.0 / 60.0) {
 				last_time = current_time;
@@ -934,20 +942,6 @@ end:
 	log_info(L"Stopped capture");
 }
 
-DWORD WINAPI update_capture_proc(LPDWORD) {
-	while (true) {
-		WaitForSingleObject(update_event, INFINITE);
-		log_info(L"Updating capture...");
-		EnterCriticalSection(&update_section);
-		stop_capture();
-		update_dimensions();
-		start_capture();
-		LeaveCriticalSection(&update_section);
-		PostMessage(main_window, WM_USER, 0, 0);
-		log_info(L"Updated capture");
-	}
-}
-
 void update_capture() {
 	SetEvent(update_event);
 }
@@ -1065,7 +1059,7 @@ void update_controls() {
 	EnableWindow(start_button, !recording_running);
 	EnableWindow(stop_button, recording_running);
 	EnableWindow(pause_button, recording_running);
-	EnableWindow(settings_button, settings_window == NULL);
+	EnableWindow(settings_button, !recording_running && settings_window == NULL);
 	if (video_window != NULL || audio_window != NULL) {
 		EnableWindow(start_button, FALSE);
 	}
@@ -1141,6 +1135,7 @@ DWORD WINAPI encode_proc(LPDWORD) {
 		if (recording_paused) {
 			continue;
 		}
+		EnterCriticalSection(&update_section);
 		double frame_start_time = get_time();
 		IMFMediaBuffer* buffer;
 		int pixel_count = aligned_width * aligned_height;
@@ -1201,6 +1196,7 @@ DWORD WINAPI encode_proc(LPDWORD) {
 			meas_total = 0;
 			meas_count = 0;
 		}
+		LeaveCriticalSection(&update_section);
 	}
 	log_info(L"Encode thread ended");
 	return 0;
@@ -1584,6 +1580,24 @@ void resume_recording() {
 	log_info(L"Resumed recording");
 }
 
+DWORD WINAPI update_capture_proc(LPDWORD) {
+	while (true) {
+		WaitForSingleObject(update_event, INFINITE);
+		if (recording_running) {
+			log_info(L"Tried to update capture while recording was running");
+			continue;
+		}
+		log_info(L"Updating capture...");
+		EnterCriticalSection(&update_section);
+		stop_capture();
+		update_dimensions();
+		start_capture();
+		LeaveCriticalSection(&update_section);
+		PostMessage(main_window, WM_USER, 0, 0);
+		log_info(L"Updated capture");
+	}
+}
+
 void update_source() {
 	if (dirty_capture) {
 		return;
@@ -1600,19 +1614,21 @@ void update_source() {
 	if (settings.stop_on_close && !IsWindow(source_window) && recording_running) {
 		stop_recording();
 	}
-	if (video_source == VIDEO_SOURCE_WINDOW && !hook_working && IsWindow(source_window) && !IsIconic(source_window) && !recording_running) {
+	if (video_source == VIDEO_SOURCE_WINDOW && !hook_working && IsWindow(source_window) && !IsIconic(source_window) && (!recording_running || settings.stop_on_close)) {
 		RECT new_rect;
 		GetWindowRect(source_window, &new_rect);
 		POINT new_position = { new_rect.left, new_rect.top };
 		fit_window_rect(source_window, &new_rect, supported_type);
 		if (memcmp(&source_rect, &new_rect, sizeof(RECT)) != 0) {
 			log_info(L"Video source size changed");
+			stop_recording();
 			source_rect = new_rect;
 			update_capture();
 			update_controls();
 		}
 		else if (memcmp(&source_position, &new_position, sizeof(POINT)) != 0) {
 			log_info(L"Video source position changed");
+			stop_recording();
 			source_position = new_position;
 			update_capture();
 		}
@@ -1781,7 +1797,7 @@ LRESULT CALLBACK settings_proc(HWND window, UINT message, WPARAM wparam, LPARAM 
 			add_form(window, &row, L"checkbox", L"Stay on top", &settings.stay_on_top);
 			add_form(window, &row, L"list", L"Visibility during recording", &settings.window_action, L"Normal", L"Minimized", L"Hidden", NULL);
 			add_form(window, &row, NULL, NULL, NULL);
-			add_form(window, &row, L"checkbox", L"Stop recording when the window closes", &settings.stop_on_close);
+			add_form(window, &row, L"checkbox", L"Stop recording when the window changes", &settings.stop_on_close);
 			add_form(window, &row, NULL, NULL, NULL);
 			add_form(window, &row, L"checkbox", L"Ask to play recording when finished", &settings.ask_to_play);
 			add_form(window, &row, NULL, NULL, NULL);
@@ -2256,7 +2272,7 @@ LRESULT CALLBACK window_proc(HWND window, UINT message, WPARAM wparam, LPARAM lp
 						}
 					}
 					if (child == settings_button) {
-						create_dialog(240, 160, L"Settings", settings_proc);
+						create_dialog(260, 160, L"Settings", settings_proc);
 					}
 					if (child == video_button) {
 						if (video_window == NULL) {
