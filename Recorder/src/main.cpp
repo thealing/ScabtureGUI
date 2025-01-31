@@ -257,8 +257,11 @@ Capture_Interface* get_capture(int index) {
 			}
 		}
 		else {
-			index = CAPTURE_DXGI_OUTPUT_DUPLICATION; 
+			index = CAPTURE_DXGI_OUTPUT_DUPLICATION;
 		}
+		// BitBlt always works,
+		// and I don't want the first impression to be a black screen :(
+		index = CAPTURE_BITBLT_GETDIBITS;
 	}
 	log_info(L"Using capture: %i", index);
 	return captures[index];
@@ -830,6 +833,7 @@ void start_capture() {
 		meas_capture_fps = 0;
 		goto end;
 	}
+	capture_failed = false;
 	capture_buffer = _aligned_malloc(capture_info.biSizeImage, 16);
 	source_buffer = capture_buffer;
 	if (resize_sources != NULL) {
@@ -1434,6 +1438,17 @@ void stop_audio_stream(Audio_Input* input) {
 	input->resampler->Release();
 }
 
+void start_beep() {
+	if (hook_working) {
+		Beep(7000, 100);
+		Sleep(100);
+		Beep(7000, 100);
+	}
+	else {
+		Beep(5000, 200);
+	}
+}
+
 void start_recording() {
 	if (recording_running) {
 		return;
@@ -1506,7 +1521,7 @@ void start_recording() {
 		add_audio_stream(&microphone_input);
 	}
 	if (settings.beep_at_start) {
-		Beep(5000, 200);
+		start_beep();
 	}
 	sink_writer->BeginWriting();
 	recording_start_time = get_time();
@@ -1573,7 +1588,7 @@ void resume_recording() {
 	UpdateWindow(main_window);
 	WaitForSingleObject(frame_event, INFINITE);
 	if (settings.beep_at_start) {
-		Beep(5000, 200);
+		start_beep();
 	}
 	recording_start_time += get_time() - recording_pause_time;
 	recording_paused = false;
@@ -1611,7 +1626,8 @@ void update_source() {
 	if (fullscreen) {
 		return;
 	}
-	if (settings.stop_on_close && !IsWindow(source_window) && recording_running) {
+	if (settings.stop_on_close && video_source == VIDEO_SOURCE_WINDOW && !IsWindow(source_window)) {
+		video_source = VIDEO_SOURCE_FULLSCREEN;
 		stop_recording();
 	}
 	if (video_source == VIDEO_SOURCE_WINDOW && !hook_working && IsWindow(source_window) && !IsIconic(source_window) && (!recording_running || settings.stop_on_close)) {
@@ -1769,6 +1785,9 @@ void update_settings() {
 }
 
 void init_settings() {
+	settings.ask_to_play = true;
+	settings.logging = LOGGING_SINGLE_FILE;
+	settings.stop_on_close = true;
 	load_data(L"Settings", &settings, sizeof(settings));
 	update_settings();
 }
@@ -2061,7 +2080,7 @@ LRESULT CALLBACK window_proc(HWND window, UINT message, WPARAM wparam, LPARAM lp
 			render_context = CreateCompatibleDC(main_context);
 			render_bitmap = CreateCompatibleBitmap(main_context, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
 			SelectObject(render_context, render_bitmap);
-			SetBkMode(render_context, TRANSPARENT);
+			SetBkMode(render_context, TRANSPARENT); 
 			load_data(L"video_options", &video_options, sizeof(video_options));
 			load_data(L"audio_options", &audio_options, sizeof(audio_options));
 			load_images();
@@ -2357,7 +2376,7 @@ int real_main() {
 	wc.lpszClassName = L"Scabture Window Class";
 	wc.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
 	RegisterClass(&wc);
-	CreateWindow(wc.lpszClassName, L"Scabture v1.2", WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, NULL, NULL);
+	CreateWindow(wc.lpszClassName, L"Scabture v1.3", WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, NULL, NULL);
 	init_settings();
 	init_config();
 	logging_mode = settings.logging;
