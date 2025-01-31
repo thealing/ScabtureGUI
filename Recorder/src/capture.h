@@ -434,7 +434,7 @@ public:
 		ID3D11Texture2D* desktop_image = NULL;
 		ID3D11Texture2D* capture_texture = NULL;
 		DXGI_OUTDUPL_FRAME_INFO desktop_info;
-		CHECK(m_duplication->AcquireNextFrame(INFINITE, &desktop_info, &desktop_resource));
+		m_duplication->AcquireNextFrame(INFINITE, &desktop_info, &desktop_resource);
 		if (desktop_resource == NULL) {
 			return false;
 		}

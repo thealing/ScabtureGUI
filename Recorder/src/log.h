@@ -11,6 +11,7 @@ enum {
 int logging_mode;
 bool supressed_errors;
 HWND main_window;
+bool capture_failed;
 
 void get_local_time(SYSTEMTIME* time) {
 	GetSystemTime(time);
@@ -65,6 +66,17 @@ void log_info(const wchar_t* format, ...) {
 	}
 }
 
+void log_warning(const wchar_t* format, ...) {
+	if (logging_mode != LOGGING_NONE) {
+		wchar_t content[128];
+		va_list args;
+		va_start(args, format);
+		vswprintf(content, format, args);
+		va_end(args);
+		log_message(L"WARN", content);
+	}
+}
+
 void log_error(const wchar_t* format, ...) {
 	if (logging_mode != LOGGING_NONE) {
 		wchar_t content[128];
@@ -74,7 +86,8 @@ void log_error(const wchar_t* format, ...) {
 		va_end(args);
 		log_message(L"ERROR", content);
 	}
-	if (!supressed_errors) {
+	if (!supressed_errors && !capture_failed) {
+		capture_failed = true;
 		int option = MessageBox(main_window, L"One or more errors have occurred. For more information, check the log file.\n\nTo quit the application, press 'Abort'.\n\nTo continue execution, press 'Retry'.\n\nTo supress further error messages, press 'Ignore'.\n", L"Scabture error", MB_ABORTRETRYIGNORE | MB_ICONERROR);
 		if (option == IDIGNORE) {
 			log_info(L"Errors supressed");
