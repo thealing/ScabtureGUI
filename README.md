@@ -19,3 +19,5 @@ This is a Windows GUI program that records the screen content and the system or 
   - OpenGL
 - Preview within the recorder
 - Convenience features
+## Screenshots
+![sCapture](https://github.com/user-attachments/assets/b7823743-8ea5-434d-8e29-1d321666877b)
