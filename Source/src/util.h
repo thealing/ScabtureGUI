@@ -14,6 +14,10 @@ double get_time() {
 
 void check(HRESULT result, const char* expr) {
 	if (FAILED(result)) {
+		if (result == DXGI_ERROR_ACCESS_LOST || 
+			result == DXGI_ERROR_DEVICE_REMOVED) { // switching fullscreen mode
+			return;
+		}
 		static int error_codes[256];
 		static double error_times[256];
 		static int error_count = 0;

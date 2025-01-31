@@ -12,7 +12,7 @@ OVERLAPPED overlapped[INSTANCE_COUNT];
 int connected_index = -1;
 
 void injection_failed(const wchar_t* reason) {
-	log_error(L"Hook injection failed! Reason: \"%ls\" Error: %d", reason, GetLastError());
+	log_warning(L"Hook injection failed! Reason: \"%ls\" Error: %d", reason, GetLastError());
 }
 
 bool inject_hook(HWND window, RECT* rect) {
