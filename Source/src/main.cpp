@@ -30,12 +30,6 @@ enum {
 };
 
 enum {
-	RESIZER_BUILT_IN,
-	RESIZER_RESIZER_DSP,
-	RESIZER_VIDEO_PROCESSOR_MFT,
-};
-
-enum {
 	RESIZE_MODE_STRETCH,
 	RESIZE_MODE_LETTERBOX,
 	RESIZE_MODE_CROP,
@@ -449,10 +443,9 @@ LRESULT CALLBACK selection_proc(HWND window, UINT message, WPARAM wparam, LPARAM
 	return DefWindowProc(window, message, wparam, lparam);
 }
 
-LRESULT CALLBACK source_list_proc(HWND window, UINT message, WPARAM wparam, LPARAM lparam, UINT_PTR, DWORD_PTR) {
-	if (message == WM_PAINT || message == WM_COMMAND) {
-		PostMessage(video_source_edit, EM_SETSEL, (WPARAM)-1, 0);
-		PostMessage(audio_source_edit, EM_SETSEL, (WPARAM)-1, 0);
+LRESULT CALLBACK list_edit_proc(HWND window, UINT message, WPARAM wparam, LPARAM lparam, UINT_PTR, DWORD_PTR) {
+	if (message == EM_SETSEL && wparam != -1 && wparam != lparam) {
+		return 1;
 	}
 	return DefSubclassProc(window, message, wparam, lparam);
 }
@@ -980,20 +973,20 @@ void create_controls() {
 	SendMessage(video_source_list, CB_ADDSTRING, 0, (LPARAM)L"Fullscreen");
 	SendMessage(video_source_list, CB_ADDSTRING, 0, (LPARAM)L"Rectangle");
 	SendMessage(video_source_list, CB_ADDSTRING, 0, (LPARAM)L"Window");
-	SetWindowSubclass(video_source_list, source_list_proc, 0, 0);
+	SendMessage(video_source_list, CB_SETCURSEL, 0, 0);
 	video_source_edit = FindWindowEx(video_source_list, NULL, L"EDIT", NULL);
 	SendMessage(video_source_edit, EM_SETREADONLY, TRUE, 0);
-	SendMessage(video_source_list, CB_SETCURSEL, 0, 0);
+	SetWindowSubclass(video_source_edit, list_edit_proc, 0, 0);
 	audio_source_label = create_control(L"STATIC", L"Audio Source:", SS_CENTERIMAGE);
 	audio_source_list = create_control(L"COMBOBOX", NULL, CBS_AUTOHSCROLL | CBS_DROPDOWN | CBS_HASSTRINGS);
 	SendMessage(audio_source_list, CB_ADDSTRING, 0, (LPARAM)L"None");
 	SendMessage(audio_source_list, CB_ADDSTRING, 0, (LPARAM)L"System");
 	SendMessage(audio_source_list, CB_ADDSTRING, 0, (LPARAM)L"Microphone");
 	SendMessage(audio_source_list, CB_ADDSTRING, 0, (LPARAM)L"System + Microphone");
-	SetWindowSubclass(audio_source_list, source_list_proc, 0, 0);
+	SendMessage(audio_source_list, CB_SETCURSEL, 0, 0);
 	audio_source_edit = FindWindowEx(audio_source_list, NULL, L"EDIT", NULL);
 	SendMessage(audio_source_edit, EM_SETREADONLY, TRUE, 0);
-	SendMessage(audio_source_list, CB_SETCURSEL, 0, 0);
+	SetWindowSubclass(audio_source_edit, list_edit_proc, 0, 0);
 	video_button = create_control(L"BUTTON", L"Video Options", BS_PUSHBUTTON);
 	audio_button = create_control(L"BUTTON", L"Audio Options", BS_PUSHBUTTON);
 	width_label = create_control(L"STATIC", L"Width:", SS_CENTERIMAGE);
