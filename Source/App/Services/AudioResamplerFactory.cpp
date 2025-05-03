@@ -22,5 +22,5 @@ AudioResampler* AudioResamplerFactory::createResampler(AudioCapture* source) con
 
 const Event* AudioResamplerFactory::getChangeEvent() const
 {
-    return _changeEventPool.getEvent();
+	return _changeEventPool.getEvent();
 }

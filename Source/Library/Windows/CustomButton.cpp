@@ -14,7 +14,7 @@ void CustomButton::setImage(const Image* image)
 
 const Event* CustomButton::getClickEvent() const
 {
-    return getChangeEvent();
+	return getChangeEvent();
 }
 
 void CustomButton::doCustomPaint(Graphics& graphics, bool disabled, bool selected)

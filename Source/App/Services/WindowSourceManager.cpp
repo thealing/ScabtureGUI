@@ -85,7 +85,7 @@ Vector WindowSourceManager::getWindowSize() const
 {
 	int width = RectUtil::getRectWidth(_source.rect);
 	int height = RectUtil::getRectHeight(_source.rect);
-    return Vector(width, height);
+	return Vector(width, height);
 }
 
 VideoCapture* WindowSourceManager::createCapture() const

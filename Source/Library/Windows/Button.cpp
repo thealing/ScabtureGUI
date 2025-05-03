@@ -7,5 +7,5 @@ Button::Button(Window* parent, const wchar_t* text)
 
 const Event* Button::getClickEvent() const
 {
-    return getChangeEvent();
+	return getChangeEvent();
 }

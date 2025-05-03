@@ -2,7 +2,7 @@
 
 HWND WindowUtil::getDesktopWindow()
 {
-    return GetDesktopWindow();
+	return GetDesktopWindow();
 }
 
 POINT WindowUtil::getWindowPosition(HWND window)

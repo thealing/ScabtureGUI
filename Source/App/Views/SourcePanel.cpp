@@ -53,7 +53,7 @@ const Event* SourcePanel::getAudioChangeEvent() const
 
 const Event* SourcePanel::getVideoOptionsClickEvent() const
 {
-    return _videoSettingsButton->getClickEvent();
+	return _videoSettingsButton->getClickEvent();
 }
 
 const Event* SourcePanel::getAudioOptionsClickEvent() const

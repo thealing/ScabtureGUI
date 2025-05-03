@@ -47,7 +47,7 @@ void ResizePanel::setEnabled(bool resize)
 
 int ResizePanel::getWidth() const
 {
-    return ControlUtil::getValue(_widthEdit);
+	return ControlUtil::getValue(_widthEdit);
 }
 
 int ResizePanel::getHeight() const
@@ -67,20 +67,20 @@ bool ResizePanel::getKeepRatio() const
 
 const Event* ResizePanel::getWidthChangeEvent() const
 {
-    return _widthEdit->getEditEvent();
+	return _widthEdit->getEditEvent();
 }
 
 const Event* ResizePanel::getHeightChangeEvent() const
 {
-    return _heightEdit->getEditEvent();
+	return _heightEdit->getEditEvent();
 }
 
 const Event* ResizePanel::getResizeChangeEvent() const
 {
-    return _resizeCheckbox->getCheckEvent();
+	return _resizeCheckbox->getCheckEvent();
 }
 
 const Event* ResizePanel::getKeepRatioChangeEvent() const
 {
-    return _keepRatioCheckbox->getCheckEvent();
+	return _keepRatioCheckbox->getCheckEvent();
 }

@@ -41,12 +41,12 @@ AudioDevice* AudioDeviceProvider::getOutputDevice() const
 
 AudioVolumeMeter* AudioDeviceProvider::getInputVolumeMeter() const
 {
-    return new AudioVolumeMeter(_enumerator, eCapture, eConsole);
+	return new AudioVolumeMeter(_enumerator, eCapture, eConsole);
 }
 
 AudioVolumeMeter* AudioDeviceProvider::getOutputVolumeMeter() const
 {
-    return new AudioVolumeMeter(_enumerator, eRender, eConsole);
+	return new AudioVolumeMeter(_enumerator, eRender, eConsole);
 }
 
 const Event* AudioDeviceProvider::getInputChangeEvent() const

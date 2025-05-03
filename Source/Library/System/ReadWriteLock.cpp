@@ -27,7 +27,7 @@ void ReadWriteLock::endWriting()
 
 bool ReadWriteLock::tryReading()
 {
-    return TryAcquireSRWLockShared(&_lock);
+	return TryAcquireSRWLockShared(&_lock);
 }
 
 bool ReadWriteLock::tryWriting()

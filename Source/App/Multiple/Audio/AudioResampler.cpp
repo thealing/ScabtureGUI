@@ -138,7 +138,7 @@ HRESULT AudioResampler::start()
 	{
 		result = _source->start();
 	}
-    return result;
+	return result;
 }
 
 HRESULT AudioResampler::stop()

@@ -274,7 +274,7 @@ HWND Window::getHandle() const
 
 HDC Window::getContext() const
 {
-    return _context;
+	return _context;
 }
 
 bool Window::canClose()

@@ -40,7 +40,7 @@ int Control::getTextLength() const
 
 const Event* Control::getResizeEvent() const
 {
-    return &_resizeEvent;
+	return &_resizeEvent;
 }
 
 const Event* Control::getChangeEvent() const

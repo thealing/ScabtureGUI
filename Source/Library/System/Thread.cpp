@@ -21,7 +21,7 @@ Thread::~Thread()
 
 int Thread::getId() const
 {
-    return GetThreadId(_handle);
+	return GetThreadId(_handle);
 }
 
 DWORD WINAPI Thread::threadProc(LPVOID parameter)

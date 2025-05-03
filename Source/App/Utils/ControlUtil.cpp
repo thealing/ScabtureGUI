@@ -30,5 +30,5 @@ int ControlUtil::getValue(const Control* control)
 	const wchar_t* text = getText(control);
 	int value = _wtoi(text);
 	delete text;
-    return value;
+	return value;
 }
