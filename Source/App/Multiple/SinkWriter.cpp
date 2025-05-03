@@ -1,0 +1,154 @@
+#include "SinkWriter.h"
+
+SinkWriter::SinkWriter(const SinkWriterSettings& settings, const wchar_t* path) : _path(path)
+{
+	ComPointer<IMFAttributes> attributes;
+	if (_path == NULL)
+	{
+		_status = E_INVALIDARG;
+	}
+	if (_status)
+	{
+		_status = MFCreateAttributes(&attributes, 3);
+	}
+	if (_status)
+	{
+		_status = attributes->SetUINT32(MF_LOW_LATENCY, settings.lowLatency);
+	}
+	if (_status)
+	{
+		_status = attributes->SetUINT32(MF_SINK_WRITER_DISABLE_THROTTLING, settings.noThrottling);
+	}
+	if (_status)
+	{
+		_status = attributes->SetUINT32(MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, settings.hardware);
+	}
+	if (_status)
+	{
+		_status = MFCreateSinkWriterFromURL(_path, NULL, attributes, &_writer);
+	}
+	if (!_status)
+	{
+		LogUtil::logComError("SinkWriter", _status);
+	}
+}
+
+HRESULT SinkWriter::addStream(IMFMediaType* inputType, IMFMediaType* outputType, DWORD* streamIndex)
+{
+	Status result;
+	if (inputType == NULL)
+	{
+		result = E_INVALIDARG;
+	}
+	if (outputType == NULL)
+	{
+		result = E_INVALIDARG;
+	}
+	if (streamIndex == NULL)
+	{
+		result = E_INVALIDARG;
+	}
+	if (_writer == NULL)
+	{
+		result = E_POINTER;
+	}
+	if (result)
+	{
+		result = _writer->AddStream(outputType, streamIndex);
+	}
+	if (result)
+	{
+		result = _writer->SetInputMediaType(*streamIndex, inputType, NULL);
+	}
+	if (!result)
+	{
+		LogUtil::logComError(__FUNCTION__, result);
+	}
+	return result;
+}
+
+HRESULT SinkWriter::writeSample(DWORD streamIndex, IMFSample* sample)
+{
+	Status result;
+	if (sample == NULL)
+	{
+		result = E_INVALIDARG;
+	}
+	if (_writer == NULL)
+	{
+		result = E_POINTER;
+	}
+	if (result)
+	{
+		result = _writer->WriteSample(streamIndex, sample);
+	}
+	if (!result)
+	{
+		LogUtil::logComWarning(__FUNCTION__, result);
+	}
+	return result;
+}
+
+HRESULT SinkWriter::getStatistics(DWORD streamIndex, MF_SINK_WRITER_STATISTICS* statistics)
+{
+	Status result;
+	if (statistics == NULL)
+	{
+		result = E_INVALIDARG;
+	}
+	if (_writer == NULL)
+	{
+		result = E_POINTER;
+	}
+	if (result)
+	{
+		statistics->cb = sizeof(MF_SINK_WRITER_STATISTICS);
+		result = _writer->GetStatistics(streamIndex, statistics);
+	}
+	if (!result)
+	{
+		LogUtil::logComWarning(__FUNCTION__, result);
+	}
+	return result;
+}
+
+HRESULT SinkWriter::start()
+{
+	Status result;
+	if (_writer == NULL)
+	{
+		result = E_POINTER;
+	}
+	if (result)
+	{
+		result = _writer->BeginWriting();
+	}
+	if (!result)
+	{
+		LogUtil::logComError(__FUNCTION__, result);
+	}
+	return result;
+}
+
+HRESULT SinkWriter::finalize()
+{
+	Status result;
+	if (_writer == NULL)
+	{
+		result = E_POINTER;
+	}
+	if (result)
+	{
+		result = _writer->Finalize();
+	}
+	if (!result)
+	{
+		LogUtil::logComError(__FUNCTION__, result);
+	}
+	return result;
+}
+
+const wchar_t* SinkWriter::getPath() const
+{
+	return _path;
+}

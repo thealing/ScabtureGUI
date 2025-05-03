@@ -1,0 +1,132 @@
+#include "DialogWindow.h"
+
+DialogWindow::DialogWindow(Window* parent, const wchar_t* title, int width, int height, int margin, int spacing) : _windowClass(title)
+{
+	create(title, title, WS_POPUP | WS_CAPTION | WS_SYSMENU, parent);
+	setSize(Vector(width, 0));
+	_width = width;
+	_height = height;
+	_margin = margin;
+	_spacing = spacing;
+	_bottom = 0;
+}
+
+DialogWindow::~DialogWindow()
+{
+	_eventDispatcher.stop();
+}
+
+void DialogWindow::setConfirmCallback(const Callback& callback)
+{
+	_confirmCallback = callback;
+}
+
+void DialogWindow::setCancelCallback(const Callback& callback)
+{
+	_cancelCallback = callback;
+}
+
+void DialogWindow::addCheckBox(const wchar_t* labelText, int controlWidth, bool* value)
+{
+	UniquePointer<Control> label(DialogUtil::createLabel(this, labelText, _margin, _bottom + _spacing, _width - _margin - controlWidth, _height - _spacing));
+	UniquePointer<Control> control(DialogUtil::createCheckBox(this, value, _width - _margin - controlWidth, _bottom + _spacing, controlWidth, _height - _spacing));
+	_bottom += _height;
+	_controls.add(label);
+	_controls.add(control);
+}
+
+void DialogWindow::addComboBox(const wchar_t* labelText, int controlWidth, int* value, const wchar_t** options, int count)
+{
+	UniquePointer<Control> label(DialogUtil::createLabel(this, labelText, _margin, _bottom + _spacing, _width - _margin - controlWidth, _height - _spacing));
+	UniquePointer<Control> control(DialogUtil::createComboBox(this, value, options, count, _width - _margin - controlWidth, _bottom + _spacing, controlWidth, _height - _spacing));
+	_bottom += _height;
+	_controls.add(label);
+	_controls.add(control);
+}
+
+void DialogWindow::addHotkeyEdit(const wchar_t* labelText, int controlWidth, Hotkey* value)
+{
+	UniquePointer<Control> label(DialogUtil::createLabel(this, labelText, _margin, _bottom + _spacing, _width - _margin - controlWidth, _height - _spacing));
+	UniquePointer<Control> control(DialogUtil::createHotkeyEdit(this, value, _width - _margin - controlWidth, _bottom + _spacing, controlWidth, _height - _spacing));
+	_bottom += _height;
+	_controls.add(label);
+	_controls.add(control);
+}
+
+void DialogWindow::addSeparator()
+{
+	_bottom += _spacing * 2;
+	UniquePointer<Control> control(DialogUtil::createSeparator(this, _margin, _bottom, _width - _margin * 2, 1));
+	_bottom += _spacing + 1;
+	_controls.add(control);
+}
+
+void DialogWindow::finalize()
+{
+	_bottom += 25;
+	UniquePointer<Control> confirmButton(DialogUtil::createButton(this, L"OK", _width - 90, _bottom, 80, 20));
+	UniquePointer<Control> cancelButton(DialogUtil::createButton(this, L"Cancel", _width - 180, _bottom, 80, 20));
+	_bottom += 30;
+	FontStore& fontStore = FontStore::getInstance();
+	setChildrenFont(fontStore.getPanelFont());
+	Window* parent = getParent();
+	if (parent != NULL)
+	{
+		Vector parentCenter = parent->getPosition() + parent->getSize() / 2;
+		Vector halfSize(_width / 2, _bottom / 2);
+		Rect rect(parentCenter - halfSize, parentCenter + halfSize);
+		setRect(rect);
+	}
+	else
+	{
+		Vector size(_width, _bottom);
+		setSize(size);
+	}
+	_eventDispatcher.addEntry(confirmButton->getChangeEvent(), BIND(DialogWindow, confirm, this));
+	_eventDispatcher.addEntry(cancelButton->getChangeEvent(), BIND(DialogWindow, cancel, this));
+	_eventDispatcher.start();
+	_controls.add(confirmButton);
+	_controls.add(cancelButton);
+}
+
+void DialogWindow::onConfirmed()
+{
+	UniquePointer<const wchar_t> title(DialogUtil::getTitle(this));
+	LogUtil::logInfo(L"Confirmed dialog \"%ls\".", title.get());
+	_confirmCallback.invoke();
+}
+
+void DialogWindow::onCancelled()
+{
+	UniquePointer<const wchar_t> title(DialogUtil::getTitle(this));
+	LogUtil::logInfo(L"Cancelled dialog \"%ls\".", title.get());
+	_cancelCallback.invoke();
+}
+
+void DialogWindow::confirm()
+{
+	postTask(BIND(DialogWindow, confirmOnWindowThread, this));
+}
+
+void DialogWindow::cancel()
+{
+	postTask(BIND(DialogWindow, cancelOnWindowThread, this));
+}
+
+void DialogWindow::confirmOnWindowThread()
+{
+	onConfirmed();
+	close();
+}
+
+void DialogWindow::cancelOnWindowThread()
+{
+	onCancelled();
+	close();
+}
+
+bool DialogWindow::canClose()
+{
+	onCancelled();
+	return false;
+}
