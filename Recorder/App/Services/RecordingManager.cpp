@@ -127,7 +127,7 @@ const wchar_t* RecordingManager::getPath() const
 
 const FpsCounter& RecordingManager::getFpsCounter() const
 {
-    return _fpsCounter;
+	return _fpsCounter;
 }
 
 const Event* RecordingManager::getEncodeEvent() const

@@ -10,7 +10,7 @@ VideoSettingsDialog::~VideoSettingsDialog()
 
 DialogWindow* VideoSettingsDialog::createWindow(Window* parent)
 {
-    return new DialogWindow(parent, L"Video Options", 340, 28, 10, 6);
+	return new DialogWindow(parent, L"Video Options", 340, 28, 10, 6);
 }
 
 void VideoSettingsDialog::createControls(DialogWindow* window, VideoSettings* settings)

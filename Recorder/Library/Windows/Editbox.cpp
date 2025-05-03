@@ -13,7 +13,7 @@ EditBox::~EditBox()
 
 const Event* EditBox::getEditEvent() const
 {
-    return getChangeEvent();
+	return getChangeEvent();
 }
 
 LRESULT EditBox::editProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam, UINT_PTR subclassId, DWORD_PTR)

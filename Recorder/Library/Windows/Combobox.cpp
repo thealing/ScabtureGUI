@@ -35,7 +35,7 @@ int ComboBox::getSelection() const
 
 const Event* ComboBox::getSelectionEvent() const
 {
-    return getChangeEvent();
+	return getChangeEvent();
 }
 
 void ComboBox::onChange()

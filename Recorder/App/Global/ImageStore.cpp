@@ -38,7 +38,7 @@ Image* ImageStore::getSpeakerImage()
 
 Image* ImageStore::getMicrophoneImage()
 {
-    return _microphoneImage;
+	return _microphoneImage;
 }
 
 ImageStore::ImageStore()

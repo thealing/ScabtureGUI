@@ -19,5 +19,5 @@ bool CheckBox::getChecked()
 
 const Event* CheckBox::getCheckEvent() const
 {
-    return getChangeEvent();
+	return getChangeEvent();
 }

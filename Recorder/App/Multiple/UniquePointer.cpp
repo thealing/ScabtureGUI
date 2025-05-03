@@ -45,7 +45,7 @@ UniquePointer<Type>& UniquePointer<Type>::operator=(UniquePointer& other)
 template<class Type>
 Type* UniquePointer<Type>::get() const
 {
-    return _object;
+	return _object;
 }
 
 template<class Type>

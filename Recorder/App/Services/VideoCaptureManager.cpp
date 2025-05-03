@@ -49,7 +49,7 @@ const FpsCounter& VideoCaptureManager::getFpsCounter() const
 
 const Event* VideoCaptureManager::getChangeEvent() const
 {
-    return _changeEventPool.getEvent();
+	return _changeEventPool.getEvent();
 }
 
 const Event* VideoCaptureManager::getFrameEvent() const

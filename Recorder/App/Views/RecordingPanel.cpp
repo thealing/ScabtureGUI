@@ -39,7 +39,7 @@ void RecordingPanel::setPausedState(bool paused)
 
 const Event* RecordingPanel::getStartClickEvent() const
 {
-    return _startButton->getClickEvent();
+	return _startButton->getClickEvent();
 }
 
 const Event* RecordingPanel::getStopClickEvent() const

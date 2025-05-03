@@ -14,7 +14,7 @@ Vector::Vector(int x, int y) : x(x), y(y)
 
 bool Vector::operator==(const Vector& other) const
 {
-    return x == other.x && y == other.y;
+	return x == other.x && y == other.y;
 }
 
 bool Vector::operator!=(const Vector& other) const
@@ -44,7 +44,7 @@ Vector Vector::operator/(const Vector& other) const
 
 Vector Vector::operator*(int value) const
 {
-    return Vector(x * value, y * value);
+	return Vector(x * value, y * value);
 }
 
 Vector Vector::operator/(int value) const

@@ -6,5 +6,5 @@ BaseResizer::BaseResizer(Vector outputSize, const Rect& outputRect) : _outputSiz
 
 Vector BaseResizer::getOutputSize() const
 {
-    return _outputSize;
+	return _outputSize;
 }

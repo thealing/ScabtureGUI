@@ -43,7 +43,7 @@ HRESULT Encoder::getStatistics(MF_SINK_WRITER_STATISTICS* statistics) const
 
 const Event* Encoder::getEncodeEvent() const
 {
-    return _eventPool.getEvent();
+	return _eventPool.getEvent();
 }
 
 HRESULT Encoder::addStream(IMFMediaType* inputType, IMFMediaType* outputType)
