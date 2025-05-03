@@ -1,0 +1,15 @@
+#include "Resource.h"
+
+ID_START BITMAP "Start.bmp"
+
+ID_STOP BITMAP "Stop.bmp"
+
+ID_PAUSE BITMAP "Pause.bmp"
+
+ID_RESUME BITMAP "Resume.bmp"
+
+ID_SETTINGS BITMAP "Settings.bmp"
+
+ID_SPEAKER BITMAP "Speaker.bmp"
+
+ID_MICROPHONE BITMAP "Microphone.bmp"
