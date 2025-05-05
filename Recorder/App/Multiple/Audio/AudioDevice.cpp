@@ -78,6 +78,7 @@ HRESULT AudioDevice::getSample(IMFSample** sample)
 	BYTE* frameBuffer = NULL;
 	UINT32 frameCount = 0;
 	DWORD flags = 0;
+	UINT64 position = 0;
 	UINT32 bufferSize = 0;
 	BYTE* bufferData = NULL;
 	if (_captureClient == NULL)
@@ -90,7 +91,7 @@ HRESULT AudioDevice::getSample(IMFSample** sample)
 	}
 	if (result)
 	{
-		result = _captureClient->GetBuffer(&frameBuffer, &frameCount, &flags, NULL, NULL);
+		result = _captureClient->GetBuffer(&frameBuffer, &frameCount, &flags, NULL, &position);
 	}
 	if (result)
 	{
@@ -124,7 +125,12 @@ HRESULT AudioDevice::getSample(IMFSample** sample)
 	}
 	if (result)
 	{
-		LONGLONG duration = llround(10000000.0 * frameCount / _waveFormat->nSamplesPerSec); 
+		LONGLONG time = position; 
+		result = (*sample)->SetSampleTime(time);
+	}
+	if (result)
+	{
+		LONGLONG duration = 10000000ll * frameCount / _waveFormat->nSamplesPerSec; 
 		result = (*sample)->SetSampleDuration(duration);
 	}
 	if (!result)
