@@ -27,4 +27,6 @@ private:
 	ComPointer<IMFMediaType> _inputType;
 	ComPointer<IMFMediaType> _outputType;
 	ComPointer<IMFTransform> _resampler;
+	UINT32 _inputSampleRate;
+	UINT32 _outputSampleRate;
 };
