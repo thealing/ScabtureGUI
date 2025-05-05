@@ -138,6 +138,12 @@ HRESULT VideoEncoder::getSample(IMFSample** sample)
 	}
 	if (result)
 	{
+		// TODO: Should this be the time when the WindowCapture::onTimer method got called?
+		LONGLONG time = MFGetSystemTime();
+		result = (*sample)->SetSampleTime(time);
+	}
+	if (result)
+	{
 		LONGLONG duration = llround(10000000.0 / _settings.frameRate); 
 		result = (*sample)->SetSampleDuration(duration);
 	}

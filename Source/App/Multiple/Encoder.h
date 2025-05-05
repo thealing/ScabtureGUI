@@ -38,8 +38,6 @@ private:
 
 	bool isPaused();
 
-	double getTimestamp();
-
 	HRESULT writeSample(IMFSample* sample);
 
 private:
@@ -48,7 +46,7 @@ private:
 	EventPool _eventPool;
 	WeakPointer<SinkWriter> _sinkWriter;
 	DWORD _streamIndex;
-	double _startTime;
-	double _pauseTime;
+	LONGLONG _startTime;
+	LONGLONG _pauseTime;
 };
 
