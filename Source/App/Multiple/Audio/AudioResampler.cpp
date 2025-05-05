@@ -2,6 +2,8 @@
 
 AudioResampler::AudioResampler(const AudioResamplerSettings& settings, AudioCapture* source) : _source(source)
 {
+	_inputSampleRate = 1;
+	_outputSampleRate = settings.format.sampleRate;
 	ComPointer<IWMResamplerProps> props;
 	if (_source == NULL)
 	{
@@ -10,6 +12,11 @@ AudioResampler::AudioResampler(const AudioResamplerSettings& settings, AudioCapt
 	if (_status)
 	{
 		_status = source->getFormat(&_inputType);
+	}
+	if (_status)
+	{
+		_status = _inputType->GetUINT32(MF_MT_AUDIO_SAMPLES_PER_SECOND, &_inputSampleRate);
+		
 	}
 	if (_status)
 	{
@@ -79,7 +86,9 @@ HRESULT AudioResampler::getSample(IMFSample** sample)
 	ComPointer<IMFSample> inputSample;
 	ComPointer<IMFMediaBuffer> inputBuffer;
 	ComPointer<IMFMediaBuffer> outputBuffer;
+	LONGLONG time = 0;
 	LONGLONG duration = 0;
+	DWORD inputSize = 0;
 	if (_source == NULL)
 	{
 		result = E_POINTER;
@@ -90,7 +99,15 @@ HRESULT AudioResampler::getSample(IMFSample** sample)
 	}
 	if (result)
 	{
+		result = inputSample->GetSampleTime(&time);
+	}
+	if (result)
+	{
 		result = inputSample->GetSampleDuration(&duration);
+	}
+	if (result)
+	{
+		result = inputSample->GetTotalLength(&inputSize);
 	}
 	if (result)
 	{
@@ -98,7 +115,7 @@ HRESULT AudioResampler::getSample(IMFSample** sample)
 	}
 	if (result)
 	{
-		DWORD outputSize = 9999999; // TODO: Calculate the exact needed size
+		DWORD outputSize = BufferUtil::alignValue(inputSize * _outputSampleRate / _inputSampleRate + 1, 4);
 		result = MFCreateMemoryBuffer(outputSize, &outputBuffer);
 	}
 	if (result)
@@ -108,6 +125,10 @@ HRESULT AudioResampler::getSample(IMFSample** sample)
 	if (result)
 	{
 		result = (*sample)->AddBuffer(outputBuffer);
+	}
+	if (result)
+	{
+		result = (*sample)->SetSampleTime(time);
 	}
 	if (result)
 	{
