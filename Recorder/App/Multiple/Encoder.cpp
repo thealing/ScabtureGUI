@@ -10,7 +10,7 @@ Encoder::~Encoder()
 
 void Encoder::start()
 {
-	_startTime = getTime();
+	_startTime = MFGetSystemTime();
 	_eventDispatcher.start();
 	doStart();
 }
@@ -23,12 +23,12 @@ void Encoder::stop()
 
 void Encoder::pause()
 {
-	_pauseTime = getTime();
+	_pauseTime = MFGetSystemTime();
 }
 
 void Encoder::resume()
 {
-	_startTime += getTime() - _pauseTime;
+	_startTime += MFGetSystemTime() - _pauseTime;
 	_pauseTime = 0;
 }
 
@@ -82,12 +82,20 @@ void Encoder::encode()
 	{
 		return;
 	}
-	double timestamp = getTimestamp();
+	Status result;
 	ComPointer<IMFSample> sample;
-	Status result = getSample(&sample);
+	LONGLONG time = 0;
 	if (result)
 	{
-		LONGLONG time = llround(10000000.0 * timestamp);
+		result = getSample(&sample);
+	}
+	if (result)
+	{
+		result = sample->GetSampleTime(&time);
+	}
+	if (result)
+	{
+		time -= _startTime;
 		result = sample->SetSampleTime(time);
 	}
 	if (result)
@@ -107,11 +115,6 @@ void Encoder::encode()
 bool Encoder::isPaused()
 {
 	return _pauseTime != 0;
-}
-
-double Encoder::getTimestamp()
-{
-	return getTime() - _startTime;
 }
 
 HRESULT Encoder::writeSample(IMFSample* sample)
