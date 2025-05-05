@@ -15,6 +15,11 @@ void BufferUtil::freeBuffer(Unit* buffer)
 	_aligned_free(buffer);
 }
 
+int BufferUtil::alignValue(int value, int alignment)
+{
+	return max(alignment, (alignment + value - 1) / alignment * alignment);
+}
+
 int BufferUtil::alignWidth(int value)
 {
 	return alignValue(value, 2);
@@ -28,9 +33,4 @@ int BufferUtil::alignHeight(int value)
 int BufferUtil::alignStride(int value)
 {
 	return alignValue(value, 32);
-}
-
-int BufferUtil::alignValue(int value, int alignment)
-{
-	return max(alignment, (alignment + value - 1) / alignment * alignment);
 }

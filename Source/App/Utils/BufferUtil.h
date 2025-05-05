@@ -10,13 +10,11 @@ public:
 	template<class Unit>
 	static void freeBuffer(Unit* buffer);
 
+	static int alignValue(int value, int alignment);
+
 	static int alignWidth(int value);
 
 	static int alignHeight(int value);
 
 	static int alignStride(int value);
-
-private:
-
-	static int alignValue(int value, int alignment);
 };
