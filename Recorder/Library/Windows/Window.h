@@ -54,6 +54,8 @@ public:
 
 	void setData(intptr_t data);
 
+	int showMessageBox(const wchar_t* title, const wchar_t* content, UINT type) const;
+
 	void getTitle(wchar_t* buffer, int size) const;
 
 	int getTitleLength() const;
