@@ -30,6 +30,10 @@ protected:
 
 	virtual HRESULT doStop();
 
+	virtual HRESULT doPause();
+
+	virtual HRESULT doResume();
+
 	virtual HRESULT getSample(IMFSample** sample);
 
 private:
