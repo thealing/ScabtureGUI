@@ -113,6 +113,7 @@
 #include "App\Multiple\MediaSource.h"
 #include "App\Multiple\SinkWriter.h"
 #include "App\Multiple\Encoder.h"
+#include "App\Multiple\Audio\SilencePlayer.h"
 #include "App\Multiple\Audio\AudioVolumeMeter.h"
 #include "App\Multiple\Audio\AudioCapture.h"
 #include "App\Multiple\Audio\AudioDevice.h"
