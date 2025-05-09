@@ -8,9 +8,9 @@ public:
 
 	virtual ~AudioDeviceProvider();
 
-	AudioDevice* getInputDevice() const;
+	AudioCapture* getInputCapture() const;
 
-	AudioDevice* getOutputDevice() const;
+	AudioCapture* getOutputCapture() const;
 
 	AudioVolumeMeter* getInputVolumeMeter() const;
 

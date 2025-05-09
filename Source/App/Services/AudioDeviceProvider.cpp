@@ -29,12 +29,12 @@ AudioDeviceProvider::~AudioDeviceProvider()
 	}
 }
 
-AudioDevice* AudioDeviceProvider::getInputDevice() const
+AudioCapture* AudioDeviceProvider::getInputCapture() const
 {
 	return new AudioDevice(_enumerator, eCapture, eConsole);
 }
 
-AudioDevice* AudioDeviceProvider::getOutputDevice() const
+AudioCapture* AudioDeviceProvider::getOutputCapture() const
 {
 	return new AudioDevice(_enumerator, eRender, eConsole);
 }
