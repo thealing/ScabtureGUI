@@ -74,25 +74,45 @@ void AudioEncoder::onFrame()
 
 HRESULT AudioEncoder::doStart()
 {
+	if (_source == NULL)
+	{
+		return E_POINTER;
+	}
 	return _source->start();
 }
 
 HRESULT AudioEncoder::doStop()
 {
+	if (_source == NULL)
+	{
+		return E_POINTER;
+	}
 	return _source->stop();
 }
 
 HRESULT AudioEncoder::doPause()
 {
+	if (_source == NULL)
+	{
+		return E_POINTER;
+	}
     return _source->stop();
 }
 
 HRESULT AudioEncoder::doResume()
 {
+	if (_source == NULL)
+	{
+		return E_POINTER;
+	}
     return _source->start();
 }
 
 HRESULT AudioEncoder::getSample(IMFSample** sample)
 {
+	if (_source == NULL)
+	{
+		return E_POINTER;
+	}
 	return _source->getSample(sample);
 }

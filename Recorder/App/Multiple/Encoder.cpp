@@ -40,6 +40,10 @@ HRESULT Encoder::getStatistics(MF_SINK_WRITER_STATISTICS* statistics) const
 	{
 		return E_POINTER;
 	}
+	if (_streamIndex == -1)
+	{
+		return E_ILLEGAL_METHOD_CALL;
+	}
 	return _sinkWriter->getStatistics(_streamIndex, statistics);
 }
 
@@ -53,6 +57,10 @@ HRESULT Encoder::addStream(IMFMediaType* inputType, IMFMediaType* outputType)
 	if (_sinkWriter == NULL)
 	{
 		return E_POINTER;
+	}
+	if (_streamIndex != -1)
+	{
+		return E_ILLEGAL_METHOD_CALL;
 	}
 	return _sinkWriter->addStream(inputType, outputType, &_streamIndex);
 }
