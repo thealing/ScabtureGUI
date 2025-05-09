@@ -180,8 +180,12 @@ void RecordingController::doActionsAfterRecording()
 	}
 	if (settings.askToPlayTheSavedRecording)
 	{
-		const wchar_t* path = _recordingManager->getPath();
-		ShellExecute(NULL, L"open", path, NULL, NULL, SW_SHOWNORMAL);
+		int result = _mainWindow->showMessageBox(L"Recording finished", L"Open the recorded video?", MB_YESNO | MB_ICONQUESTION);
+		if (result == IDYES)
+		{
+			const wchar_t* path = _recordingManager->getPath();
+			ShellExecute(NULL, L"open", path, NULL, NULL, SW_SHOWNORMAL);
+		}
 	}
 }
 

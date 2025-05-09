@@ -154,6 +154,11 @@ void Window::setData(intptr_t data)
 	SetWindowLongPtr(_handle, GWLP_USERDATA, data);
 }
 
+int Window::showMessageBox(const wchar_t* title, const wchar_t* content, UINT type) const
+{
+	return MessageBox(_handle, content, title, type);
+}
+
 void Window::getTitle(wchar_t* buffer, int size) const
 {
 	int length = GetWindowText(_handle, buffer, size);
