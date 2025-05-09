@@ -82,6 +82,16 @@ HRESULT AudioEncoder::doStop()
 	return _source->stop();
 }
 
+HRESULT AudioEncoder::doPause()
+{
+    return _source->stop();
+}
+
+HRESULT AudioEncoder::doResume()
+{
+    return _source->start();
+}
+
 HRESULT AudioEncoder::getSample(IMFSample** sample)
 {
 	return _source->getSample(sample);

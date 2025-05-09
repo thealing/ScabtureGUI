@@ -23,6 +23,7 @@ void Encoder::stop()
 
 void Encoder::pause()
 {
+	doPause();
 	_pauseTime = MFGetSystemTime();
 }
 
@@ -30,6 +31,7 @@ void Encoder::resume()
 {
 	_startTime += MFGetSystemTime() - _pauseTime;
 	_pauseTime = 0;
+	doResume();
 }
 
 HRESULT Encoder::getStatistics(MF_SINK_WRITER_STATISTICS* statistics) const
@@ -67,6 +69,16 @@ HRESULT Encoder::doStart()
 }
 
 HRESULT Encoder::doStop()
+{
+	return S_OK;
+}
+
+HRESULT Encoder::doPause()
+{
+	return S_OK;
+}
+
+HRESULT Encoder::doResume()
 {
 	return S_OK;
 }

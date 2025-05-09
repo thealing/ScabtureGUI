@@ -10,6 +10,8 @@ public:
 
 	HRESULT writeSample(DWORD streamIndex, IMFSample* sample);
 
+	HRESULT sendStreamTick(DWORD streamIndex, LONGLONG timestamp);
+
 	HRESULT getStatistics(DWORD streamIndex, MF_SINK_WRITER_STATISTICS* statistics);
 
 	HRESULT start();

@@ -89,6 +89,24 @@ HRESULT SinkWriter::writeSample(DWORD streamIndex, IMFSample* sample)
 	return result;
 }
 
+HRESULT SinkWriter::sendStreamTick(DWORD streamIndex, LONGLONG timestamp)
+{
+	Status result;
+	if (_writer == NULL)
+	{
+		result = E_POINTER;
+	}
+	if (result)
+	{
+		result = _writer->SendStreamTick(streamIndex, timestamp);
+	}
+	if (!result)
+	{
+		LogUtil::logComWarning(__FUNCTION__, result);
+	}
+	return result;
+}
+
 HRESULT SinkWriter::getStatistics(DWORD streamIndex, MF_SINK_WRITER_STATISTICS* statistics)
 {
 	Status result;

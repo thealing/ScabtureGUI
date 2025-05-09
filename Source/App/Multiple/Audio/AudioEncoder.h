@@ -14,6 +14,10 @@ private:
 
 	virtual HRESULT doStop() override;
 
+	virtual HRESULT doPause() override;
+
+	virtual HRESULT doResume() override;
+
 	virtual HRESULT getSample(IMFSample** sample) override;
 
 private:
