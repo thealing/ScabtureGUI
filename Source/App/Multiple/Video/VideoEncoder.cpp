@@ -79,11 +79,20 @@ VideoEncoder::VideoEncoder(const VideoEncoderSettings& settings, VideoCapture* s
 	}
 	if (_status)
 	{
-		addEvent(_source->getFrameEvent());
+		_frameEvent = _source->getFrameEvent();
+		addEvent(_frameEvent);
 	}
 	if (!_status)
 	{
 		LogUtil::logComError("VideoEncoder", _status);
+	}
+}
+
+VideoEncoder::~VideoEncoder()
+{
+	if (_frameEvent != NULL)
+	{
+		_source->releaseFrameEvent(_frameEvent);
 	}
 }
 
@@ -144,6 +153,7 @@ HRESULT VideoEncoder::getSample(IMFSample** sample)
 	}
 	if (result)
 	{
+		// TODO: Should this be a delta-time to the next frame instead of a fixed value?
 		LONGLONG duration = llround(10000000.0 / _settings.frameRate); 
 		result = (*sample)->SetSampleDuration(duration);
 	}
