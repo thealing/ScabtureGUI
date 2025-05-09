@@ -4,7 +4,11 @@ class FrameSource : NonCopyable
 {
 public:
 
-	const Event* getFrameEvent() const;
+	FrameSource();
+
+	const Event* getFrameEvent();
+
+	void releaseFrameEvent(const Event* event);
 
 protected:
 
@@ -12,6 +16,9 @@ protected:
 
 private:
 
-	EventPool _frameEventPool;
+	static const int Capacity = 4;
+
+	Event _events[Capacity];
+	bool _used[Capacity];
 };
 
