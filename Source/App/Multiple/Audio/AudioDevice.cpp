@@ -8,6 +8,17 @@ AudioDevice::AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole 
 	}
 	if (_status)
 	{
+		// An output device stops capturing when it detects that no audio is playing.
+		// This messes up the media foundation sink writer so we must not let this happen.
+		// TODO: Solve this by using a timer instead and call SendStreamTick()?
+		if (flow == eRender)
+		{
+			_silencePlayer = new SilencePlayer(enumerator, flow, role);
+			_status = _silencePlayer->start();
+		}
+	}
+	if (_status)
+	{
 		_status = enumerator->GetDefaultAudioEndpoint(flow, role, &_device);
 	}
 	if (_status)
@@ -29,15 +40,16 @@ AudioDevice::AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole 
 	}
 	if (_status)
 	{
-		_status = _audioClient->GetService(IID_PPV_ARGS(&_captureClient));
-	}
-	if (_status)
-	{
 		_status = _audioClient->SetEventHandle(_frameEvent);
 	}
 	if (_status)
 	{
-		_eventDispather.addEntry(&_frameEvent, BIND(AudioDevice, onFrame, this));
+		Callback callback = BIND(AudioDevice, onFrame, this);
+		_eventDispather.addEntry(&_frameEvent, callback);
+	}
+	if (_status)
+	{
+		_status = _audioClient->GetService(IID_PPV_ARGS(&_captureClient));
 	}
 	if (!_status)
 	{
@@ -47,6 +59,10 @@ AudioDevice::AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole 
 
 AudioDevice::~AudioDevice()
 {
+	if (_silencePlayer != NULL)
+	{
+		_silencePlayer->stop();
+	}
 }
 
 HRESULT AudioDevice::getFormat(IMFMediaType** format)
@@ -133,6 +149,13 @@ HRESULT AudioDevice::getSample(IMFSample** sample)
 		LONGLONG duration = 10000000ll * frameCount / _waveFormat->nSamplesPerSec; 
 		result = (*sample)->SetSampleDuration(duration);
 	}
+	if (result)
+	{
+		if (flags & AUDCLNT_BUFFERFLAGS_DATA_DISCONTINUITY)
+		{
+			result = (*sample)->SetUINT32(MFSampleExtension_Discontinuity, TRUE);
+		}
+	}
 	if (!result)
 	{
 		LogUtil::logComWarning(__FUNCTION__, result);
@@ -149,8 +172,14 @@ HRESULT AudioDevice::start()
 	}
 	if (result)
 	{
-		_eventDispather.start();
 		result = _audioClient->Start();
+	}
+	if (result)
+	{
+		if (HRESULT(result) == S_OK)
+		{
+			_eventDispather.start();
+		}
 	}
 	if (!result)
 	{
@@ -169,7 +198,13 @@ HRESULT AudioDevice::stop()
 	if (result)
 	{
 		result = _audioClient->Stop();
-		_eventDispather.stop();
+	}
+	if (result)
+	{
+		if (HRESULT(result) == S_OK)
+		{
+			_eventDispather.stop();
+		}
 	}
 	if (!result)
 	{

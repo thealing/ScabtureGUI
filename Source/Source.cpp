@@ -31,6 +31,7 @@
 #include "App\Multiple\Audio\AudioResampler.cpp"
 #include "App\Multiple\Audio\AudioVolumeMeter.cpp"
 #include "App\Multiple\Audio\AudioEncoder.cpp"
+#include "App\Multiple\Audio\SilencePlayer.cpp"
 #include "App\Multiple\Captures\MouseCapture.cpp"
 #include "App\Multiple\Captures\BaseCapture.cpp"
 #include "App\Multiple\Captures\BitbltCapture.cpp"
