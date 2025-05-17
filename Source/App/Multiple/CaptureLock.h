@@ -1,10 +1,7 @@
 #pragma once
 
-// This is a custom read-write lock implementation which solves an issue with the SRWLock. 
-// SRWLock is designed to avoid writer-starvation, so when an exclusive acquisition is requested,
-// it doesn't allow any more shared acquisitions, until all of them are released, and the write completes. 
-// This version blocks the write request until all reader locks are released,
-// while still allowing new readers to acquire the lock.
+// This is a custom read-write lock implementation, for correct locking of the video capture.
+// When a writer lock is requested, it waits until all reader locks are released, while still allowing new reader locks to be acquired.
 class CaptureLock : NonCopyable
 {
 public:
