@@ -368,6 +368,7 @@
     <None Include="Library\Windows\Picture.h" />
     <None Include="Library\Windows\Window.h" />
     <None Include="Library\Windows\WindowClass.h" />
+    <None Include="App\Models\AudioDataFormat.h" />
     <ClInclude Include="Recorder.h" />
     <ClInclude Include="Resources\Resource.h" />
   </ItemGroup>
