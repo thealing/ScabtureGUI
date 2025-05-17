@@ -14,6 +14,10 @@ AudioVolumeMeter::AudioVolumeMeter(IMMDeviceEnumerator* enumerator, EDataFlow fl
 	{
 		_status = _device->Activate(__uuidof(IAudioMeterInformation), CLSCTX_ALL, NULL, (void**)&_meter);
 	}
+	if (_status)
+	{
+		_deviceToKeepAlive = new AudioDevice(enumerator, flow, role);
+	}
 	if (!_status)
 	{
 		LogUtil::logComWarning("AudioVolumeMeter", _status);
@@ -25,7 +29,7 @@ HRESULT AudioVolumeMeter::getVolumes(Volumes* volumes) const
 	Status result;
 	UINT count = 0;
 	float values[2] = {};
-	if (_meter == NULL)
+	if (result && _meter == NULL)
 	{
 		result = E_POINTER;
 	}
@@ -50,6 +54,10 @@ HRESULT AudioVolumeMeter::getVolumes(Volumes* volumes) const
 			volumes->left = values[0];
 			volumes->right = values[1];
 		}
+	}
+	if (!result)
+	{
+		LogUtil::logComWarning(__FUNCTION__, result);
 	}
 	return result;
 }

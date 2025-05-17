@@ -13,5 +13,6 @@ private:
 	Status _status;
 	ComPointer<IMMDevice> _device;
 	ComPointer<IAudioMeterInformation> _meter;
+	UniquePointer<AudioDevice> _deviceToKeepAlive;
 };
 
