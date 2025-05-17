@@ -12,10 +12,6 @@ public:
 
 	virtual HRESULT getSample(IMFSample** sample) override;
 
-	virtual HRESULT start() override;
-
-	virtual HRESULT stop() override;
-
 private:
 
 	void onFrame();

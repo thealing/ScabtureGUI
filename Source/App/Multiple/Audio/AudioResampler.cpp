@@ -114,7 +114,7 @@ HRESULT AudioResampler::getSample(IMFSample** sample)
 		result = _resampler->ProcessInput(0, inputSample, 0);
 	}
 	if (result)
-	{
+	{ 
 		DWORD outputSize = BufferUtil::alignValue(inputSize * _outputSampleRate / _inputSampleRate + 1, 4);
 		result = MFCreateMemoryBuffer(outputSize, &outputBuffer);
 	}
@@ -140,42 +140,6 @@ HRESULT AudioResampler::getSample(IMFSample** sample)
 		MFT_OUTPUT_DATA_BUFFER data = {};
 		data.pSample = *sample;
 		result = _resampler->ProcessOutput(0, 1, &data, &flags);
-	}
-	if (!result)
-	{
-		LogUtil::logComWarning(__FUNCTION__, result);
-	}
-	return result;
-}
-
-HRESULT AudioResampler::start()
-{
-	Status result;
-	if (result && _source == NULL)
-	{
-		result = E_POINTER;
-	}
-	if (result)
-	{
-		result = _source->start();
-	}
-	if (!result)
-	{
-		LogUtil::logComWarning(__FUNCTION__, result);
-	}
-	return result;
-}
-
-HRESULT AudioResampler::stop()
-{
-	Status result;
-	if (result && _source == NULL)
-	{
-		result = E_POINTER;
-	}
-	if (result)
-	{
-		result = _source->stop();
 	}
 	if (!result)
 	{
