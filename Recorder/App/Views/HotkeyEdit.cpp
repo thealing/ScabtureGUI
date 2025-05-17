@@ -53,17 +53,18 @@ LRESULT HotkeyEdit::hotkeyProc(HWND window, UINT message, WPARAM wParam, LPARAM 
 				instance->_value->shift = GetKeyState(VK_SHIFT) & 0x8000;
 				instance->_value->control = GetKeyState(VK_CONTROL) & 0x8000;
 				instance->_value->alt = GetKeyState(VK_MENU) & 0x8000;
+				instance->update();
 			}
 			if (key == VK_BACK || key == VK_DELETE)
 			{
 				instance->_value->key = 0;
+				instance->update();
 			}
-			instance->update();
 		}
-	}
-	if (message == WM_CHAR || message == WM_KEYDOWN)
-	{
-		return 0;
+		if (message == WM_CHAR)
+		{
+			return 0;
+		}
 	}
 	return DefSubclassProc(window, message, wParam, lParam);
 }
