@@ -36,21 +36,21 @@ SinkWriter::SinkWriter(const SinkWriterSettings& settings, const wchar_t* path) 
 HRESULT SinkWriter::addStream(IMFMediaType* inputType, IMFMediaType* outputType, DWORD* streamIndex)
 {
 	Status result;
-	if (inputType == NULL)
-	{
-		result = E_INVALIDARG;
-	}
-	if (outputType == NULL)
-	{
-		result = E_INVALIDARG;
-	}
-	if (streamIndex == NULL)
-	{
-		result = E_INVALIDARG;
-	}
-	if (_writer == NULL)
+	if (result && _writer == NULL)
 	{
 		result = E_POINTER;
+	}
+	if (result && inputType == NULL)
+	{
+		result = E_INVALIDARG;
+	}
+	if (result && outputType == NULL)
+	{
+		result = E_INVALIDARG;
+	}
+	if (result && streamIndex == NULL)
+	{
+		result = E_INVALIDARG;
 	}
 	if (result)
 	{
@@ -70,13 +70,13 @@ HRESULT SinkWriter::addStream(IMFMediaType* inputType, IMFMediaType* outputType,
 HRESULT SinkWriter::writeSample(DWORD streamIndex, IMFSample* sample)
 {
 	Status result;
-	if (sample == NULL)
-	{
-		result = E_INVALIDARG;
-	}
-	if (_writer == NULL)
+	if (result && _writer == NULL)
 	{
 		result = E_POINTER;
+	}
+	if (result && sample == NULL)
+	{
+		result = E_INVALIDARG;
 	}
 	if (result)
 	{
@@ -92,7 +92,7 @@ HRESULT SinkWriter::writeSample(DWORD streamIndex, IMFSample* sample)
 HRESULT SinkWriter::sendStreamTick(DWORD streamIndex, LONGLONG timestamp)
 {
 	Status result;
-	if (_writer == NULL)
+	if (result && _writer == NULL)
 	{
 		result = E_POINTER;
 	}
@@ -110,13 +110,13 @@ HRESULT SinkWriter::sendStreamTick(DWORD streamIndex, LONGLONG timestamp)
 HRESULT SinkWriter::getStatistics(DWORD streamIndex, MF_SINK_WRITER_STATISTICS* statistics)
 {
 	Status result;
-	if (statistics == NULL)
-	{
-		result = E_INVALIDARG;
-	}
-	if (_writer == NULL)
+	if (result && _writer == NULL)
 	{
 		result = E_POINTER;
+	}
+	if (result && statistics == NULL)
+	{
+		result = E_INVALIDARG;
 	}
 	if (result)
 	{
@@ -133,7 +133,7 @@ HRESULT SinkWriter::getStatistics(DWORD streamIndex, MF_SINK_WRITER_STATISTICS* 
 HRESULT SinkWriter::start()
 {
 	Status result;
-	if (_writer == NULL)
+	if (result && _writer == NULL)
 	{
 		result = E_POINTER;
 	}
@@ -151,7 +151,7 @@ HRESULT SinkWriter::start()
 HRESULT SinkWriter::finalize()
 {
 	Status result;
-	if (_writer == NULL)
+	if (result && _writer == NULL)
 	{
 		result = E_POINTER;
 	}

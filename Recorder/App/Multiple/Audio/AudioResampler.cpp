@@ -64,7 +64,7 @@ AudioResampler::~AudioResampler()
 HRESULT AudioResampler::getFormat(IMFMediaType** format)
 {
 	Status result;
-	if (_outputType == NULL)
+	if (result && _outputType == NULL)
 	{
 		result = E_POINTER;
 	}
@@ -89,7 +89,7 @@ HRESULT AudioResampler::getSample(IMFSample** sample)
 	LONGLONG time = 0;
 	LONGLONG duration = 0;
 	DWORD inputSize = 0;
-	if (_source == NULL)
+	if (result && _source == NULL)
 	{
 		result = E_POINTER;
 	}
@@ -151,7 +151,7 @@ HRESULT AudioResampler::getSample(IMFSample** sample)
 HRESULT AudioResampler::start()
 {
 	Status result;
-	if (_source == NULL)
+	if (result && _source == NULL)
 	{
 		result = E_POINTER;
 	}
@@ -159,19 +159,27 @@ HRESULT AudioResampler::start()
 	{
 		result = _source->start();
 	}
+	if (!result)
+	{
+		LogUtil::logComWarning(__FUNCTION__, result);
+	}
 	return result;
 }
 
 HRESULT AudioResampler::stop()
 {
 	Status result;
-	if (_source == NULL)
+	if (result && _source == NULL)
 	{
 		result = E_POINTER;
 	}
 	if (result)
 	{
 		result = _source->stop();
+	}
+	if (!result)
+	{
+		LogUtil::logComWarning(__FUNCTION__, result);
 	}
 	return result;
 }
