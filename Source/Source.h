@@ -69,6 +69,7 @@
 #include "App\Models\AudioResampleQuality.h"
 #include "App\Models\AudioSampleRate.h"
 #include "App\Models\AudioSource.h"
+#include "App\Models\AudioDataFormat.h"
 #include "App\Models\CaptureMethod.h"
 #include "App\Models\DeviceStatus.h"
 #include "App\Models\EncodeFormat.h"

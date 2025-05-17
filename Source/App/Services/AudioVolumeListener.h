@@ -20,10 +20,6 @@ private:
 
 	void update();
 
-	void updateInputVolumes();
-
-	void updateOutputVolumes();
-
 private:
 
 	static const int UpdateFps = 50;
@@ -33,10 +29,6 @@ private:
 
 	UniquePointer<AudioVolumeMeter> _inputMeter;
 	UniquePointer<AudioVolumeMeter> _outputMeter;
-	Volumes _inputVolumes;
-	Volumes _outputVolumes;
-	bool _inputWorking;
-	bool _outputWorking;
 	UniquePointer<Timer> _timer;
 	EventPool _updateEventPool;
 };

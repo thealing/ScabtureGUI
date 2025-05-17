@@ -1103,5 +1103,8 @@
     <None Include="Library\Windows\WindowClass.h">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="App\Models\AudioDataFormat.h">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -6,13 +6,22 @@ public:
 
 	AudioVolumeMeter(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole role);
 
-	HRESULT getVolumes(Volumes* volumes) const;
+	bool getVolumes(Volumes* volumes) const;
+
+	const Event* getUpdateEvent() const;
+
+private:
+
+	void update();
 
 private:
 
 	Status _status;
-	ComPointer<IMMDevice> _device;
-	ComPointer<IAudioMeterInformation> _meter;
-	UniquePointer<AudioDevice> _deviceToKeepAlive;
+	UniquePointer<AudioCapture> _source;
+	int _channelCount;
+	int _sampleSize;
+	AudioDataFormat _format;
+	Volumes _volumes;
+	Event _updateEvent;
 };
 
