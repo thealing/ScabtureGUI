@@ -30,7 +30,7 @@ void SnapshotController::takeSnapshot()
 	ComPointer<IWICStream> stream;
 	ComPointer<IWICBitmapEncoder> encoder;
 	ComPointer<IWICBitmapFrameEncode> frame;
-	if (capture == NULL)
+	if (result && capture == NULL)
 	{
 		result = E_POINTER;
 	}

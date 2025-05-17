@@ -157,5 +157,9 @@ HRESULT VideoEncoder::getSample(IMFSample** sample)
 		LONGLONG duration = llround(10000000.0 / _settings.frameRate); 
 		result = (*sample)->SetSampleDuration(duration);
 	}
+	if (!result)
+	{
+		LogUtil::logComWarning(__FUNCTION__, result);
+	}
 	return result;
 }

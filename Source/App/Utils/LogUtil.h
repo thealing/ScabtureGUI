@@ -27,5 +27,9 @@ public:
 	static void logComWarning(const char* label, HRESULT result);
 
 	static void logComError(const char* label, HRESULT result);
+
+private:
+
+	static bool isComResultSupressed(HRESULT result);
 };
 

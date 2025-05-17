@@ -70,10 +70,31 @@ void LogUtil::logError(const wchar_t* format, ...)
 
 void LogUtil::logComWarning(const char* label, HRESULT result)
 {
+	if (isComResultSupressed(result))
+	{
+		return;
+	}
 	logWarning(L"%hs: Failed with error 0x%08X.", label, result);
 }
 
 void LogUtil::logComError(const char* label, HRESULT result)
 {
+	if (isComResultSupressed(result))
+	{
+		return;
+	}
 	logError(L"%hs: Failed with error 0x%08X.", label, result);
+}
+
+bool LogUtil::isComResultSupressed(HRESULT result)
+{
+	if (result == MF_E_TRANSFORM_INPUT_REMAINING)
+	{
+		return true;
+	}
+	if (result == MF_E_TRANSFORM_NEED_MORE_INPUT)
+	{
+		return true;
+	}
+    return false;
 }

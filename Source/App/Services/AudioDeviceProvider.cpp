@@ -64,11 +64,11 @@ HRESULT AudioDeviceProvider::GetDeviceName(LPCWSTR deviceId, PROPVARIANT* device
 	Status result;
 	ComPointer<IMMDevice> device;
 	ComPointer<IPropertyStore> propertyStore;
-	if (deviceId == NULL)
+	if (result && deviceId == NULL)
 	{
 		result = E_INVALIDARG;
 	}
-	if (deviceName == NULL)
+	if (result && deviceName == NULL)
 	{
 		result = E_INVALIDARG;
 	}
