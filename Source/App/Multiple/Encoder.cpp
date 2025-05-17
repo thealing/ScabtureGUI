@@ -12,18 +12,15 @@ void Encoder::start()
 {
 	_startTime = MFGetSystemTime();
 	_eventDispatcher.start();
-	doStart();
 }
 
 void Encoder::stop()
 {
-	doStop();
 	_eventDispatcher.stop();
 }
 
 void Encoder::pause()
 {
-	doPause();
 	_pauseTime = MFGetSystemTime();
 }
 
@@ -31,20 +28,28 @@ void Encoder::resume()
 {
 	_startTime += MFGetSystemTime() - _pauseTime;
 	_pauseTime = 0;
-	doResume();
 }
 
 HRESULT Encoder::getStatistics(MF_SINK_WRITER_STATISTICS* statistics) const
 {
-	if (_sinkWriter == NULL)
+	Status result;
+	if (result && _sinkWriter == NULL)
 	{
-		return E_POINTER;
+		result = E_POINTER;
 	}
-	if (_streamIndex == -1)
+	if (result && _streamIndex == -1)
 	{
-		return E_ILLEGAL_METHOD_CALL;
+		result = E_ILLEGAL_METHOD_CALL;
 	}
-	return _sinkWriter->getStatistics(_streamIndex, statistics);
+	if (result)
+	{
+		result = _sinkWriter->getStatistics(_streamIndex, statistics);
+	}
+	if (!result)
+	{
+		LogUtil::logComWarning(__FUNCTION__, result);
+	}
+	return result;
 }
 
 const Event* Encoder::getEncodeEvent() const
@@ -54,41 +59,30 @@ const Event* Encoder::getEncodeEvent() const
 
 HRESULT Encoder::addStream(IMFMediaType* inputType, IMFMediaType* outputType)
 {
-	if (_sinkWriter == NULL)
+	Status result;
+	if (result && _sinkWriter == NULL)
 	{
-		return E_POINTER;
+		result = E_POINTER;
 	}
-	if (_streamIndex != -1)
+	if (result && _streamIndex != -1)
 	{
-		return E_ILLEGAL_METHOD_CALL;
+		result = E_ILLEGAL_METHOD_CALL;
 	}
-	return _sinkWriter->addStream(inputType, outputType, &_streamIndex);
+	if (result)
+	{
+		result = _sinkWriter->addStream(inputType, outputType, &_streamIndex);
+	}
+	if (!result)
+	{
+		LogUtil::logComWarning(__FUNCTION__, result);
+	}
+	return result;
 }
 
 void Encoder::addEvent(const Event* event)
 {
 	Callback callback = BIND(Encoder, encode, this);
 	_eventDispatcher.addEntry(event, callback);
-}
-
-HRESULT Encoder::doStart()
-{
-	return S_OK;
-}
-
-HRESULT Encoder::doStop()
-{
-	return S_OK;
-}
-
-HRESULT Encoder::doPause()
-{
-	return S_OK;
-}
-
-HRESULT Encoder::doResume()
-{
-	return S_OK;
 }
 
 HRESULT Encoder::getSample(IMFSample**)
@@ -139,9 +133,18 @@ bool Encoder::isPaused()
 
 HRESULT Encoder::writeSample(IMFSample* sample)
 {
-	if (_sinkWriter == NULL)
+	Status result;
+	if (result && _sinkWriter == NULL)
 	{
-		return E_POINTER;
+		result = E_POINTER;
 	}
-	return _sinkWriter->writeSample(_streamIndex, sample);
+	if (result)
+	{
+		result = _sinkWriter->writeSample(_streamIndex, sample);
+	}
+	if (!result)
+	{
+		LogUtil::logComWarning(__FUNCTION__, result);
+	}
+	return result;
 }

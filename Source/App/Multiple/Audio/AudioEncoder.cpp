@@ -72,47 +72,20 @@ void AudioEncoder::onFrame()
 	_frameEvent.set();
 }
 
-HRESULT AudioEncoder::doStart()
-{
-	if (_source == NULL)
-	{
-		return E_POINTER;
-	}
-	return _source->start();
-}
-
-HRESULT AudioEncoder::doStop()
-{
-	if (_source == NULL)
-	{
-		return E_POINTER;
-	}
-	return _source->stop();
-}
-
-HRESULT AudioEncoder::doPause()
-{
-	if (_source == NULL)
-	{
-		return E_POINTER;
-	}
-    return _source->stop();
-}
-
-HRESULT AudioEncoder::doResume()
-{
-	if (_source == NULL)
-	{
-		return E_POINTER;
-	}
-    return _source->start();
-}
-
 HRESULT AudioEncoder::getSample(IMFSample** sample)
 {
-	if (_source == NULL)
+	Status result;
+	if (result && _source == NULL)
 	{
-		return E_POINTER;
+		result = E_POINTER;
 	}
-	return _source->getSample(sample);
+	if (result)
+	{
+		result = _source->getSample(sample);
+	}
+	if (!result)
+	{
+		LogUtil::logComWarning(__FUNCTION__, result);
+	}
+	return result;
 }
