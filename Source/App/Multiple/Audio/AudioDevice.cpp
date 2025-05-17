@@ -8,17 +8,6 @@ AudioDevice::AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole 
 	}
 	if (_status)
 	{
-		// An output device stops capturing when it detects that no audio is playing.
-		// This messes up the media foundation sink writer so we must not let this happen.
-		// TODO: Solve this by using a timer instead and call SendStreamTick()?
-		if (flow == eRender)
-		{
-			_silencePlayer = new SilencePlayer(enumerator, flow, role);
-			_status = _silencePlayer->start();
-		}
-	}
-	if (_status)
-	{
 		_status = enumerator->GetDefaultAudioEndpoint(flow, role, &_device);
 	}
 	if (_status)
@@ -31,25 +20,32 @@ AudioDevice::AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole 
 	}
 	if (_status)
 	{
-		DWORD flags = AUDCLNT_STREAMFLAGS_EVENTCALLBACK;
+		DWORD flags = 0;
 		if (flow == eRender)
 		{
-			flags |= AUDCLNT_STREAMFLAGS_LOOPBACK;
+			flags = AUDCLNT_STREAMFLAGS_LOOPBACK;
 		}
+		// TODO: Set the buffer duration to be longer if the timer resolution is too high?
 		_status = _audioClient->Initialize(AUDCLNT_SHAREMODE_SHARED, flags, 0, 0, _waveFormat, NULL);
 	}
 	if (_status)
 	{
-		_status = _audioClient->SetEventHandle(_frameEvent);
-	}
-	if (_status)
-	{
-		Callback callback = BIND(AudioDevice, onFrame, this);
-		_eventDispather.addEntry(&_frameEvent, callback);
+		REFERENCE_TIME defaultPeriod = 0;
+		_status = _audioClient->GetDevicePeriod(&defaultPeriod, NULL);
+		if (_status)
+		{
+			LogUtil::logInfo(L"AudioDevice: Device period is %lli ms.", defaultPeriod / 10000);
+			Callback callback = BIND(AudioDevice, onFrame, this);
+			_timer = new Timer(0, defaultPeriod / 20000000.0, callback);
+		}
 	}
 	if (_status)
 	{
 		_status = _audioClient->GetService(IID_PPV_ARGS(&_captureClient));
+	}
+	if (_status)
+	{
+		_status = _audioClient->Start();
 	}
 	if (!_status)
 	{
@@ -59,16 +55,20 @@ AudioDevice::AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole 
 
 AudioDevice::~AudioDevice()
 {
-	if (_silencePlayer != NULL)
+	if (_status)
 	{
-		_silencePlayer->stop();
+		_status = _audioClient->Stop();
+	}
+	if (!_status)
+	{
+		LogUtil::logComWarning("AudioDevice", _status);
 	}
 }
 
 HRESULT AudioDevice::getFormat(IMFMediaType** format)
 {
 	Status result;
-	if (_waveFormat == NULL)
+	if (result && _waveFormat == NULL)
 	{
 		result = E_POINTER;
 	}
@@ -97,11 +97,11 @@ HRESULT AudioDevice::getSample(IMFSample** sample)
 	UINT64 position = 0;
 	UINT32 bufferSize = 0;
 	BYTE* bufferData = NULL;
-	if (_captureClient == NULL)
+	if (result && _captureClient == NULL)
 	{
 		result = E_POINTER;
 	}
-	if (_waveFormat == NULL)
+	if (result && _waveFormat == NULL)
 	{
 		result = E_POINTER;
 	}
@@ -166,20 +166,9 @@ HRESULT AudioDevice::getSample(IMFSample** sample)
 HRESULT AudioDevice::start()
 {
 	Status result;
-	if (_audioClient == NULL)
+	if (result && _audioClient == NULL)
 	{
 		result = E_POINTER;
-	}
-	if (result)
-	{
-		result = _audioClient->Start();
-	}
-	if (result)
-	{
-		if (HRESULT(result) == S_OK)
-		{
-			_eventDispather.start();
-		}
 	}
 	if (!result)
 	{
@@ -191,20 +180,9 @@ HRESULT AudioDevice::start()
 HRESULT AudioDevice::stop()
 {
 	Status result;
-	if (_audioClient == NULL)
+	if (result && _audioClient == NULL)
 	{
 		result = E_POINTER;
-	}
-	if (result)
-	{
-		result = _audioClient->Stop();
-	}
-	if (result)
-	{
-		if (HRESULT(result) == S_OK)
-		{
-			_eventDispather.stop();
-		}
 	}
 	if (!result)
 	{
