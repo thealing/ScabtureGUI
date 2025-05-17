@@ -20,6 +20,14 @@ AudioDevice::AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole 
 	}
 	if (_status)
 	{
+		if (flow == eRender)
+		{
+			LogUtil::logInfo(L"Output device format: %d ch / %d bit / %d Hz.", _waveFormat->nChannels, _waveFormat->wBitsPerSample, _waveFormat->nSamplesPerSec);
+		}
+		if (flow == eCapture)
+		{
+			LogUtil::logInfo(L"Input device format: %d ch / %d bit / %d Hz.", _waveFormat->nChannels, _waveFormat->wBitsPerSample, _waveFormat->nSamplesPerSec);
+		}
 		DWORD flags = 0;
 		if (flow == eRender)
 		{
@@ -34,9 +42,8 @@ AudioDevice::AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole 
 		_status = _audioClient->GetDevicePeriod(&defaultPeriod, NULL);
 		if (_status)
 		{
-			LogUtil::logInfo(L"AudioDevice: Device period is %lli ms.", defaultPeriod / 10000);
-			Callback callback = BIND(AudioDevice, onFrame, this);
-			_timer = new Timer(0, defaultPeriod / 20000000.0, callback);
+			REFERENCE_TIME halfPeriod = defaultPeriod / 2;
+			_timer = new Timer(0, halfPeriod / 10000000.0, BIND(AudioDevice, onFrame, this));
 		}
 	}
 	if (_status)
@@ -155,34 +162,6 @@ HRESULT AudioDevice::getSample(IMFSample** sample)
 		{
 			result = (*sample)->SetUINT32(MFSampleExtension_Discontinuity, TRUE);
 		}
-	}
-	if (!result)
-	{
-		LogUtil::logComWarning(__FUNCTION__, result);
-	}
-	return result;
-}
-
-HRESULT AudioDevice::start()
-{
-	Status result;
-	if (result && _audioClient == NULL)
-	{
-		result = E_POINTER;
-	}
-	if (!result)
-	{
-		LogUtil::logComWarning(__FUNCTION__, result);
-	}
-	return result;
-}
-
-HRESULT AudioDevice::stop()
-{
-	Status result;
-	if (result && _audioClient == NULL)
-	{
-		result = E_POINTER;
 	}
 	if (!result)
 	{
