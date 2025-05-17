@@ -1,4 +1,4 @@
-#include "PreviewPresenter.h"
+#include "FpsPresenter.h"
 
 FpsPresenter::FpsPresenter(FpsDisplay* fpsDisplay, VideoCaptureManager* videoCaptureManager, RecordingManager* recordingManager) : _eventDispatcher(fpsDisplay)
 {
