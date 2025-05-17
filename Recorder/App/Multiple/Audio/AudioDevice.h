@@ -23,12 +23,10 @@ private:
 private:
 
 	Status _status;
-	UniquePointer<SilencePlayer> _silencePlayer;
 	ComPointer<IMMDevice> _device;
 	ComPointer<IAudioClient> _audioClient;
 	ComPointer<IAudioCaptureClient> _captureClient;
 	WaveFormat _waveFormat;
-	EventDispatcher _eventDispather;
-	Event _frameEvent;
+	UniquePointer<Timer> _timer;
 };
 
