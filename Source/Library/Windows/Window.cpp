@@ -337,6 +337,8 @@ LRESULT Window::windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lPar
 		}
 		case WM_PAINT:
 		{
+			PAINTSTRUCT paint = {};
+			BeginPaint(window, &paint);
 			RECT rect = {};
 			GetClientRect(window, &rect);
 			COLORREF textColor = instance->_foregroundColor;
@@ -351,7 +353,7 @@ LRESULT Window::windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lPar
 			instance->doPaint(graphics);
 			excludeChildren(window, instance->_context);
 			BitBlt(instance->_context, 0, 0, rect.right, rect.bottom, instance->_renderContext, 0, 0, SRCCOPY);
-			ValidateRect(window, &rect);
+			EndPaint(window, &paint);
 			instance->postMessage(WM_UPDATEUISTATE, MAKELONG(UIS_SET, UISF_HIDEFOCUS), 0);
 			return 0;
 		}
