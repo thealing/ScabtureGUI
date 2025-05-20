@@ -12,6 +12,6 @@ public:
 
 private:
 
-	AudioEncoderSettings _settings;
+	AsyncSettingsManager<AudioEncoderSettings> _settingsManager;
 };
 

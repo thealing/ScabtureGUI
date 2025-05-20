@@ -18,7 +18,6 @@ private:
 
 private:
 
-	VideoResizerSettings _settings;
-	EventPool _changeEventPool;
+	AsyncSettingsManager<VideoResizerSettings> _settingsManager;
 };
 

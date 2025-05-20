@@ -14,7 +14,6 @@ public:
 
 private:
 
-	AudioResamplerSettings _settings;
-	EventPool _changeEventPool;
+	AsyncSettingsManager<AudioResamplerSettings> _settingsManager;
 };
 

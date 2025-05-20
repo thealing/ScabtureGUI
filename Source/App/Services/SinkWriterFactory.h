@@ -12,6 +12,6 @@ public:
 
 private:
 
-	SinkWriterSettings _settings;
+	AsyncSettingsManager<SinkWriterSettings> _settingsManager;
 };
 

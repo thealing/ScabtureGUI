@@ -1,21 +1,17 @@
 #include "SinkWriterFactory.h"
 
-SinkWriterFactory::SinkWriterFactory() : _settings()
+SinkWriterFactory::SinkWriterFactory()
 {
 }
 
 bool SinkWriterFactory::setSettings(const SinkWriterSettings& settings)
 {
-	if (MemoryUtil::areEqual(_settings, settings))
-	{
-		return false;
-	}
-	_settings = settings;
-	return true;
+	return _settingsManager.setSettings(settings);
 }
 
 SinkWriter* SinkWriterFactory::createSinkWriter()
 {
+	SinkWriterSettings settings = _settingsManager.getSettings();
 	const wchar_t* path = SaveUtil::generateFileName(L"Recording", L"mp4");
-	return new SinkWriter(_settings, path);
+	return new SinkWriter(settings, path);
 }
