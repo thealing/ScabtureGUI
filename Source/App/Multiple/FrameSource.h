@@ -16,9 +16,6 @@ protected:
 
 private:
 
-	static const int Capacity = 4;
-
-	Event _events[Capacity];
-	bool _used[Capacity];
+	EventPool _frameEventPool;
 };
 
