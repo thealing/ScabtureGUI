@@ -1,20 +1,16 @@
 #include "VideoEncoderFactory.h"
 
-VideoEncoderFactory::VideoEncoderFactory() : _settings()
+VideoEncoderFactory::VideoEncoderFactory()
 {
 }
 
 bool VideoEncoderFactory::setSettings(const VideoEncoderSettings& settings)
 {
-	if (MemoryUtil::areEqual(_settings, settings))
-	{
-		return false;
-	}
-	_settings = settings;
-	return true;
+	return _settingsManager.setSettings(settings);
 }
 
 Encoder* VideoEncoderFactory::createEncoder(VideoCapture* source, SinkWriter* sinkWriter) const
 {
-	return new VideoEncoder(_settings, source, sinkWriter);
+	VideoEncoderSettings settings = _settingsManager.getSettings();
+	return new VideoEncoder(settings, source, sinkWriter);
 }

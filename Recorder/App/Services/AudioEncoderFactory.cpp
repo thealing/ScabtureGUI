@@ -1,20 +1,16 @@
 #include "AudioEncoderFactory.h"
 
-AudioEncoderFactory::AudioEncoderFactory() : _settings()
+AudioEncoderFactory::AudioEncoderFactory()
 {
 }
 
 bool AudioEncoderFactory::setSettings(const AudioEncoderSettings& settings)
 {
-	if (MemoryUtil::areEqual(_settings, settings))
-	{
-		return false;
-	}
-	_settings = settings;
-	return true;
+	return _settingsManager.setSettings(settings);
 }
 
 Encoder* AudioEncoderFactory::createEncoder(AudioCapture* source, SinkWriter* sinkWriter) const
 {
-	return new AudioEncoder(_settings, source, sinkWriter);
+	AudioEncoderSettings settings = _settingsManager.getSettings();
+	return new AudioEncoder(settings, source, sinkWriter);
 }

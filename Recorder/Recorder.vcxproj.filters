@@ -497,12 +497,6 @@
     <None Include="App\Multiple\SinkWriter.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Multiple\Status.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="App\Multiple\Status.h">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="App\Multiple\UniquePointer.cpp">
       <Filter>Source Files</Filter>
     </None>
@@ -1103,7 +1097,22 @@
     <None Include="Library\Windows\WindowClass.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Models\AudioDataFormat.h">
+    <None Include="App\Multiple\AsyncSettingsManager.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Multiple\AsyncSettingsManager.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Library\System\LatchEvent.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Library\System\LatchEvent.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Multiple\Status.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\Status.h">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

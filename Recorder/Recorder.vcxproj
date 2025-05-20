@@ -263,7 +263,6 @@
     <None Include="App\Multiple\Resizers\Resizer.h" />
     <None Include="App\Multiple\SettingsProvider.h" />
     <None Include="App\Multiple\SinkWriter.h" />
-    <None Include="App\Multiple\Status.h" />
     <None Include="App\Multiple\UniquePointer.h" />
     <None Include="App\Multiple\UniqueStorage.h" />
     <None Include="App\Multiple\Video\VideoCapture.h" />
@@ -368,7 +367,9 @@
     <None Include="Library\Windows\Picture.h" />
     <None Include="Library\Windows\Window.h" />
     <None Include="Library\Windows\WindowClass.h" />
-    <None Include="App\Models\AudioDataFormat.h" />
+    <None Include="App\Multiple\AsyncSettingsManager.h" />
+    <None Include="Library\System\LatchEvent.h" />
+    <None Include="App\Multiple\Status.h" />
     <ClInclude Include="Recorder.h" />
     <ClInclude Include="Resources\Resource.h" />
   </ItemGroup>
@@ -428,7 +429,6 @@
     <None Include="App\Multiple\Resizers\Resizer.cpp" />
     <None Include="App\Multiple\SettingsProvider.cpp" />
     <None Include="App\Multiple\SinkWriter.cpp" />
-    <None Include="App\Multiple\Status.cpp" />
     <None Include="App\Multiple\UniquePointer.cpp" />
     <None Include="App\Multiple\UniqueStorage.cpp" />
     <None Include="App\Multiple\Video\VideoCapture.cpp" />
@@ -531,6 +531,9 @@
     <None Include="Library\Windows\Picture.cpp" />
     <None Include="Library\Windows\Window.cpp" />
     <None Include="Library\Windows\WindowClass.cpp" />
+    <None Include="App\Multiple\AsyncSettingsManager.cpp" />
+    <None Include="Library\System\LatchEvent.cpp" />
+    <None Include="App\Multiple\Status.cpp" />
     <ClCompile Include="Recorder.cpp" />
   </ItemGroup>
   <ItemGroup>

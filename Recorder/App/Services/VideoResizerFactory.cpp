@@ -1,38 +1,24 @@
 #include "VideoResizerFactory.h"
 
-VideoResizerFactory::VideoResizerFactory() : _settings()
+VideoResizerFactory::VideoResizerFactory()
 {
 }
 
 bool VideoResizerFactory::setSettings(const VideoResizerSettings& settings)
 {
-	if (MemoryUtil::areEqual(_settings, settings))
-	{
-		return false;
-	}
-	if (!_settings.doResize && !settings.doResize)
-	{
-		_settings.width = settings.width;
-		_settings.height = settings.height;
-		if (MemoryUtil::areEqual(_settings, settings))
-		{
-			return false;
-		}
-	}
-	_settings = settings;
-	_changeEventPool.setEvents();
-	return true;
+	return _settingsManager.setSettings(settings);
 }
 
 VideoCapture* VideoResizerFactory::createResizer(VideoCapture* source) const
 {
-	if (_settings.doResize)
+	VideoResizerSettings settings = _settingsManager.getSettings();
+	if (settings.doResize)
 	{
 		const Buffer* inputBuffer = source->getBuffer();
 		int inputWidth = inputBuffer->getWidth();
 		int inputHeight = inputBuffer->getHeight();
-		int outputWidth = _settings.width;
-		int outputHeight = _settings.height;
+		int outputWidth = settings.width;
+		int outputHeight = settings.height;
 		Vector inputSize(inputWidth, inputHeight);
 		Vector outputSize(outputWidth, outputHeight);
 		Resizer* resizer = createResizer(inputSize, outputSize);
@@ -47,21 +33,22 @@ VideoCapture* VideoResizerFactory::createResizer(VideoCapture* source) const
 
 const Event* VideoResizerFactory::getChangeEvent() const
 {
-	return _changeEventPool.getEvent();
+	return _settingsManager.getChangeEvent();
 }
 
 Resizer* VideoResizerFactory::createResizer(Vector inputSize, Vector outputSize) const
 {
+	VideoResizerSettings settings = _settingsManager.getSettings();
 	int inputWidth = inputSize.x;
 	int inputHeight = inputSize.y;
 	int outputWidth = outputSize.x;
 	int outputHeight = outputSize.y;
-	if (_settings.mode == ResizeModeLetterbox)
+	if (settings.mode == ResizeModeLetterbox)
 	{
 		outputWidth = min(outputWidth, outputHeight * inputWidth / inputHeight);
 		outputHeight = min(outputHeight, outputWidth * inputHeight / inputWidth);
 	}
-	if (_settings.mode == ResizeModeCrop)
+	if (settings.mode == ResizeModeCrop)
 	{
 		inputWidth = min(inputWidth, inputHeight * outputWidth / outputHeight);
 		inputHeight = min(inputHeight, inputWidth * outputHeight / outputWidth);
@@ -80,7 +67,7 @@ Resizer* VideoResizerFactory::createResizer(Vector inputSize, Vector outputSize)
 	inputSize.y = BufferUtil::alignHeight(inputSize.y);
 	outputSize.x = BufferUtil::alignStride(outputSize.x);
 	outputSize.y = BufferUtil::alignHeight(outputSize.y);
-	if (_settings.quality)
+	if (settings.quality)
 	{
 		return new BilinearResizer(inputSize, outputSize, inputRect, outputRect);
 	}
