@@ -23,7 +23,7 @@ void Window::showState(int state)
 
 void Window::activate()
 {
-	//SetForegroundWindow(_handle);
+	// Could use SetForegroundWindow?
 	BringWindowToTop(_handle);
 }
 
@@ -75,7 +75,7 @@ void Window::setRect(const Rect& rect)
 
 void Window::setText(const wchar_t* position)
 {
-	// Using SetWindowText would cause the text to flicker.
+	// Using SetWindowText would cause the text to flicker!
 	setRedraw(false);
 	sendMessage(WM_SETTEXT, NULL, (LPARAM)position);
 	setRedraw(true);
