@@ -16,7 +16,6 @@ AudioResampler::AudioResampler(const AudioResamplerSettings& settings, AudioCapt
 	if (_status)
 	{
 		_status = _inputType->GetUINT32(MF_MT_AUDIO_SAMPLES_PER_SECOND, &_inputSampleRate);
-		
 	}
 	if (_status)
 	{
@@ -114,7 +113,7 @@ HRESULT AudioResampler::getSample(IMFSample** sample)
 		result = _resampler->ProcessInput(0, inputSample, 0);
 	}
 	if (result)
-	{ 
+	{
 		DWORD outputSize = BufferUtil::alignValue(inputSize * _outputSampleRate / _inputSampleRate + 1, 4);
 		result = MFCreateMemoryBuffer(outputSize, &outputBuffer);
 	}
