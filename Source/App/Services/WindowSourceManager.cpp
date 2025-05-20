@@ -6,6 +6,8 @@ WindowSourceManager::WindowSourceManager() : _settings(), _source()
 
 bool WindowSourceManager::setSettings(const WindowSourceSettings& settings)
 {
+	WriteLockHolder holder(&_lock);
+	bool init = _settingsInitEvent.set();
 	if (MemoryUtil::areEqual(_settings, settings))
 	{
 		return false;
@@ -18,12 +20,18 @@ bool WindowSourceManager::setSettings(const WindowSourceSettings& settings)
 		_source.rect = WindowUtil::getRelativeRect(_source.window, _settings.area);
 		_source.client = _settings.area == WindowAreaClient;
 	}
+	if (init)
+	{
+		return false;
+	}
 	_changeEventPool.setEvents();
 	return true;
 }
 
 bool WindowSourceManager::selectSource(VideoSource source)
 {
+	WriteLockHolder holder(&_lock);
+	bool init = _sourceInitEvent.set();
 	switch (source)
 	{
 		case VideoSourceFullscreen:
@@ -77,12 +85,19 @@ bool WindowSourceManager::selectSource(VideoSource source)
 			break;
 		}
 	}
+	if (init)
+	{
+		return false;
+	}
 	_changeEventPool.setEvents();
 	return true;
 }
 
 Vector WindowSourceManager::getWindowSize() const
 {
+	_settingsInitEvent.wait();
+	_sourceInitEvent.wait();
+	ReadLockHolder holder(&_lock);
 	int width = RectUtil::getRectWidth(_source.rect);
 	int height = RectUtil::getRectHeight(_source.rect);
 	return Vector(width, height);
@@ -90,6 +105,9 @@ Vector WindowSourceManager::getWindowSize() const
 
 VideoCapture* WindowSourceManager::createCapture() const
 {
+	_settingsInitEvent.wait();
+	_sourceInitEvent.wait();
+	ReadLockHolder holder(&_lock);
 	return new WindowCapture(_settings.captureSettings, _source);
 }
 
