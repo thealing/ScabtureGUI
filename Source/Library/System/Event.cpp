@@ -1,16 +1,16 @@
 #include "Event.h"
 
-int Event::waitOne(Event** events, int count)
+int Event::waitOne(const Event** events, int count)
 {
 	return wait(events, count, false);
 }
 
-int Event::waitAll(Event** events, int count)
+int Event::waitAll(const Event** events, int count)
 {
 	return wait(events, count, true);
 }
 
-int Event::wait(Event** events, int count, bool all)
+int Event::wait(const Event** events, int count, bool all)
 {
 	HANDLE* handles = new HANDLE[count];
 	for (int i = 0; i < count; i++)
@@ -40,9 +40,4 @@ void Event::set()
 void Event::reset()
 {
 	ResetEvent(_handle);
-}
-
-Event::operator HANDLE() const
-{
-	return _handle;
 }

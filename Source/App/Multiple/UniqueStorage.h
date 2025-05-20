@@ -9,13 +9,20 @@ public:
 
 	~UniqueStorage();
 
-	void add(UniquePointer<Type>& value);
+	int store(Type* value);
+
+	int dispose(const Type* value);
+
+	Type* getValue(int index);
+
+	const Type* getValue(int index) const;
+
+	const int getCount() const;
 
 private:
 
-	static const int Capacity = 64;
-
-	UniquePointer<Type>* _values;
+	Type** _values;
 	int _count;
+	int _capacity;
 };
 

@@ -6,16 +6,15 @@ public:
 
 	EventPool();
 
-	~EventPool();
+	void setEvents() const;
 
-	void setEvents();
+	void resetEvents() const;
 
 	const Event* getEvent() const;
 
+	void deleteEvent(const Event* event) const;
+
 private:
 
-	static const int Capacity = 4;
-
-	Event* _events;
-	mutable int _count;
+	mutable UniqueStorage<Event> _events;
 };

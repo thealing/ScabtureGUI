@@ -4,6 +4,10 @@ class BaseEventDispatcher : NonCopyable
 {
 public:
 
+	static const int Capacity = 16;
+
+public:
+
 	BaseEventDispatcher();
 
 	virtual ~BaseEventDispatcher();
@@ -24,14 +28,11 @@ private:
 
 	void threadProc();
 
-protected:
-
-	static const int Capacity = 16;
-
 private:
 
 	UniquePointer<Thread> _thread;
-	Event** _events;
+	Event _stopEvent;
+	const Event** _events;
 	int _count;
 };
 
