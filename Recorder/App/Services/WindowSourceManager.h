@@ -18,8 +18,12 @@ public:
 
 private:
 
+	mutable ReadWriteLock _lock;
+
 	WindowSourceSettings _settings;
 	WindowSource _source;
+	LatchEvent _settingsInitEvent;
+	LatchEvent _sourceInitEvent;
 	EventPool _changeEventPool;
 };
 
