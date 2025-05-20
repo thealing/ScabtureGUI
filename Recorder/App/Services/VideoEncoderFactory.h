@@ -12,6 +12,6 @@ public:
 
 private:
 
-	VideoEncoderSettings _settings;
+	AsyncSettingsManager<VideoEncoderSettings> _settingsManager;
 };
 
