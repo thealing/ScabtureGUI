@@ -2,7 +2,7 @@
 
 AudioVolumeListener::AudioVolumeListener()
 {
-	_timer = new Timer(0.1, 1.0 / UpdateFps, BIND(AudioVolumeListener, update, this));
+	_timer = new Timer(0, 1.0 / UpdateFps, BIND(AudioVolumeListener, update, this));
 }
 
 void AudioVolumeListener::setInputVolumeMeter(AudioVolumeMeter* meter)
