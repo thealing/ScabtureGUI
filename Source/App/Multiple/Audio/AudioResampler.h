@@ -19,10 +19,10 @@ private:
 private:
 
 	Status _status;
-	UniquePointer<AudioCapture> _source;
 	ComPointer<IMFMediaType> _inputType;
 	ComPointer<IMFMediaType> _outputType;
 	ComPointer<IMFTransform> _resampler;
 	UINT32 _inputSampleRate;
 	UINT32 _outputSampleRate;
+	UniquePointer<AudioCapture> _source; // Must be the last field to be destructed first!
 };
