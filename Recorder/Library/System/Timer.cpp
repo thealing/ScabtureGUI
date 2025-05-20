@@ -57,7 +57,7 @@ DWORD WINAPI Timer::threadProc(PVOID parameter)
 	while (true)
 	{
 		_ntSetTimer(timer->_timerHandle, &dueTime, NULL, NULL, FALSE, 0, NULL);
-		int index = WaitForMultipleObjects(ARRAYSIZE(objects), objects, FALSE, INFINITE);
+		DWORD index = WaitForMultipleObjects(ARRAYSIZE(objects), objects, FALSE, INFINITE);
 		if (index == WAIT_OBJECT_0)
 		{
 			break;
