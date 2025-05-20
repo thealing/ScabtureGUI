@@ -23,18 +23,16 @@ VideoCaptureController::~VideoCaptureController()
 void VideoCaptureController::onSourceChanged()
 {
 	LogUtil::logInfo(L"VideoCaptureController: Window source changed.");
-	Vector size = _windowSourceManager->getWindowSize();
-	if (size == 0)
-	{
-		LogUtil::logInfo(L"VideoCaptureController: Skipping update because the source is empty.");
-		return;
-	}
 	VideoSettings settings = _videoSettingsManager->getSettings();
-	settings.width = size.x;
-	settings.height = size.y;
-	if (_videoSettingsManager->setSettings(settings))
+	if (settings.doResize && settings.keepRatio)
 	{
-		LogUtil::logInfo(L"VideoCaptureController: Settings changed to the window size.");
+		Vector size = _windowSourceManager->getWindowSize();
+		settings.width = size.x;
+		settings.height = size.y;
+		if (_videoSettingsManager->setSettings(settings))
+		{
+			LogUtil::logInfo(L"VideoCaptureController: Settings changed to the window size.");
+		}
 	}
 	updateCapture();
 }
@@ -53,9 +51,9 @@ void VideoCaptureController::onRefreshHotkeyPressed()
 
 void VideoCaptureController::updateCapture()
 {
-	LogUtil::logInfo(L"VideoCaptureController: Resetting capture.");
+	MessageBeep(0);
+	LogUtil::logInfo(L"VideoCaptureController: Updating capture.");
 	_videoCaptureManager->reset();
-	LogUtil::logInfo(L"VideoCaptureController: Creating capture.");
 	VideoCapture* capture = _windowSourceManager->createCapture();
 	capture = _videoResizerFactory->createResizer(capture);
 	_videoCaptureManager->setCapture(capture);
