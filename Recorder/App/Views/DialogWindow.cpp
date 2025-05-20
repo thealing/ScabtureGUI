@@ -28,44 +28,44 @@ void DialogWindow::setCancelCallback(const Callback& callback)
 
 void DialogWindow::addCheckBox(const wchar_t* labelText, int controlWidth, bool* value)
 {
-	UniquePointer<Control> label(DialogUtil::createLabel(this, labelText, _margin, _bottom + _spacing, _width - _margin - controlWidth, _height - _spacing));
-	UniquePointer<Control> control(DialogUtil::createCheckBox(this, value, _width - _margin - controlWidth, _bottom + _spacing, controlWidth, _height - _spacing));
+	Control* label = DialogUtil::createLabel(this, labelText, _margin, _bottom + _spacing, _width - _margin - controlWidth, _height - _spacing);
+	Control* control = DialogUtil::createCheckBox(this, value, _width - _margin - controlWidth, _bottom + _spacing, controlWidth, _height - _spacing);
 	_bottom += _height;
-	_controls.add(label);
-	_controls.add(control);
+	_controls.store(label);
+	_controls.store(control);
 }
 
 void DialogWindow::addComboBox(const wchar_t* labelText, int controlWidth, int* value, const wchar_t** options, int count)
 {
-	UniquePointer<Control> label(DialogUtil::createLabel(this, labelText, _margin, _bottom + _spacing, _width - _margin - controlWidth, _height - _spacing));
-	UniquePointer<Control> control(DialogUtil::createComboBox(this, value, options, count, _width - _margin - controlWidth, _bottom + _spacing, controlWidth, _height - _spacing));
+	Control* label = DialogUtil::createLabel(this, labelText, _margin, _bottom + _spacing, _width - _margin - controlWidth, _height - _spacing);
+	Control* control = DialogUtil::createComboBox(this, value, options, count, _width - _margin - controlWidth, _bottom + _spacing, controlWidth, _height - _spacing);
 	_bottom += _height;
-	_controls.add(label);
-	_controls.add(control);
+	_controls.store(label);
+	_controls.store(control);
 }
 
 void DialogWindow::addHotkeyEdit(const wchar_t* labelText, int controlWidth, Hotkey* value)
 {
-	UniquePointer<Control> label(DialogUtil::createLabel(this, labelText, _margin, _bottom + _spacing, _width - _margin - controlWidth, _height - _spacing));
-	UniquePointer<Control> control(DialogUtil::createHotkeyEdit(this, value, _width - _margin - controlWidth, _bottom + _spacing, controlWidth, _height - _spacing));
+	Control* label = DialogUtil::createLabel(this, labelText, _margin, _bottom + _spacing, _width - _margin - controlWidth, _height - _spacing);
+	Control* control = DialogUtil::createHotkeyEdit(this, value, _width - _margin - controlWidth, _bottom + _spacing, controlWidth, _height - _spacing);
 	_bottom += _height;
-	_controls.add(label);
-	_controls.add(control);
+	_controls.store(label);
+	_controls.store(control);
 }
 
 void DialogWindow::addSeparator()
 {
 	_bottom += _spacing * 2;
-	UniquePointer<Control> control(DialogUtil::createSeparator(this, _margin, _bottom, _width - _margin * 2, 1));
+	Control* control = DialogUtil::createSeparator(this, _margin, _bottom, _width - _margin * 2, 1);
 	_bottom += _spacing + 1;
-	_controls.add(control);
+	_controls.store(control);
 }
 
 void DialogWindow::finalize()
 {
 	_bottom += 25;
-	UniquePointer<Control> confirmButton(DialogUtil::createButton(this, L"OK", _width - 90, _bottom, 80, 20));
-	UniquePointer<Control> cancelButton(DialogUtil::createButton(this, L"Cancel", _width - 180, _bottom, 80, 20));
+	Control* confirmButton = DialogUtil::createButton(this, L"OK", _width - 90, _bottom, 80, 20);
+	Control* cancelButton = DialogUtil::createButton(this, L"Cancel", _width - 180, _bottom, 80, 20);
 	_bottom += 30;
 	FontStore& fontStore = FontStore::getInstance();
 	setChildrenFont(fontStore.getPanelFont());
@@ -85,8 +85,8 @@ void DialogWindow::finalize()
 	_eventDispatcher.addEntry(confirmButton->getChangeEvent(), BIND(DialogWindow, confirm, this));
 	_eventDispatcher.addEntry(cancelButton->getChangeEvent(), BIND(DialogWindow, cancel, this));
 	_eventDispatcher.start();
-	_controls.add(confirmButton);
-	_controls.add(cancelButton);
+	_controls.store(confirmButton);
+	_controls.store(cancelButton);
 }
 
 void DialogWindow::onConfirmed()

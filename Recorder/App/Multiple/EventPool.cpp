@@ -2,26 +2,43 @@
 
 EventPool::EventPool()
 {
-	_events = new Event[Capacity];
-	_count = 0;
 }
 
-EventPool::~EventPool()
+void EventPool::setEvents() const
 {
-	delete[] _events;
-}
-
-void EventPool::setEvents()
-{
-	for (int i = 0; i < Capacity; i++)
+	int count = _events.getCount();
+	for (int i = 0; i < count; i++)
 	{
-		_events[i].set();
+		Event* event = _events.getValue(i);
+		if (event != NULL)
+		{
+			event->set();
+		}
+	}
+}
+
+void EventPool::resetEvents() const
+{
+	int count = _events.getCount();
+	for (int i = 0; i < count; i++)
+	{
+		Event* event = _events.getValue(i);
+		if (event != NULL)
+		{
+			event->reset();
+		}
 	}
 }
 
 const Event* EventPool::getEvent() const
 {
-	assert(_count < Capacity);
-	_count++;
-	return &_events[_count - 1];
+	Event* event = new Event();
+	event->set();
+	_events.store(event);
+	return event;
+}
+
+void EventPool::deleteEvent(const Event* event) const
+{
+	_events.dispose(event);
 }

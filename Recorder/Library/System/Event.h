@@ -4,11 +4,11 @@ class Event : NonCopyable
 {
 public:
 
-	static int waitOne(Event** events, int count);
+	static int waitOne(const Event** events, int count);
 
-	static int waitAll(Event** events, int count);
+	static int waitAll(const Event** events, int count);
 
-	static int wait(Event** events, int count, bool all);
+	static int wait(const Event** events, int count, bool all);
 
 	Event();
 
@@ -17,8 +17,6 @@ public:
 	void set();
 
 	void reset();
-
-	operator HANDLE() const;
 
 private:
 
