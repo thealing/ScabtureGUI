@@ -29,24 +29,14 @@ AudioDeviceProvider::~AudioDeviceProvider()
 	}
 }
 
-AudioCapture* AudioDeviceProvider::getInputCapture() const
+AudioDevice* AudioDeviceProvider::getInputDevice() const
 {
 	return new AudioDevice(_enumerator, eCapture, eConsole);
 }
 
-AudioCapture* AudioDeviceProvider::getOutputCapture() const
+AudioDevice* AudioDeviceProvider::getOutputDevice() const
 {
 	return new AudioDevice(_enumerator, eRender, eConsole);
-}
-
-AudioVolumeMeter* AudioDeviceProvider::getInputVolumeMeter() const
-{
-	return new AudioVolumeMeter(_enumerator, eCapture, eConsole);
-}
-
-AudioVolumeMeter* AudioDeviceProvider::getOutputVolumeMeter() const
-{
-	return new AudioVolumeMeter(_enumerator, eRender, eConsole);
 }
 
 const Event* AudioDeviceProvider::getInputChangeEvent() const

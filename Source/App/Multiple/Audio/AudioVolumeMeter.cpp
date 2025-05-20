@@ -1,18 +1,17 @@
 #include "AudioVolumeMeter.h"
 
-AudioVolumeMeter::AudioVolumeMeter(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole role) : _volumes(), _format(AudioDataFormatUnknown)
+AudioVolumeMeter::AudioVolumeMeter(AudioCapture* source) : _source(source), _volumes(), _sampleSize(0), _channelCount(0)
 {
 	ComPointer<IMFMediaType> format;
 	GUID subtype;
 	UINT32 channels = 0;
 	UINT32 bitsPerSample = 0;
-	if (enumerator == NULL)
+	if (_source == NULL)
 	{
 		_status = E_INVALIDARG;
 	}
 	if (_status)
 	{
-		_source = new AudioDevice(enumerator, flow, role);
 		_source->setCallback(BIND(AudioVolumeMeter, update, this));
 	}
 	if (_status)
@@ -33,25 +32,12 @@ AudioVolumeMeter::AudioVolumeMeter(IMMDeviceEnumerator* enumerator, EDataFlow fl
 	}
 	if (_status)
 	{
-		_sampleSize = bitsPerSample / 8;
-		_channelCount = channels;
-		if (subtype == MFAudioFormat_PCM && bitsPerSample == 8)
-		{
-			_format = AudioDataFormat8bit;
-		}
 		if (subtype == MFAudioFormat_PCM && bitsPerSample == 16)
 		{
-			_format = AudioDataFormat16bit;
+			_sampleSize = bitsPerSample / 8;
+			_channelCount = channels;
 		}
-		if (subtype == MFAudioFormat_PCM && bitsPerSample == 32)
-		{
-			_format = AudioDataFormat32bit;
-		}
-		if (subtype == MFAudioFormat_Float && bitsPerSample == 32)
-		{
-			_format = AudioDataFormatFloat;
-		}
-		if (_format == AudioDataFormatUnknown)
+		else
 		{
 			_status = MF_E_UNSUPPORTED_FORMAT;
 		}
@@ -66,11 +52,6 @@ bool AudioVolumeMeter::getVolumes(Volumes* volumes) const
 {
 	*volumes = _volumes;
 	return _status;
-}
-
-const Event* AudioVolumeMeter::getUpdateEvent() const
-{
-	return &_updateEvent;
 }
 
 void AudioVolumeMeter::update()
@@ -106,76 +87,34 @@ void AudioVolumeMeter::update()
 			{
 				values[i] = 0;
 			}
-			switch (_format)
+			int16_t* samples = (int16_t*)data;
+			for (int i = 0; i + _channelCount <= frameCount; i += _channelCount)
 			{
-				case AudioDataFormat8bit:
+				for (int j = 0; j < _channelCount; j++)
 				{
-					int8_t* samples = (int8_t*)data;
-					for (int i = 0; i + _channelCount <= frameCount; i += _channelCount)
-					{
-						for (int j = 0; j < _channelCount; j++)
-						{
-							float value = abs(samples[i + j] - 128) / 128.0f;
-							values[j] = max(values[j], value);
-						}
-					}
-					break;
-				}
-				case AudioDataFormat16bit:
-				{
-					int16_t* samples = (int16_t*)data;
-					for (int i = 0; i + _channelCount <= frameCount; i += _channelCount)
-					{
-						for (int j = 0; j < _channelCount; j++)
-						{
-							float value = abs(samples[i + j]) / 32768.0f;
-							values[j] = max(values[j], value);
-						}
-					}
-					break;
-				}
-				case AudioDataFormat32bit:
-				{
-					int32_t* samples = (int32_t*)data;
-					for (int i = 0; i + _channelCount <= frameCount; i += _channelCount)
-					{
-						for (int j = 0; j < _channelCount; j++)
-						{
-							float value = abs(samples[i + j]) / 2147483648.0f;
-							values[j] = max(values[j], value);
-						}
-					}
-					break;
-				}
-				case AudioDataFormatFloat:
-				{
-					float* samples = (float*)data;
-					for (int i = 0; i + _channelCount <= frameCount; i += _channelCount)
-					{
-						for (int j = 0; j < _channelCount; j++)
-						{
-							float value = fabsf(samples[i + j]);
-							values[j] = max(values[j], value);
-						}
-					}
-					break;
+					float value = abs(samples[i + j]) / 32768.0f;
+					values[j] = max(values[j], value);
 				}
 			}
+			Volumes newVolumes = {};
 			if (_channelCount >= 1)
 			{
-				_volumes.left = values[0];
-				_volumes.right = values[0];
+				newVolumes.left = values[0];
+				newVolumes.right = values[0];
 			}
 			if (_channelCount >= 2)
 			{
-				_volumes.left = values[0];
-				_volumes.right = values[1];
+				newVolumes.left = values[0];
+				newVolumes.right = values[1];
 			}
+			// Apply a bit of smoothing.
+			_volumes.left = (_volumes.left + newVolumes.left) / 2;
+			_volumes.right = (_volumes.right + newVolumes.right) / 2;
 		}
 		result = buffer->Unlock();
 	}
-	if (result)
+	if (!result)
 	{
-		_updateEvent.set();
+		LogUtil::logComWarning(__FUNCTION__, result);
 	}
 }

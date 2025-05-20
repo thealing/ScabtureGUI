@@ -57,14 +57,14 @@ void AudioCaptureController::updateCapture()
 		}
 		case AudioSourceSystemOutput:
 		{
-			AudioCapture* device = _audioDeviceProvider->getOutputCapture();
+			AudioCapture* device = _audioDeviceProvider->getOutputDevice();
 			AudioCapture* resampler = _audioResamplerFactory->createResampler(device);
 			_audioCaptureManager->setCapture(resampler);
 			break;
 		}
 		case AudioSourceMicrophone:
 		{
-			AudioCapture* device = _audioDeviceProvider->getInputCapture();
+			AudioCapture* device = _audioDeviceProvider->getInputDevice();
 			AudioCapture* resampler = _audioResamplerFactory->createResampler(device);
 			_audioCaptureManager->setCapture(resampler);
 			break;

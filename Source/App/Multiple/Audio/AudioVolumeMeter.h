@@ -4,11 +4,9 @@ class AudioVolumeMeter : NonCopyable
 {
 public:
 
-	AudioVolumeMeter(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole role);
+	AudioVolumeMeter(AudioCapture* source);
 
 	bool getVolumes(Volumes* volumes) const;
-
-	const Event* getUpdateEvent() const;
 
 private:
 
@@ -17,11 +15,9 @@ private:
 private:
 
 	Status _status;
-	UniquePointer<AudioCapture> _source;
 	int _channelCount;
 	int _sampleSize;
-	AudioDataFormat _format;
 	Volumes _volumes;
-	Event _updateEvent;
+	UniquePointer<AudioCapture> _source;  // Must be the last field to be destructed first!
 };
 
