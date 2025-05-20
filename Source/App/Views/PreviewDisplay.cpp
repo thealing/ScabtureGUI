@@ -46,6 +46,7 @@ void PreviewDisplay::setUpscale(bool upscale)
 	{
 		_dirty = true;
 		_upscale = upscale;
+		updateControl();
 	}
 }
 
