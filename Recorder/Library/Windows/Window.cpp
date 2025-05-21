@@ -19,6 +19,7 @@ void Window::hide()
 void Window::showState(int state)
 {
 	ShowWindow(_handle, state);
+	UpdateWindow(_handle);
 }
 
 void Window::activate()
@@ -45,6 +46,11 @@ void Window::setRedraw(bool redraw)
 void Window::repaint()
 {
 	RedrawWindow(_handle, NULL, NULL, RDW_INVALIDATE | RDW_ALLCHILDREN | RDW_ERASE | RDW_FRAME | RDW_ERASENOW | RDW_UPDATENOW);
+}
+
+void Window::invalidate()
+{
+	RedrawWindow(_handle, NULL, NULL, RDW_INVALIDATE | RDW_ALLCHILDREN | RDW_ERASE | RDW_FRAME | RDW_ERASENOW);
 }
 
 void Window::setPosition(Vector position)
@@ -321,13 +327,9 @@ LRESULT Window::windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lPar
 	Window* instance = (Window*)subclassId;
 	switch (message)
 	{
-		case WM_NCCALCSIZE:
-		{
-			instance->setRedraw(false);
-			break;
-		}
 		case WM_SIZE:
 		{
+			instance->setRedraw(false);
 			instance->destroyRenderObjects();
 			instance->createRenderObjects();
 			instance->broadcastMessage(Control::MessageResized, wParam, lParam);
@@ -338,7 +340,7 @@ LRESULT Window::windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lPar
 		case WM_PAINT:
 		{
 			PAINTSTRUCT paint = {};
-			BeginPaint(window, &paint);
+			HDC context = BeginPaint(window, &paint);
 			RECT rect = {};
 			GetClientRect(window, &rect);
 			COLORREF textColor = instance->_foregroundColor;
@@ -351,8 +353,8 @@ LRESULT Window::windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lPar
 			DefSubclassProc(window, WM_PAINT, (WPARAM)instance->_renderContext, 0);
 			Graphics graphics(instance->_renderContext);
 			instance->doPaint(graphics);
-			excludeChildren(window, instance->_context);
-			BitBlt(instance->_context, 0, 0, rect.right, rect.bottom, instance->_renderContext, 0, 0, SRCCOPY);
+			excludeChildren(window, context);
+			BitBlt(context, 0, 0, rect.right, rect.bottom, instance->_renderContext, 0, 0, SRCCOPY);
 			EndPaint(window, &paint);
 			instance->postMessage(WM_UPDATEUISTATE, MAKELONG(UIS_SET, UISF_HIDEFOCUS), 0);
 			return 0;
