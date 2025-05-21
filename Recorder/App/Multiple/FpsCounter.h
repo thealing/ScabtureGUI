@@ -10,7 +10,7 @@ public:
 
 	void recordFrame();
 
-	int getFps() const;
+	int getMeasuredFps() const;
 
 	const Event* getUpdateEvent() const;
 

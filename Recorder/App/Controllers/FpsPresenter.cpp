@@ -21,8 +21,8 @@ void FpsPresenter::updateFps()
 {
 	const FpsCounter& captureFpsCounter = _videoCaptureManager->getFpsCounter();
 	const FpsCounter& encodeFpsCounter = _recordingManager->getFpsCounter();
-	int captureFps = captureFpsCounter.getFps();
-	int encodeFps = encodeFpsCounter.getFps();
+	int captureFps = captureFpsCounter.getMeasuredFps();
+	int encodeFps = encodeFpsCounter.getMeasuredFps();
 	if (!_recordingManager->isRunning())
 	{
 		encodeFps = captureFps;
@@ -34,6 +34,11 @@ void FpsPresenter::updateFps()
 	if (encodeFps < 0)
 	{
 		encodeFps = captureFps;
+	}
+	if (captureFps < 0)
+	{
+		captureFps = 0;
+		encodeFps = 0;
 	}
 	_fpsDisplay->update(captureFps, encodeFps);
 }
