@@ -2,7 +2,7 @@
 
 HotkeyEdit::HotkeyEdit(Window* parent, Hotkey* value) : _value(value)
 {
-	create(L"EDIT", NULL, WS_BORDER | ES_RIGHT, parent);
+	create(L"EDIT", NULL, WS_BORDER | ES_LEFT, parent);
 	addCallback(hotkeyProc);
 	update();
 }
@@ -36,7 +36,10 @@ void HotkeyEdit::update()
 		size_t length = wcslen(text);
 		text[length] = _value->key;
 	}
-	setText(text);
+	size_t length = wcslen(text);
+	HWND handle = getHandle();
+	SetWindowText(handle, text);
+	SendMessage(handle, EM_SETSEL, length, -1);
 }
 
 LRESULT HotkeyEdit::hotkeyProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam, UINT_PTR subclassId, DWORD_PTR)
