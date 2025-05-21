@@ -34,6 +34,6 @@ void PreviewPresenter::updatePreview()
 		}
 	}
 	_videoCaptureManager->unlockCapture();
-	_previewDisplay->invalidate();
+	_previewDisplay->draw();
 	DwmFlush();
 }

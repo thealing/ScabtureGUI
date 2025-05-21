@@ -6,6 +6,8 @@ public:
 
 	PreviewDisplay(Window* parent);
 
+	void draw();
+
 	void setDisabled(bool disabled);
 
 	void setHighQuality(bool highQuality);
@@ -31,6 +33,7 @@ private:
 private:
 
 	ExclusiveLock _lock;
+	bool _dirty;
 	bool _disabled;
 	bool _highQuality;
 	bool _upscale;
