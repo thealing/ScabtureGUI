@@ -20,6 +20,8 @@ private:
 
 	void updateSinkWriterSettings(const MainSettings& mainSettings);
 
+	void updateLoggerSettings(const MainSettings& mainSettings);
+
 private:
 
 	WindowEventDispatcher _eventDispatcher;
