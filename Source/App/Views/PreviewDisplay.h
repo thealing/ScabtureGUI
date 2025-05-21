@@ -1,16 +1,10 @@
 #pragma once
 
-class PreviewDisplay : public CustomControl
+class PreviewDisplay : public Control
 {
 public:
 
 	PreviewDisplay(Window* parent);
-
-	~PreviewDisplay();
-
-	void invalidate();
-
-	void setPaintCallback(const Callback& callback);
 
 	void setDisabled(bool disabled);
 
@@ -18,39 +12,31 @@ public:
 
 	void setUpscale(bool upscale);
 
-	void drawPreview(const Buffer* buffer);
-
-protected:
-
-	virtual void onResize() override;
+	void setBuffer(const Buffer& buffer);
 
 private:
-
-	void updateSize(int width, int height, int stride);
 
 	void updateControl();
 
 	void moveControl(int x, int y, int width, int height);
 
-	void drawPreview(const void* pixels);
+	void drawPreview(Graphics& graphics);
 
-	void drawPreviewDisabled();
+	void drawPreviewDisabled(Graphics& graphics);
+
+	virtual void onResize() override;
+
+	virtual void doPaint(Graphics& graphics) override;
 
 private:
 
-	Callback _paintCallback;
-	int _timer;
-	int _printTime;
-	bool _dirty;
+	ExclusiveLock _lock;
 	bool _disabled;
 	bool _highQuality;
 	bool _upscale;
 	int _width;
 	int _height;
 	int _stride;
-
-private:
-
-	static LRESULT CALLBACK subclassProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam, UINT_PTR subclassId, DWORD_PTR data);
+	uint32_t* _pixels;
 };
 

@@ -86,6 +86,11 @@ void Graphics::clear(Color color)
 	StretchDIBits(_handle, 0, 0, width, height, 0, 0, 1, 1, &pixel, &bitmapInfo, DIB_RGB_COLORS, SRCCOPY);  
 }
 
+HDC Graphics::getHandle() const
+{
+	return _handle;
+}
+
 UINT Graphics::getAlignmentFormat(Alignment alignment)
 {
 	switch (alignment)

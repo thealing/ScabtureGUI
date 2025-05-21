@@ -7,7 +7,6 @@ PreviewPresenter::PreviewPresenter(PreviewDisplay* previewDisplay, VideoCaptureM
 	_mainSettingsManager = mainSettingsManager;
 	_videoSettingsManager = videoSettingsManager;
 	_recordingManager = recordingManager;
-	_previewDisplay->setPaintCallback(BIND(PreviewPresenter, renderPreview, this));
 	_eventDispatcher.addEntry(videoCaptureManager->getFrameEvent(), BIND(PreviewPresenter, updatePreview, this));
 	_eventDispatcher.start();
 }
@@ -19,11 +18,6 @@ PreviewPresenter::~PreviewPresenter()
 
 void PreviewPresenter::updatePreview()
 {
-	_previewDisplay->invalidate();
-}
-
-void PreviewPresenter::renderPreview()
-{
 	MainSettings mainSettings = _mainSettingsManager->getSettings();
 	VideoSettings videoSettings = _videoSettingsManager->getSettings();
 	bool recording = _recordingManager->isRunning();
@@ -34,7 +28,12 @@ void PreviewPresenter::renderPreview()
 	if (capture != NULL)
 	{
 		const Buffer* buffer = capture->getBuffer();
-		_previewDisplay->drawPreview(buffer);
+		if (buffer != NULL)
+		{
+			_previewDisplay->setBuffer(*buffer);
+		}
 	}
 	_videoCaptureManager->unlockCapture();
+	_previewDisplay->invalidate();
+	DwmFlush();
 }

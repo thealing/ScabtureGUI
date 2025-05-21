@@ -32,6 +32,8 @@ public:
 
 	void clear(Color color);
 
+	HDC getHandle() const;
+
 private:
 
 	HDC _handle;
