@@ -88,6 +88,10 @@ void LogUtil::logComError(const char* label, HRESULT result)
 
 bool LogUtil::isComResultSupressed(HRESULT result)
 {
+	if (result == E_ILLEGAL_METHOD_CALL)
+	{
+		return true;
+	}
 	if (result == MF_E_TRANSFORM_INPUT_REMAINING)
 	{
 		return true;
