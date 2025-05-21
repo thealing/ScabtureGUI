@@ -9,7 +9,7 @@ void FpsCounter::reset()
 {
 	WriteLockHolder holder(&_lock);
 	_frameCounter = 0;
-	_measuredFps = 0;
+	_measuredFps = -1;
 	_lastFrameTime = getTime();
 	_lastMeasureTime = _lastFrameTime;
 	_timer = new Timer(0.75, 1.0, BIND(FpsCounter, update, this));
@@ -22,7 +22,7 @@ void FpsCounter::recordFrame()
 	_lastFrameTime = getTime();
 }
 
-int FpsCounter::getFps() const
+int FpsCounter::getMeasuredFps() const
 {
 	ReadLockHolder holder(&_lock);
 	return _measuredFps;
