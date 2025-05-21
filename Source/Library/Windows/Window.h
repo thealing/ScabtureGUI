@@ -22,6 +22,8 @@ public:
 
 	void repaint();
 
+	void invalidate();
+
 	void setPosition(Vector position);
 
 	void setSize(Vector size);
