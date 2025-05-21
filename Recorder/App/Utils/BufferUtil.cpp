@@ -1,11 +1,11 @@
 #include "BufferUtil.h"
 
 template<class Unit>
-Unit* BufferUtil::allocateBuffer(int pixelCount)
+Unit* BufferUtil::allocateBuffer(int count)
 {
-	int byteCount = pixelCount * sizeof(Unit);
-	void* buffer = _aligned_malloc(byteCount, 16);
-	memset(buffer, 0, byteCount);
+	int bytes = count * sizeof(Unit);
+	void* buffer = _aligned_malloc(bytes, 16);
+	memset(buffer, 0, bytes);
 	return (Unit*)buffer;
 }
 
@@ -13,6 +13,13 @@ template<class Unit>
 void BufferUtil::freeBuffer(Unit* buffer)
 {
 	_aligned_free(buffer);
+}
+
+template<class Unit>
+void BufferUtil::copyBuffer(Unit* destination, const Unit* source, int count)
+{
+	int bytes = count * sizeof(Unit);
+	memcpy(destination, source, bytes);
 }
 
 int BufferUtil::alignValue(int value, int alignment)

@@ -12,8 +12,6 @@ private:
 
 	void updatePreview();
 
-	void renderPreview();
-
 private:
 
 	EventDispatcher _eventDispatcher;

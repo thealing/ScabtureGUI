@@ -1,94 +1,57 @@
 #include "PreviewDisplay.h"
 
-PreviewDisplay::PreviewDisplay(Window* parent) : _printTime(0), _dirty(true), _disabled(false), _highQuality(false), _width(0), _height(0), _stride(0)
+PreviewDisplay::PreviewDisplay(Window* parent) : _disabled(false), _highQuality(false), _upscale(false), _width(0), _height(0), _stride(0)
 {
 	create(L"STATIC", NULL, 0, 0, parent);
-	addCallback(subclassProc);
-}
-
-PreviewDisplay::~PreviewDisplay()
-{
-	removeCallback(subclassProc);
-}
-
-void PreviewDisplay::invalidate()
-{
-	_timer++;
-	postMessage(WM_PAINT, 0, _timer);
-}
-
-void PreviewDisplay::setPaintCallback(const Callback& callback)
-{
-	_paintCallback = callback;
 }
 
 void PreviewDisplay::setDisabled(bool disabled)
 {
+	ExclusiveLockHolder holder(&_lock);
 	if (_disabled != disabled)
 	{
-		_dirty = true;
 		_disabled = disabled;
+		invalidate();
 	}
 }
 
 void PreviewDisplay::setHighQuality(bool highQuality)
 {
+	ExclusiveLockHolder holder(&_lock);
 	if (_highQuality != highQuality)
 	{
-		_dirty = true;
 		_highQuality = highQuality;
+		invalidate();
 	}
 }
 
 void PreviewDisplay::setUpscale(bool upscale)
 {
+	ExclusiveLockHolder holder(&_lock);
 	if (_upscale != upscale)
 	{
-		_dirty = true;
 		_upscale = upscale;
-		updateControl();
+		invalidate();
 	}
 }
 
-void PreviewDisplay::drawPreview(const Buffer* buffer)
+void PreviewDisplay::setBuffer(const Buffer& buffer)
 {
-	int width = buffer->getWidth();
-	int height = buffer->getHeight();
-	int stride = buffer->getStride();
-	updateSize(width, height, stride);
-	HWND handle = getHandle();
-	RECT rect = {};
-	GetClientRect(handle, &rect);
-	if (IsRectEmpty(&rect))
+	ExclusiveLockHolder holder(&_lock);
+	int width = buffer.getWidth();
+	int height = buffer.getHeight();
+	int stride = buffer.getStride();
+	if (_pixels != NULL && _width == width && _height == height && _stride == stride)
 	{
-		return;
-	}
-	if (_disabled)
-	{
-		drawPreviewDisabled();
-	}
-	else
-	{
-		const void* pixels = buffer->beginReading();
-		drawPreview(pixels);
-		buffer->endReading();
-	}
-}
-
-void PreviewDisplay::onResize()
-{
-	updateControl();
-}
-
-void PreviewDisplay::updateSize(int width, int height, int stride)
-{
-	if (_width == width && _height == height && _stride == stride)
-	{
+		const uint32_t* source = buffer.beginReading();
+		BufferUtil::copyBuffer(_pixels, source, _stride * _height);
+		buffer.endReading();
 		return;
 	}
 	_width = width;
 	_height = height;
 	_stride = stride;
+	_pixels = BufferUtil::allocateBuffer<uint32_t>(_stride * _height);
 	updateControl();
 }
 
@@ -121,21 +84,15 @@ void PreviewDisplay::updateControl()
 	int positionX = (rect.left + rect.right) / 2 - displayWidth / 2;
 	int positionY = (rect.top + rect.bottom) / 2 - displayHeight / 2;
 	moveControl(positionX, positionY, displayWidth, displayHeight);
-	invalidate();
 }
 
 void PreviewDisplay::moveControl(int x, int y, int width, int height)
 {
-	_dirty = true;
 	HWND handle = getHandle();
-	RECT oldRect = {};
-	GetWindowRect(handle, &oldRect);
-	MoveWindow(handle, x, y, width, height, FALSE);
-	HWND parentHandle = GetParent(handle);
-	RedrawWindow(parentHandle, NULL, NULL, RDW_INVALIDATE | RDW_ERASE | RDW_ERASENOW | RDW_UPDATENOW);
+	SetWindowPos(handle, NULL, x, y, width, height, SWP_NOZORDER | SWP_ASYNCWINDOWPOS);
 }
 
-void PreviewDisplay::drawPreview(const void* pixels)
+void PreviewDisplay::drawPreview(Graphics& graphics)
 {
 	BITMAPINFO bitmapInfo = {};
 	bitmapInfo.bmiHeader.biSize = sizeof(bitmapInfo);
@@ -146,20 +103,13 @@ void PreviewDisplay::drawPreview(const void* pixels)
 	bitmapInfo.bmiHeader.biSizeImage = _stride * _height * 4;
 	bitmapInfo.bmiHeader.biCompression = BI_RGB;
 	Vector displaySize = getSize();
-	HDC context = getContext();
+	HDC context = graphics.getHandle();
 	SetStretchBltMode(context, _highQuality ? HALFTONE : COLORONCOLOR);
-	StretchDIBits(context, 0, 0, displaySize.x, displaySize.y, 0, 0, _width, _height, pixels, &bitmapInfo, DIB_RGB_COLORS, SRCCOPY);
+	StretchDIBits(context, 0, 0, displaySize.x, displaySize.y, 0, 0, _width, _height, _pixels, &bitmapInfo, DIB_RGB_COLORS, SRCCOPY);
 }
 
-void PreviewDisplay::drawPreviewDisabled()
+void PreviewDisplay::drawPreviewDisabled(Graphics& graphics)
 {
-	if (!_dirty)
-	{
-		return;
-	}
-	_dirty = false;
-	HDC context = getContext();
-	Graphics graphics(context);
 	FontStore& fontStore = FontStore::getInstance();
 	graphics.setFont(*fontStore.getDisplayFont());
 	graphics.setTextColor(255);
@@ -168,18 +118,21 @@ void PreviewDisplay::drawPreviewDisabled()
 	graphics.drawString(L"Preview Disabled", AlignmentMiddleCenter, 0, getSize());
 }
 
-LRESULT PreviewDisplay::subclassProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam, UINT_PTR subclassId, DWORD_PTR)
+void PreviewDisplay::onResize()
 {
-	PreviewDisplay* instance = (PreviewDisplay*)subclassId;
-	if (message == WM_PAINT)
+	ExclusiveLockHolder holder(&_lock);
+	updateControl();
+}
+
+void PreviewDisplay::doPaint(Graphics& graphics)
+{
+	ExclusiveLockHolder holder(&_lock);
+	if (_disabled)
 	{
-		int time = (int)lParam;
-		if (time > instance->_printTime)
-		{
-			instance->_paintCallback.invoke();
-			instance->_printTime = instance->_timer;
-		}
-		return DefWindowProc(window, message, wParam, lParam);
+		drawPreviewDisabled(graphics);
 	}
-	return DefSubclassProc(window, message, wParam, lParam);
+	else
+	{
+		drawPreview(graphics);
+	}
 }
