@@ -26,6 +26,7 @@ void MainSettingsObserver::onSettingsChanged()
 	updateSoundSettings(mainSettings);
 	updateKeyboardSettings(mainSettings);
 	updateSinkWriterSettings(mainSettings);
+	updateLoggerSettings(mainSettings);
 }
 
 void MainSettingsObserver::updateWindowSettings(const MainSettings& mainSettings)
@@ -70,4 +71,9 @@ void MainSettingsObserver::updateSinkWriterSettings(const MainSettings& mainSett
 	{
 		LogUtil::logInfo(L"MainSettingsObserver: Sink writer settings changed.");
 	}
+}
+
+void MainSettingsObserver::updateLoggerSettings(const MainSettings& mainSettings)
+{
+	LogUtil::saveMode(mainSettings.logMode);
 }
