@@ -51,7 +51,6 @@ void VideoCaptureController::onRefreshHotkeyPressed()
 
 void VideoCaptureController::updateCapture()
 {
-	MessageBeep(0);
 	LogUtil::logInfo(L"VideoCaptureController: Updating capture.");
 	_videoCaptureManager->reset();
 	VideoCapture* capture = _windowSourceManager->createCapture();
