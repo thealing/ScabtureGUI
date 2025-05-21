@@ -1,8 +1,24 @@
 #include "PreviewDisplay.h"
 
-PreviewDisplay::PreviewDisplay(Window* parent) : _disabled(false), _highQuality(false), _upscale(false), _width(0), _height(0), _stride(0)
+PreviewDisplay::PreviewDisplay(Window* parent) : _dirty(true), _disabled(false), _highQuality(false), _upscale(false), _width(0), _height(0), _stride(0)
 {
 	create(L"STATIC", NULL, 0, 0, parent);
+}
+
+void PreviewDisplay::draw()
+{
+	if (_disabled)
+	{
+		if (_dirty)
+		{
+			_dirty = false;
+			invalidate();
+		}
+	}
+	else
+	{
+		invalidate();
+	}
 }
 
 void PreviewDisplay::setDisabled(bool disabled)
@@ -11,6 +27,7 @@ void PreviewDisplay::setDisabled(bool disabled)
 	if (_disabled != disabled)
 	{
 		_disabled = disabled;
+		_dirty = true;
 		invalidate();
 	}
 }
@@ -21,6 +38,7 @@ void PreviewDisplay::setHighQuality(bool highQuality)
 	if (_highQuality != highQuality)
 	{
 		_highQuality = highQuality;
+		_dirty = true;
 		invalidate();
 	}
 }
@@ -31,6 +49,7 @@ void PreviewDisplay::setUpscale(bool upscale)
 	if (_upscale != upscale)
 	{
 		_upscale = upscale;
+		_dirty = true;
 		invalidate();
 	}
 }
@@ -52,6 +71,7 @@ void PreviewDisplay::setBuffer(const Buffer& buffer)
 	_height = height;
 	_stride = stride;
 	_pixels = BufferUtil::allocateBuffer<uint32_t>(_stride * _height);
+	_dirty = true;
 	updateControl();
 }
 
@@ -110,6 +130,7 @@ void PreviewDisplay::drawPreview(Graphics& graphics)
 
 void PreviewDisplay::drawPreviewDisabled(Graphics& graphics)
 {
+	Beep(5000, 3);
 	FontStore& fontStore = FontStore::getInstance();
 	graphics.setFont(*fontStore.getDisplayFont());
 	graphics.setTextColor(255);
