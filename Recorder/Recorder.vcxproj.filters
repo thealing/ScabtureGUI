@@ -332,12 +332,6 @@
     <None Include="App\Multiple\Audio\AudioVolumeMeter.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Multiple\Captures\BaseCapture.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="App\Multiple\Captures\BaseCapture.h">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="App\Multiple\Captures\BitbltCapture.cpp">
       <Filter>Source Files</Filter>
     </None>
@@ -365,10 +359,10 @@
     <None Include="App\Multiple\Captures\GdiCapture.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Multiple\Captures\MouseCapture.cpp">
+    <None Include="App\Multiple\Captures\MouseOverlay.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="App\Multiple\Captures\MouseCapture.h">
+    <None Include="App\Multiple\Captures\MouseOverlay.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Multiple\Resizers\BaseResizer.cpp">
@@ -1113,6 +1107,12 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="App\Multiple\Status.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\Overlay.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\Overlay.h">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

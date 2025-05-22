@@ -10,8 +10,15 @@ bool BitBltGetDIBitsCapture::getFrame(Buffer* buffer)
 	{
 		return false;
 	}
-	void* pixels = buffer->beginWriting();
-	int result = GetDIBits(_captureContext, _captureBitmap, 0, _source.height, pixels, &_bitmapInfo, DIB_RGB_COLORS);
+	uint32_t* pixels = buffer->beginWriting();
+	bool result = GetDIBits(_captureContext, _captureBitmap, 0, _source.height, pixels, &_bitmapInfo, DIB_RGB_COLORS);
+	if (result)
+	{
+		int width = buffer->getWidth();
+		int height = buffer->getHeight();
+		int stride = buffer->getStride();
+		drawOverlays(pixels, width, height, stride);
+	}
 	buffer->endWriting();
-	return result != 0;
+	return result;
 }

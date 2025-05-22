@@ -248,13 +248,12 @@
     <None Include="App\Multiple\BaseEventDispatcher.h" />
     <None Include="App\Multiple\Buffer.h" />
     <None Include="App\Multiple\CaptureLock.h" />
-    <None Include="App\Multiple\Captures\BaseCapture.h" />
     <None Include="App\Multiple\Captures\BitbltCapture.h" />
     <None Include="App\Multiple\Captures\BitbltGetdibitsCapture.h" />
     <None Include="App\Multiple\Captures\Capture.h" />
     <None Include="App\Multiple\Captures\CaptureSource.h" />
     <None Include="App\Multiple\Captures\GdiCapture.h" />
-    <None Include="App\Multiple\Captures\MouseCapture.h" />
+    <None Include="App\Multiple\Captures\MouseOverlay.h" />
     <None Include="App\Multiple\ComPointer.h" />
     <None Include="App\Multiple\Encoder.h" />
     <None Include="App\Multiple\EventDispatcher.h" />
@@ -376,6 +375,7 @@
     <None Include="App\Multiple\AsyncSettingsManager.h" />
     <None Include="Library\System\LatchEvent.h" />
     <None Include="App\Multiple\Status.h" />
+    <None Include="App\Multiple\Captures\Overlay.h" />
     <ClInclude Include="Recorder.h" />
     <ClInclude Include="Resources\Resource.h" />
   </ItemGroup>
@@ -415,12 +415,11 @@
     <None Include="App\Multiple\BaseEventDispatcher.cpp" />
     <None Include="App\Multiple\Buffer.cpp" />
     <None Include="App\Multiple\CaptureLock.cpp" />
-    <None Include="App\Multiple\Captures\BaseCapture.cpp" />
     <None Include="App\Multiple\Captures\BitbltCapture.cpp" />
     <None Include="App\Multiple\Captures\BitbltGetdibitsCapture.cpp" />
     <None Include="App\Multiple\Captures\Capture.cpp" />
     <None Include="App\Multiple\Captures\GdiCapture.cpp" />
-    <None Include="App\Multiple\Captures\MouseCapture.cpp" />
+    <None Include="App\Multiple\Captures\MouseOverlay.cpp" />
     <None Include="App\Multiple\ComPointer.cpp" />
     <None Include="App\Multiple\Encoder.cpp" />
     <None Include="App\Multiple\EventDispatcher.cpp" />
@@ -540,6 +539,7 @@
     <None Include="App\Multiple\AsyncSettingsManager.cpp" />
     <None Include="Library\System\LatchEvent.cpp" />
     <None Include="App\Multiple\Status.cpp" />
+    <None Include="App\Multiple\Captures\Overlay.cpp" />
     <ClCompile Include="Recorder.cpp" />
   </ItemGroup>
   <ItemGroup>

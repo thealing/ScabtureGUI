@@ -12,14 +12,11 @@ WindowCapture::WindowCapture(const WindowCaptureSettings& settings, const Window
 	captureSource.width = _buffer->getWidth();
 	captureSource.height = _buffer->getHeight();
 	captureSource.stride = _buffer->getStride();
+	_capture = createCapture(captureSource, settings.method);
 	if (settings.showCursor)
 	{
-		Capture* capture = createCapture(captureSource, settings.method);
-		_capture = new MouseCapture(captureSource, capture, settings.drawCursor);
-	}
-	else
-	{
-		_capture = createCapture(captureSource, settings.method);
+		Overlay* mouseOverlay = new MouseOverlay(captureSource, settings.drawCursor);
+		_capture->addOverlay(mouseOverlay);
 	}
 	_timer = new Timer(0, 1.0 / settings.frameRate, BIND(WindowCapture, onTimer, this));
 }
@@ -35,7 +32,8 @@ const Buffer* WindowCapture::getBuffer() const
 
 void WindowCapture::onTimer()
 {
-	if (_capture->getFrame(_buffer))
+	bool captured = _capture->getFrame(_buffer);
+	if (captured)
 	{
 		signalFrame();
 	}
