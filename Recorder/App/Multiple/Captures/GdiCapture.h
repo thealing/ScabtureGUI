@@ -1,6 +1,6 @@
 #pragma once
 
-class GdiCapture : public BaseCapture
+class GdiCapture : public Capture
 {
 public:
 
