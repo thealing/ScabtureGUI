@@ -130,7 +130,6 @@ void PreviewDisplay::drawPreview(Graphics& graphics)
 
 void PreviewDisplay::drawPreviewDisabled(Graphics& graphics)
 {
-	Beep(5000, 3);
 	FontStore& fontStore = FontStore::getInstance();
 	graphics.setFont(*fontStore.getDisplayFont());
 	graphics.setTextColor(255);
