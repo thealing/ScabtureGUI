@@ -9,15 +9,13 @@ public:
 
 	~UniqueStorage();
 
-	int store(Type* value);
+	void store(Type* value);
 
-	int dispose(const Type* value);
+	void dispose(const Type* value);
 
-	Type* getValue(int index);
+	Type** begin();
 
-	const Type* getValue(int index) const;
-
-	const int getCount() const;
+	Type** end();
 
 private:
 
