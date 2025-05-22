@@ -19,16 +19,8 @@ UniqueStorage<Type>::~UniqueStorage()
 }
 
 template<class Type>
-int UniqueStorage<Type>::store(Type* value)
+void UniqueStorage<Type>::store(Type* value)
 {
-	for (int i = 0; i < _count; ++i)
-	{
-		if (_values[i] == NULL)
-		{
-			_values[i] = value;
-			return i;
-		}
-	}
 	if (_count == _capacity)
 	{
 		_capacity = max(4, _capacity * 2);
@@ -36,38 +28,33 @@ int UniqueStorage<Type>::store(Type* value)
 	}
 	_values[_count] = value;
 	_count++;
-	return _count - 1;
 }
 
 template<class Type>
-int UniqueStorage<Type>::dispose(const Type* value)
+void UniqueStorage<Type>::dispose(const Type* value)
 {
 	for (int i = 0; i < _count; ++i)
 	{
 		if (_values[i] == value)
 		{
 			delete _values[i];
-			_values[i] = NULL;
-			return i;
+			for (i++; i < _count; i++)
+			{
+				_values[i - 1] = _values[i];
+			}
+			_count--;
 		}
 	}
-	return -1;
 }
 
 template<class Type>
-Type* UniqueStorage<Type>::getValue(int index)
+Type** UniqueStorage<Type>::begin()
 {
-	return _values[index];
+    return _values;
 }
 
 template<class Type>
-const Type* UniqueStorage<Type>::getValue(int index) const
+Type** UniqueStorage<Type>::end()
 {
-	return _values[index];
-}
-
-template<class Type>
-const int UniqueStorage<Type>::getCount() const
-{
-	return _count;
+	return _values + _count;
 }

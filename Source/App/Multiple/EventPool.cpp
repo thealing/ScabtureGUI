@@ -6,27 +6,17 @@ EventPool::EventPool()
 
 void EventPool::setEvents() const
 {
-	int count = _events.getCount();
-	for (int i = 0; i < count; i++)
+	for (Event* event : _events)
 	{
-		Event* event = _events.getValue(i);
-		if (event != NULL)
-		{
-			event->set();
-		}
+		event->set();
 	}
 }
 
 void EventPool::resetEvents() const
 {
-	int count = _events.getCount();
-	for (int i = 0; i < count; i++)
+	for (Event* event : _events)
 	{
-		Event* event = _events.getValue(i);
-		if (event != NULL)
-		{
-			event->reset();
-		}
+		event->reset();
 	}
 }
 
