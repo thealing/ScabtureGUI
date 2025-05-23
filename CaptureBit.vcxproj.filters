@@ -230,9 +230,6 @@
     <None Include="App\Models\Settings\SinkWriterSettings.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Models\Settings\SoundSettings.h">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="App\Models\Settings\VideoEncoderSettings.h">
       <Filter>Header Files</Filter>
     </None>
@@ -521,10 +518,10 @@
     <None Include="App\Multiple\WindowEventDispatcher.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Multiple\WindowListener.cpp">
+    <None Include="App\Services\WindowListener.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="App\Multiple\WindowListener.h">
+    <None Include="App\Services\WindowListener.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Services\AudioCaptureManager.cpp">
@@ -609,12 +606,6 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="App\Services\SinkWriterFactory.h">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="App\Services\SoundPlayer.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="App\Services\SoundPlayer.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Services\SourceManager.cpp">

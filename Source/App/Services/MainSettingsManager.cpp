@@ -8,15 +8,12 @@ MainSettingsManager::MainSettingsManager() : SettingsManager(L"Settings")
 MainSettings MainSettingsManager::getDefault() const
 {
 	MainSettings settings = {};
-	settings.stayOnTop = false;
 	settings.windowVisibility = WindowVisibilityMinimized;
 	settings.highQualityPreview = true;
-	settings.disablePreview = true;
+	settings.disablePreviewWhileRecording = true;
 	settings.stopWhenTheWindowChanges = true;
 	settings.stopWhenTheAudioDeviceChanges = true;
 	settings.askToPlayTheSavedRecording = true;
-	settings.beepWhenTheRecordingStarts = true;
-	settings.beepWhenTheRecordingStops = true;
 	settings.useHardwareEncoder = true;
 	settings.lowLatencyEncoder = true;
 	return settings;

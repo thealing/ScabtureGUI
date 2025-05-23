@@ -6,7 +6,6 @@ ScreenRecorderApplication::ScreenRecorderApplication(bool console) : MediaApplic
 
 void ScreenRecorderApplication::run()
 {
-	// Composition Root
 	SourcePanel* sourcePanel = _mainWindow.getSourcePanel();
 	SettingsPanel* settingsPanel = _mainWindow.getSettingsPanel();
 	PreviewDisplay* previewDisplay = _mainWindow.getPreviewDisplay();
@@ -31,10 +30,10 @@ void ScreenRecorderApplication::run()
 	RecordingPresenter recordingPresenter(recordingDisplay, &_recordingManager, &_videoCaptureManager);
 	AudioPresenter audioPresenter(volumeDisplay, &_audioVolumeListener, &_audioSourceManager);
 	UsagePresenter usagePresenter(settingsPanel, &_cpuMonitor, &_memoryMonitor);
-	MainSettingsObserver mainSettingsObserver(&_mainWindow, &_mainSettingsManager, &_soundPlayer, &_keyboardListener, &_sinkWriterFactory);
+	MainSettingsObserver mainSettingsObserver(&_mainWindow, &_mainSettingsManager, &_keyboardListener, &_sinkWriterFactory);
 	VideoSettingsObserver videoSettingsObserver(&_videoSettingsManager, &_windowSourceManager, &_videoResizerFactory, &_videoEncoderFactory);
 	AudioSettingsObserver audioSettingsObserver(&_audioSettingsManager, &_audioResamplerFactory, &_audioEncoderFactory);
-	RecordingController recordingController(&_mainWindow, &_recordingManager, &_videoCaptureManager, &_videoEncoderFactory, &_audioCaptureManager, &_audioEncoderFactory, &_sinkWriterFactory, &_mainSettingsManager, &_soundPlayer, &_keyboardListener);
+	RecordingController recordingController(&_mainWindow, &_recordingManager, &_videoCaptureManager, &_videoEncoderFactory, &_audioCaptureManager, &_audioEncoderFactory, &_sinkWriterFactory, &_mainSettingsManager, &_keyboardListener);
 	SnapshotController snapshotController(&_videoCaptureManager, &_keyboardListener);
 	_mainWindow.runMessageLoop();
 }

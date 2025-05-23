@@ -17,10 +17,6 @@ SinkWriter::SinkWriter(const SinkWriterSettings& settings, const wchar_t* path) 
 	}
 	if (_status)
 	{
-		_status = attributes->SetUINT32(MF_SINK_WRITER_DISABLE_THROTTLING, settings.noThrottling);
-	}
-	if (_status)
-	{
 		_status = attributes->SetUINT32(MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, settings.hardware);
 	}
 	if (_status)
