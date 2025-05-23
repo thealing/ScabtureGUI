@@ -4,6 +4,7 @@ MediaApplication::MediaApplication(bool console) : Application(console)
 {
 	initPlatform();
 	setAccurateTimer();
+	setDpiAwareness();
 }
 
 MediaApplication::~MediaApplication()
@@ -42,4 +43,13 @@ void MediaApplication::setAccurateTimer()
 {
 	double timerResolution = Timer::setResolution(0);
 	LogUtil::logDebug(L"Changed timer resolution to %g.", timerResolution);
+}
+
+void MediaApplication::setDpiAwareness()
+{
+	BOOL result = SetProcessDPIAware();
+	if (result == FALSE)
+	{
+		LogUtil::logWarning(L"Failed to set DPI awareness.");
+	}
 }
