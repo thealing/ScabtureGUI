@@ -22,7 +22,7 @@ VideoCaptureController::~VideoCaptureController()
 
 void VideoCaptureController::onSourceChanged()
 {
-	LogUtil::logInfo(L"VideoCaptureController: Window source changed.");
+	LogUtil::logInfo(L"VideoCaptureController: Source changed.");
 	VideoSettings settings = _videoSettingsManager->getSettings();
 	if (settings.doResize && settings.keepRatio)
 	{
@@ -39,7 +39,7 @@ void VideoCaptureController::onSourceChanged()
 
 void VideoCaptureController::onResizerChanged()
 {
-	LogUtil::logInfo(L"VideoCaptureController: Window source changed.");
+	LogUtil::logInfo(L"VideoCaptureController: Resizer changed.");
 	updateCapture();
 }
 
