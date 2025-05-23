@@ -33,7 +33,6 @@ AudioDevice::AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole 
 		{
 			flags = AUDCLNT_STREAMFLAGS_LOOPBACK;
 		}
-		// TODO: Set the buffer duration to be longer if the timer resolution is too high?
 		_status = _audioClient->Initialize(AUDCLNT_SHAREMODE_SHARED, flags, 0, 0, _waveFormat, NULL);
 	}
 	if (_status)

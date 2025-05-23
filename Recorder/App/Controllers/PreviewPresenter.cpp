@@ -21,7 +21,7 @@ void PreviewPresenter::updatePreview()
 	MainSettings mainSettings = _mainSettingsManager->getSettings();
 	VideoSettings videoSettings = _videoSettingsManager->getSettings();
 	bool recording = _recordingManager->isRunning();
-	_previewDisplay->setDisabled(mainSettings.disablePreview && recording);
+	_previewDisplay->setDisabled(mainSettings.disablePreviewWhileRecording && recording);
 	_previewDisplay->setHighQuality(mainSettings.highQualityPreview);
 	_previewDisplay->setUpscale(!videoSettings.doResize);
 	VideoCapture* capture = _videoCaptureManager->lockCapture();

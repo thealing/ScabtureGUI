@@ -26,7 +26,6 @@ private:
 	VideoEncoderFactory _videoEncoderFactory;
 	AudioEncoderFactory _audioEncoderFactory;
 	RecordingManager _recordingManager;
-	SoundPlayer _soundPlayer;
 	MainSettingsManager _mainSettingsManager;
 	VideoSettingsManager _videoSettingsManager;
 	AudioSettingsManager _audioSettingsManager;

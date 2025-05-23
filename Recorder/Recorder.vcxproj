@@ -229,7 +229,6 @@
     <None Include="App\Models\Settings\KeyboardSettings.h" />
     <None Include="App\Models\Settings\MainSettings.h" />
     <None Include="App\Models\Settings\SinkWriterSettings.h" />
-    <None Include="App\Models\Settings\SoundSettings.h" />
     <None Include="App\Models\Settings\VideoEncoderSettings.h" />
     <None Include="App\Models\Settings\VideoResizerSettings.h" />
     <None Include="App\Models\Settings\VideoSettings.h" />
@@ -277,7 +276,7 @@
     <None Include="App\Multiple\WaveFormat.h" />
     <None Include="App\Multiple\WeakPointer.h" />
     <None Include="App\Multiple\WindowEventDispatcher.h" />
-    <None Include="App\Multiple\WindowListener.h" />
+    <None Include="App\Services\WindowListener.h" />
     <None Include="App\Services\AudioCaptureManager.h" />
     <None Include="App\Services\AudioDeviceProvider.h" />
     <None Include="App\Services\AudioEncoderFactory.h" />
@@ -292,7 +291,6 @@
     <None Include="App\Services\RecordingManager.h" />
     <None Include="App\Services\SettingsManager.h" />
     <None Include="App\Services\SinkWriterFactory.h" />
-    <None Include="App\Services\SoundPlayer.h" />
     <None Include="App\Services\SourceManager.h" />
     <None Include="App\Services\VideoCaptureManager.h" />
     <None Include="App\Services\VideoEncoderFactory.h" />
@@ -443,7 +441,7 @@
     <None Include="App\Multiple\WaveFormat.cpp" />
     <None Include="App\Multiple\WeakPointer.cpp" />
     <None Include="App\Multiple\WindowEventDispatcher.cpp" />
-    <None Include="App\Multiple\WindowListener.cpp" />
+    <None Include="App\Services\WindowListener.cpp" />
     <None Include="App\Services\AudioCaptureManager.cpp" />
     <None Include="App\Services\AudioDeviceProvider.cpp" />
     <None Include="App\Services\AudioEncoderFactory.cpp" />
@@ -458,7 +456,6 @@
     <None Include="App\Services\RecordingManager.cpp" />
     <None Include="App\Services\SettingsManager.cpp" />
     <None Include="App\Services\SinkWriterFactory.cpp" />
-    <None Include="App\Services\SoundPlayer.cpp" />
     <None Include="App\Services\SourceManager.cpp" />
     <None Include="App\Services\VideoCaptureManager.cpp" />
     <None Include="App\Services\VideoEncoderFactory.cpp" />

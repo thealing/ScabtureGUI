@@ -1,10 +1,9 @@
 #include "MainSettingsObserver.h"
 
-MainSettingsObserver::MainSettingsObserver(MainWindow* mainWindow, MainSettingsManager* mainSettingsManager, SoundPlayer* soundPlayer, KeyboardListener* keyboardListener, SinkWriterFactory* sinkWriterFactory) : _eventDispatcher(mainWindow)
+MainSettingsObserver::MainSettingsObserver(MainWindow* mainWindow, MainSettingsManager* mainSettingsManager, KeyboardListener* keyboardListener, SinkWriterFactory* sinkWriterFactory) : _eventDispatcher(mainWindow)
 {
 	_mainWindow = mainWindow;
 	_mainSettingsManager = mainSettingsManager;
-	_soundPlayer = soundPlayer;
 	_keyboardListener = keyboardListener;
 	_sinkWriterFactory = sinkWriterFactory;
 	_eventDispatcher.addEntry(mainSettingsManager->getChangeEvent(), BIND(MainSettingsObserver, onSettingsChanged, this));
@@ -23,7 +22,6 @@ void MainSettingsObserver::onSettingsChanged()
 	LogUtil::logInfo(L"MainSettingsObserver: Updating settings.");
 	MainSettings mainSettings = _mainSettingsManager->getSettings();
 	updateWindowSettings(mainSettings);
-	updateSoundSettings(mainSettings);
 	updateKeyboardSettings(mainSettings);
 	updateSinkWriterSettings(mainSettings);
 	updateLoggerSettings(mainSettings);
@@ -33,17 +31,6 @@ void MainSettingsObserver::updateWindowSettings(const MainSettings& mainSettings
 {
 	bool topMost = mainSettings.stayOnTop;
 	_mainWindow->setTopMost(topMost);
-}
-
-void MainSettingsObserver::updateSoundSettings(const MainSettings& mainSettings)
-{
-	SoundSettings settings = {};
-	settings.playStartSound = mainSettings.beepWhenTheRecordingStarts;
-	settings.playStopSound = mainSettings.beepWhenTheRecordingStops;
-	if (_soundPlayer->setSettings(settings))
-	{
-		LogUtil::logInfo(L"MainSettingsObserver: Sound settings changed.");
-	}
 }
 
 void MainSettingsObserver::updateKeyboardSettings(const MainSettings& mainSettings)
@@ -65,7 +52,6 @@ void MainSettingsObserver::updateSinkWriterSettings(const MainSettings& mainSett
 {
 	SinkWriterSettings settings = {};
 	settings.lowLatency = mainSettings.lowLatencyEncoder;
-	settings.noThrottling = mainSettings.disableThrottling;
 	settings.hardware = mainSettings.useHardwareEncoder;
 	if (_sinkWriterFactory->setSettings(settings))
 	{

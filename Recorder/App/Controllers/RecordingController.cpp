@@ -1,6 +1,6 @@
 #include "RecordingController.h"
 
-RecordingController::RecordingController(MainWindow* mainWindow, RecordingManager* recordingManager, VideoCaptureManager* videoCaptureManager, VideoEncoderFactory* videoEncoderFactory, AudioCaptureManager* audioCaptureManager, AudioEncoderFactory* audioEncoderFactory, SinkWriterFactory* sinkWriterFactory,  MainSettingsManager* mainSettingsManager, SoundPlayer* soundPlayer, KeyboardListener* keyboardListener) : _eventDispatcher(mainWindow)
+RecordingController::RecordingController(MainWindow* mainWindow, RecordingManager* recordingManager, VideoCaptureManager* videoCaptureManager, VideoEncoderFactory* videoEncoderFactory, AudioCaptureManager* audioCaptureManager, AudioEncoderFactory* audioEncoderFactory, SinkWriterFactory* sinkWriterFactory,  MainSettingsManager* mainSettingsManager, KeyboardListener* keyboardListener) : _eventDispatcher(mainWindow)
 {
 	_mainWindow = mainWindow;
 	_recordingManager = recordingManager;
@@ -10,7 +10,6 @@ RecordingController::RecordingController(MainWindow* mainWindow, RecordingManage
 	_audioEncoderFactory = audioEncoderFactory;
 	_sinkWriterFactory = sinkWriterFactory;
 	_mainSettingsManager = mainSettingsManager;
-	_soundPlayer = soundPlayer;
 	_keyboardListener = keyboardListener;
 	RecordingPanel* recordingPanel = mainWindow->getRecordingPanel();
 	_eventDispatcher.addEntry(recordingPanel->getStartClickEvent(), BIND(RecordingController, onStartButtonClicked, this));
@@ -94,7 +93,6 @@ void RecordingController::startRecording()
 	AudioCapture* audioCapture = _audioCaptureManager->lockCapture();
 	Encoder* audioEncoder = _audioEncoderFactory->createEncoder(audioCapture, sinkWriter);
 	doActionsBeforeRecording();
-	_soundPlayer->playStartSound();
 	_recordingManager->start(sinkWriter, videoEncoder, audioEncoder);
 	LogUtil::logInfo(L"RecordingController: Started recording.");
 }
@@ -108,7 +106,6 @@ void RecordingController::stopRecording()
 	}
 	LogUtil::logInfo(L"RecordingController: Stopping recording.");
 	_recordingManager->stop();
-	_soundPlayer->playStopSound();
 	doActionsAfterRecording();
 	_recordingManager->cleanup();
 	_videoCaptureManager->unlockCapture();
@@ -130,7 +127,6 @@ void RecordingController::pauseRecording()
 	}
 	LogUtil::logInfo(L"RecordingController: Pausing recording.");
 	_recordingManager->pause();
-	_soundPlayer->playPauseSound();
 	updatePanel(true, true);
 	LogUtil::logInfo(L"RecordingController: Paused recording.");
 }
@@ -149,7 +145,6 @@ void RecordingController::resumeRecording()
 	}
 	LogUtil::logInfo(L"RecordingController: Resuming recording.");
 	updatePanel(true, false);
-	_soundPlayer->playResumeSound();
 	_recordingManager->resume();
 	LogUtil::logInfo(L"RecordingController: Resumed recording.");
 }
