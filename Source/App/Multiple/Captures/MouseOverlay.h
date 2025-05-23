@@ -13,7 +13,8 @@ public:
 private:
 
 	bool _draw;
-	POINT _offset;
+	HWND _window;
+	bool _client;
 	ICONINFO _iconInfo;
 	HDC _context;
 };
