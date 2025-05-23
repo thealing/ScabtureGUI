@@ -15,4 +15,6 @@ private:
 	void uninitPlatform();
 
 	void setAccurateTimer();
+
+	void setDpiAwareness();
 };
