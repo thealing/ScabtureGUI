@@ -2,19 +2,8 @@
 
 MouseOverlay::MouseOverlay(const CaptureSource& source, bool draw) : _draw(draw)
 {
-	_offset.x = source.rect.left;
-	_offset.y = source.rect.top;
-	if (source.client)
-	{
-		ClientToScreen(source.window, &_offset);
-	}
-	else
-	{
-		RECT rect = {};
-		GetWindowRect(source.window, &rect);
-		_offset.x += rect.left;
-		_offset.y += rect.top;
-	}
+	_window = source.window;
+	_client = source.client;
 	_iconInfo = {};
 	_context = CreateCompatibleDC(NULL);
 }
@@ -50,8 +39,20 @@ void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
 	{
 		return;
 	}
-	cursorInfo.ptScreenPos.x -= _offset.x;
-	cursorInfo.ptScreenPos.y -= _offset.y;
+	POINT offset = {};
+	if (_client)
+	{
+		ClientToScreen(_window, &offset);
+	}
+	else
+	{
+		RECT rect = {};
+		GetWindowRect(_window, &rect);
+		offset.x += rect.left;
+		offset.y += rect.top;
+	}
+	cursorInfo.ptScreenPos.x -= offset.x;
+	cursorInfo.ptScreenPos.y -= offset.y;
 	BITMAP iconBitmap = {};
 	int iconWidth = 0;
 	int iconHeight = 0;
