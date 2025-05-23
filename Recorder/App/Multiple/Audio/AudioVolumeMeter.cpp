@@ -107,11 +107,20 @@ void AudioVolumeMeter::update()
 				newVolumes.left = values[0];
 				newVolumes.right = values[1];
 			}
-			// Apply a bit of smoothing.
 			_volumes.left = (_volumes.left + newVolumes.left) / 2;
 			_volumes.right = (_volumes.right + newVolumes.right) / 2;
 		}
+		else
+		{
+			_volumes.left = 0;
+			_volumes.right = 0;
+		}
 		result = buffer->Unlock();
+	}
+	else
+	{
+		_volumes.left = 0;
+		_volumes.right = 0;
 	}
 	if (!result)
 	{
