@@ -17,7 +17,7 @@ SinkWriter::SinkWriter(const SinkWriterSettings& settings, const wchar_t* path) 
 	}
 	if (_status)
 	{
-		_status = attributes->SetUINT32(MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, settings.hardware);
+		_status = attributes->SetUINT32(MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, settings.useGpu);
 	}
 	if (_status)
 	{

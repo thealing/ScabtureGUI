@@ -3,5 +3,5 @@
 struct SinkWriterSettings
 {
 	bool lowLatency;
-	bool hardware;
+	bool useGpu;
 };
