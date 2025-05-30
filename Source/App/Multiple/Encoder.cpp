@@ -1,22 +1,22 @@
 #include "Encoder.h"
 
-Encoder::Encoder(SinkWriter* sinkWriter) : _sinkWriter(sinkWriter), _streamIndex(-1), _startTime(0), _pauseTime(0)
+Encoder::Encoder(FrameSource* source, SinkWriter* sinkWriter) : FrameSink(source)
 {
-}
-
-Encoder::~Encoder()
-{
+	_sinkWriter = sinkWriter;
+	_streamIndex = -1;
+	_startTime = 0;
+	_pauseTime = 0;
 }
 
 void Encoder::start()
 {
 	_startTime = MFGetSystemTime();
-	_eventDispatcher.start();
+	FrameSink::start();
 }
 
 void Encoder::stop()
 {
-	_eventDispatcher.stop();
+	FrameSink::stop();
 }
 
 void Encoder::pause()
@@ -79,18 +79,7 @@ HRESULT Encoder::addStream(IMFMediaType* inputType, IMFMediaType* outputType)
 	return result;
 }
 
-void Encoder::addEvent(const Event* event)
-{
-	Callback callback = BIND(Encoder, encode, this);
-	_eventDispatcher.addEntry(event, callback);
-}
-
-HRESULT Encoder::getSample(IMFSample**)
-{
-	return E_NOTIMPL;
-}
-
-void Encoder::encode()
+void Encoder::onFrame()
 {
 	if (isPaused())
 	{
@@ -126,6 +115,20 @@ void Encoder::encode()
 	}
 }
 
+void Encoder::onError()
+{
+	Status result;
+	if (result)
+	{
+		LONGLONG timestamp = MFGetSystemTime() - _startTime;
+		result = sendStreamTick(timestamp);
+	}
+	if (!result)
+	{
+		LogUtil::logComWarning(__FUNCTION__, result);
+	}
+}
+
 bool Encoder::isPaused()
 {
 	return _pauseTime != 0;
@@ -138,9 +141,35 @@ HRESULT Encoder::writeSample(IMFSample* sample)
 	{
 		result = E_POINTER;
 	}
+	if (result && _streamIndex == -1)
+	{
+		result = E_ILLEGAL_METHOD_CALL;
+	}
 	if (result)
 	{
 		result = _sinkWriter->writeSample(_streamIndex, sample);
+	}
+	if (!result)
+	{
+		LogUtil::logComWarning(__FUNCTION__, result);
+	}
+	return result;
+}
+
+HRESULT Encoder::sendStreamTick(LONGLONG timestamp)
+{
+	Status result;
+	if (result && _sinkWriter == NULL)
+	{
+		result = E_POINTER;
+	}
+	if (result && _streamIndex == -1)
+	{
+		result = E_ILLEGAL_METHOD_CALL;
+	}
+	if (result)
+	{
+		result = _sinkWriter->sendStreamTick(_streamIndex, timestamp);
 	}
 	if (!result)
 	{

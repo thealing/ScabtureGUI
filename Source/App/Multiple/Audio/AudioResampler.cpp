@@ -1,10 +1,10 @@
 #include "AudioResampler.h"
 
-AudioResampler::AudioResampler(const AudioResamplerSettings& settings, AudioCapture* source) : _source(source)
+AudioResampler::AudioResampler(const AudioResamplerSettings& settings, AudioCapture* source) : FrameDelegate(source)
 {
-	_inputSampleRate = 1;
-	_outputSampleRate = settings.format.sampleRate;
-	ComPointer<IWMResamplerProps> props;
+	_inputSampleRate = 0;
+	_outputSampleRate = 0;
+	_source = source;
 	if (_source == NULL)
 	{
 		_status = E_INVALIDARG;
@@ -12,10 +12,6 @@ AudioResampler::AudioResampler(const AudioResamplerSettings& settings, AudioCapt
 	if (_status)
 	{
 		_status = source->getFormat(&_inputType);
-	}
-	if (_status)
-	{
-		_status = _inputType->GetUINT32(MF_MT_AUDIO_SAMPLES_PER_SECOND, &_inputSampleRate);
 	}
 	if (_status)
 	{
@@ -40,15 +36,20 @@ AudioResampler::AudioResampler(const AudioResamplerSettings& settings, AudioCapt
 	}
 	if (_status)
 	{
+		ComPointer<IWMResamplerProps> props;
 		_status = _resampler->QueryInterface(IID_PPV_ARGS(&props));
+		if (_status)
+		{
+			_status = props->SetHalfFilterLength(settings.quality);
+		}
 	}
 	if (_status)
 	{
-		_status = props->SetHalfFilterLength(settings.quality);
+		_status = _inputType->GetUINT32(MF_MT_AUDIO_SAMPLES_PER_SECOND, &_inputSampleRate);
 	}
 	if (_status)
 	{
-		_source->setCallback(BIND(AudioResampler, onFrame, this));
+		_status = _outputType->GetUINT32(MF_MT_AUDIO_SAMPLES_PER_SECOND, &_outputSampleRate);
 	}
 	if (!_status)
 	{
@@ -88,6 +89,7 @@ HRESULT AudioResampler::getSample(IMFSample** sample)
 	LONGLONG time = 0;
 	LONGLONG duration = 0;
 	DWORD inputSize = 0;
+	DWORD outputSize = 0;
 	if (result && _source == NULL)
 	{
 		result = E_POINTER;
@@ -110,11 +112,14 @@ HRESULT AudioResampler::getSample(IMFSample** sample)
 	}
 	if (result)
 	{
+		outputSize = BufferUtil::alignValue(inputSize * _outputSampleRate / max(_inputSampleRate, 1u) + 1, 4);
+	}
+	if (result)
+	{
 		result = _resampler->ProcessInput(0, inputSample, 0);
 	}
 	if (result)
 	{
-		DWORD outputSize = BufferUtil::alignValue(inputSize * _outputSampleRate / _inputSampleRate + 1, 4);
 		result = MFCreateMemoryBuffer(outputSize, &outputBuffer);
 	}
 	if (result)
@@ -145,9 +150,4 @@ HRESULT AudioResampler::getSample(IMFSample** sample)
 		LogUtil::logComWarning(__FUNCTION__, result);
 	}
 	return result;
-}
-
-void AudioResampler::onFrame()
-{
-	invokeCallback();
 }
