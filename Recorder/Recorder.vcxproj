@@ -108,6 +108,7 @@
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DisableSpecificWarnings>4250</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,6 +129,7 @@
       <ExceptionHandling>false</ExceptionHandling>
       <StringPooling>true</StringPooling>
       <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4250</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,6 +154,7 @@
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DisableSpecificWarnings>4250</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -172,6 +175,7 @@
       <ExceptionHandling>false</ExceptionHandling>
       <StringPooling>true</StringPooling>
       <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4250</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -183,6 +187,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="App\Multiple\SilencePlayer.h" />
     <None Include="App\Controllers\AudioCaptureController.h" />
     <None Include="App\Controllers\AudioDeviceObserver.h" />
     <None Include="App\Controllers\AudioPresenter.h" />
@@ -276,7 +281,6 @@
     <None Include="App\Multiple\WaveFormat.h" />
     <None Include="App\Multiple\WeakPointer.h" />
     <None Include="App\Multiple\WindowEventDispatcher.h" />
-    <None Include="App\Services\WindowListener.h" />
     <None Include="App\Services\AudioCaptureManager.h" />
     <None Include="App\Services\AudioDeviceProvider.h" />
     <None Include="App\Services\AudioEncoderFactory.h" />
@@ -374,10 +378,14 @@
     <None Include="Library\System\LatchEvent.h" />
     <None Include="App\Multiple\Status.h" />
     <None Include="App\Multiple\Captures\Overlay.h" />
+    <None Include="App\Multiple\FrameSink.h" />
+    <None Include="App\Multiple\FrameEmitter.h" />
+    <None Include="App\Multiple\FrameDelegate.h" />
     <ClInclude Include="Recorder.h" />
     <ClInclude Include="Resources\Resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App\Multiple\SilencePlayer.cpp" />
     <None Include="App\Controllers\AudioCaptureController.cpp" />
     <None Include="App\Controllers\AudioDeviceObserver.cpp" />
     <None Include="App\Controllers\AudioPresenter.cpp" />
@@ -441,7 +449,6 @@
     <None Include="App\Multiple\WaveFormat.cpp" />
     <None Include="App\Multiple\WeakPointer.cpp" />
     <None Include="App\Multiple\WindowEventDispatcher.cpp" />
-    <None Include="App\Services\WindowListener.cpp" />
     <None Include="App\Services\AudioCaptureManager.cpp" />
     <None Include="App\Services\AudioDeviceProvider.cpp" />
     <None Include="App\Services\AudioEncoderFactory.cpp" />
@@ -537,6 +544,9 @@
     <None Include="Library\System\LatchEvent.cpp" />
     <None Include="App\Multiple\Status.cpp" />
     <None Include="App\Multiple\Captures\Overlay.cpp" />
+    <None Include="App\Multiple\FrameSink.cpp" />
+    <None Include="App\Multiple\FrameEmitter.cpp" />
+    <None Include="App\Multiple\FrameDelegate.cpp" />
     <ClCompile Include="Recorder.cpp" />
   </ItemGroup>
   <ItemGroup>

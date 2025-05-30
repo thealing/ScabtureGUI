@@ -1,12 +1,10 @@
 #pragma once
 
-class Encoder : NonCopyable
+class Encoder : public FrameSink
 {
 public:
 
-	Encoder(SinkWriter* sinkWriter);
-
-	virtual ~Encoder();
+	Encoder(FrameSource* source, SinkWriter* sinkWriter);
 
 	void start();
 
@@ -24,21 +22,22 @@ protected:
 
 	HRESULT addStream(IMFMediaType* inputType, IMFMediaType* outputType);
 
-	void addEvent(const Event* event);
-
-	virtual HRESULT getSample(IMFSample** sample);
+	virtual HRESULT getSample(IMFSample** sample) = 0;
 
 private:
 
-	void encode();
+	virtual void onFrame() override;
+
+	virtual void onError() override;
 
 	bool isPaused();
 
 	HRESULT writeSample(IMFSample* sample);
 
+	HRESULT sendStreamTick(LONGLONG timestamp);
+
 private:
 
-	EventDispatcher _eventDispatcher;
 	EventPool _eventPool;
 	WeakPointer<SinkWriter> _sinkWriter;
 	DWORD _streamIndex;

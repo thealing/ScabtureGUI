@@ -1,6 +1,6 @@
 #pragma once
 
-class AudioResampler : public AudioCapture
+class AudioResampler : public FrameDelegate, public virtual AudioCapture
 {
 public:
 
@@ -14,15 +14,11 @@ public:
 
 private:
 
-	void onFrame();
-
-private:
-
 	Status _status;
 	ComPointer<IMFMediaType> _inputType;
 	ComPointer<IMFMediaType> _outputType;
 	ComPointer<IMFTransform> _resampler;
+	UniquePointer<AudioCapture> _source;
 	UINT32 _inputSampleRate;
 	UINT32 _outputSampleRate;
-	UniquePointer<AudioCapture> _source; // Must be the last field to be destructed first!
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-class MediaSource : NonCopyable
+class MediaSource : public virtual FrameSource
 {
 public:
 

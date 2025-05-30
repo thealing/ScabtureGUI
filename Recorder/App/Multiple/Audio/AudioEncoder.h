@@ -8,8 +8,6 @@ public:
 
 private:
 
-	void onFrame();
-
 	virtual HRESULT getSample(IMFSample** sample) override;
 
 private:
@@ -17,6 +15,5 @@ private:
 	Status _status;
 	AudioEncoderSettings _settings;
 	WeakPointer<AudioCapture> _source;
-	Event _frameEvent;
 };
 

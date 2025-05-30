@@ -1,6 +1,6 @@
 #pragma once
 
-class AudioDevice : public AudioCapture
+class AudioDevice : public FrameEmitter, public virtual AudioCapture
 {
 public:
 
@@ -24,5 +24,6 @@ private:
 	ComPointer<IAudioCaptureClient> _captureClient;
 	WaveFormat _waveFormat;
 	UniquePointer<Timer> _timer;
+	UniquePointer<SilencePlayer> _player;
 };
 

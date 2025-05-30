@@ -1,19 +1,9 @@
 #pragma once
 
-class AudioCapture : public MediaSource
+class AudioCapture : public virtual MediaSource
 {
 public:
 
 	virtual ~AudioCapture();
-
-	void setCallback(const Callback& callback);
-
-protected:
-
-	void invokeCallback();
-
-private:
-
-	Callback _callback;
 };
 

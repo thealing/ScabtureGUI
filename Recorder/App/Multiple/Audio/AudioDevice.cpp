@@ -37,21 +37,25 @@ AudioDevice::AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole 
 	}
 	if (_status)
 	{
+		_status = _audioClient->GetService(IID_PPV_ARGS(&_captureClient));
+	}
+	if (_status)
+	{
+		_status = _audioClient->Start();
+	}
+	if (_status)
+	{
 		REFERENCE_TIME defaultPeriod = 0;
 		_status = _audioClient->GetDevicePeriod(&defaultPeriod, NULL);
 		if (_status)
 		{
 			REFERENCE_TIME halfPeriod = defaultPeriod / 2;
 			_timer = new Timer(0, halfPeriod / 10000000.0, BIND(AudioDevice, onFrame, this));
+			if (flow == eRender)
+			{
+				_player = new SilencePlayer(enumerator, flow, role);
+			}
 		}
-	}
-	if (_status)
-	{
-		_status = _audioClient->GetService(IID_PPV_ARGS(&_captureClient));
-	}
-	if (_status)
-	{
-		_status = _audioClient->Start();
 	}
 	if (!_status)
 	{
@@ -152,7 +156,7 @@ HRESULT AudioDevice::getSample(IMFSample** sample)
 	}
 	if (result)
 	{
-		LONGLONG duration = 10000000ll * frameCount / _waveFormat->nSamplesPerSec; 
+		LONGLONG duration = 10000000ll * frameCount / max(_waveFormat->nSamplesPerSec, 1ul); 
 		result = (*sample)->SetSampleDuration(duration);
 	}
 	if (result)
@@ -171,5 +175,29 @@ HRESULT AudioDevice::getSample(IMFSample** sample)
 
 void AudioDevice::onFrame()
 {
-	invokeCallback();
+	Status result;
+	UINT32 packetSize = 0;
+	if (result && _captureClient == NULL)
+	{
+		result = E_POINTER;
+	}
+	if (result && _waveFormat == NULL)
+	{
+		result = E_POINTER;
+	}
+	if (result)
+	{
+		result = _captureClient->GetNextPacketSize(&packetSize);
+	}
+	if (result)
+	{
+		if (packetSize > 0)
+		{
+			signalFrame();
+		}
+	}
+	else
+	{
+		signalError();
+	}
 }

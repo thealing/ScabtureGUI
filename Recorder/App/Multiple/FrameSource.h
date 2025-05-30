@@ -4,18 +4,14 @@ class FrameSource : NonCopyable
 {
 public:
 
-	FrameSource();
+	virtual ~FrameSource();
 
-	const Event* getFrameEvent();
+	virtual const Event* getFrameEvent() = 0;
 
-	void releaseFrameEvent(const Event* event);
+	virtual const Event* getErrorEvent() = 0;
 
-protected:
+	virtual void releaseFrameEvent(const Event* event) = 0;
 
-	void signalFrame();
-
-private:
-
-	EventPool _frameEventPool;
+	virtual void releaseErrorEvent(const Event* event) = 0;
 };
 

@@ -518,12 +518,6 @@
     <None Include="App\Multiple\WindowEventDispatcher.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Services\WindowListener.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="App\Services\WindowListener.h">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="App\Services\AudioCaptureManager.cpp">
       <Filter>Source Files</Filter>
     </None>
@@ -1104,6 +1098,30 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="App\Multiple\Captures\Overlay.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Multiple\SilencePlayer.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\SilencePlayer.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Multiple\FrameSink.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Multiple\FrameSink.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\FrameEmitter.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\FrameEmitter.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Multiple\FrameDelegate.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\FrameDelegate.h">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

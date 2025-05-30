@@ -1,6 +1,6 @@
 #include "AudioEncoder.h"
 
-AudioEncoder::AudioEncoder(const AudioEncoderSettings& settings, AudioCapture* source, SinkWriter* sinkWriter) : Encoder(sinkWriter)
+AudioEncoder::AudioEncoder(const AudioEncoderSettings& settings, AudioCapture* source, SinkWriter* sinkWriter) : Encoder(source, sinkWriter)
 {
 	_settings = settings;
 	_source = source;
@@ -56,20 +56,10 @@ AudioEncoder::AudioEncoder(const AudioEncoderSettings& settings, AudioCapture* s
 	{
 		_status = addStream(inputType, outputType);
 	}
-	if (_status)
-	{
-		addEvent(&_frameEvent);
-		_source->setCallback(BIND(AudioEncoder, onFrame, this));
-	}
 	if (!_status)
 	{
 		LogUtil::logComError("AudioEncoder", _status);
 	}
-}
-
-void AudioEncoder::onFrame()
-{
-	_frameEvent.set();
 }
 
 HRESULT AudioEncoder::getSample(IMFSample** sample)
