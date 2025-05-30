@@ -6,9 +6,9 @@ public:
 
 	EventPool();
 
-	void setEvents() const;
+	void setEvents();
 
-	void resetEvents() const;
+	void resetEvents();
 
 	const Event* getEvent() const;
 
@@ -17,4 +17,6 @@ public:
 private:
 
 	mutable UniqueStorage<Event> _events;
+
+	bool _set;
 };
