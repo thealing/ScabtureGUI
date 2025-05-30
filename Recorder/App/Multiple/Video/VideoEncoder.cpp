@@ -1,6 +1,6 @@
 #include "VideoEncoder.h"
 
-VideoEncoder::VideoEncoder(const VideoEncoderSettings& settings, VideoCapture* source, SinkWriter* sinkWriter) : Encoder(sinkWriter)
+VideoEncoder::VideoEncoder(const VideoEncoderSettings& settings, VideoCapture* source, SinkWriter* sinkWriter) : Encoder(source, sinkWriter)
 {
 	_settings = settings;
 	_source = source;
@@ -77,22 +77,9 @@ VideoEncoder::VideoEncoder(const VideoEncoderSettings& settings, VideoCapture* s
 	{
 		_status = addStream(inputType, outputType);
 	}
-	if (_status)
-	{
-		_frameEvent = _source->getFrameEvent();
-		addEvent(_frameEvent);
-	}
 	if (!_status)
 	{
 		LogUtil::logComError("VideoEncoder", _status);
-	}
-}
-
-VideoEncoder::~VideoEncoder()
-{
-	if (_frameEvent != NULL)
-	{
-		_source->releaseFrameEvent(_frameEvent);
 	}
 }
 

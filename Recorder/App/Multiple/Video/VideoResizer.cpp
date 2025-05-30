@@ -6,6 +6,7 @@ VideoResizer::VideoResizer(VideoCapture* source, Resizer* resizer, Buffer* buffe
 	_resizer = resizer;
 	_buffer = buffer;
 	_eventDispatcher.addEntry(source->getFrameEvent(), BIND(VideoResizer, onFrame, this));
+	_eventDispatcher.addEntry(source->getErrorEvent(), BIND(VideoResizer, onError, this));
 	_eventDispatcher.start();
 }
 
@@ -28,4 +29,9 @@ void VideoResizer::onFrame()
 	_buffer->endWriting();
 	inputBuffer->endReading();
 	signalFrame();
+}
+
+void VideoResizer::onError()
+{
+	signalError();
 }

@@ -8,6 +8,8 @@ public:
 
 	void draw();
 
+	void setActive(bool active);
+
 	void setDisabled(bool disabled);
 
 	void setHighQuality(bool highQuality);
@@ -26,6 +28,8 @@ private:
 
 	void drawPreviewDisabled(Graphics& graphics);
 
+	void drawPreviewInactive(Graphics& graphics);
+
 	virtual void onResize() override;
 
 	virtual void doPaint(Graphics& graphics) override;
@@ -34,6 +38,7 @@ private:
 
 	ExclusiveLock _lock;
 	bool _dirty;
+	bool _active;
 	bool _disabled;
 	bool _highQuality;
 	bool _upscale;

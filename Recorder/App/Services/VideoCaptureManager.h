@@ -22,9 +22,13 @@ public:
 
 	const Event* getFrameEvent() const;
 
+	const Event* getErrorEvent() const;
+
 private:
 
 	void onFrame();
+
+	void onError();
 
 private:
 
@@ -34,5 +38,6 @@ private:
 	FpsCounter _fpsCounter;
 	EventPool _changeEventPool;
 	EventPool _frameEventPool;
+	EventPool _errorEventPool;
 };
 

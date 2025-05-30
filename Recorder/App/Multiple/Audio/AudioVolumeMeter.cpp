@@ -4,15 +4,11 @@ AudioVolumeMeter::AudioVolumeMeter(AudioCapture* source) : _source(source), _vol
 {
 	ComPointer<IMFMediaType> format;
 	GUID subtype;
-	UINT32 channels = 0;
+	UINT32 numChannels = 0;
 	UINT32 bitsPerSample = 0;
 	if (_source == NULL)
 	{
 		_status = E_INVALIDARG;
-	}
-	if (_status)
-	{
-		_source->setCallback(BIND(AudioVolumeMeter, update, this));
 	}
 	if (_status)
 	{
@@ -24,7 +20,7 @@ AudioVolumeMeter::AudioVolumeMeter(AudioCapture* source) : _source(source), _vol
 	}
 	if (_status)
 	{
-		_status = format->GetUINT32(MF_MT_AUDIO_NUM_CHANNELS, &channels);
+		_status = format->GetUINT32(MF_MT_AUDIO_NUM_CHANNELS, &numChannels);
 	}
 	if (_status)
 	{
@@ -35,16 +31,30 @@ AudioVolumeMeter::AudioVolumeMeter(AudioCapture* source) : _source(source), _vol
 		if (subtype == MFAudioFormat_PCM && bitsPerSample == 16)
 		{
 			_sampleSize = bitsPerSample / 8;
-			_channelCount = channels;
+			_channelCount = numChannels;
 		}
 		else
 		{
 			_status = MF_E_UNSUPPORTED_FORMAT;
 		}
 	}
+	if (_status)
+	{
+		_eventDispatcher.addEntry(_source->getFrameEvent(), BIND(AudioVolumeMeter, onFrame, this));
+		_eventDispatcher.addEntry(_source->getErrorEvent(), BIND(AudioVolumeMeter, onError, this));
+		_eventDispatcher.start();
+	}
 	if (!_status)
 	{
 		LogUtil::logComWarning("AudioVolumeMeter", _status);
+	}
+}
+
+AudioVolumeMeter::~AudioVolumeMeter()
+{
+	if (_status)
+	{
+		_eventDispatcher.stop();
 	}
 }
 
@@ -54,7 +64,12 @@ bool AudioVolumeMeter::getVolumes(Volumes* volumes) const
 	return _status;
 }
 
-void AudioVolumeMeter::update()
+bool AudioVolumeMeter::isInvalidated() const
+{
+	return _invalidated;
+}
+
+void AudioVolumeMeter::onFrame()
 {
 	Status result;
 	ComPointer<IMFSample> sample;
@@ -117,13 +132,13 @@ void AudioVolumeMeter::update()
 		}
 		result = buffer->Unlock();
 	}
-	else
-	{
-		_volumes.left = 0;
-		_volumes.right = 0;
-	}
 	if (!result)
 	{
 		LogUtil::logComWarning(__FUNCTION__, result);
 	}
+}
+
+void AudioVolumeMeter::onError()
+{
+	_invalidated = true;
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-class VideoResizer : public VideoCapture
+class VideoResizer : public FrameEmitter, public virtual VideoCapture
 {
 public:
 
@@ -13,6 +13,8 @@ public:
 private:
 
 	void onFrame();
+
+	void onError();
 
 private:
 

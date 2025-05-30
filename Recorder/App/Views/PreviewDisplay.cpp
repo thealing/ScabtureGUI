@@ -1,6 +1,6 @@
 #include "PreviewDisplay.h"
 
-PreviewDisplay::PreviewDisplay(Window* parent) : _dirty(true), _disabled(false), _highQuality(false), _upscale(false), _width(0), _height(0), _stride(0)
+PreviewDisplay::PreviewDisplay(Window* parent) : _dirty(true), _active(true), _disabled(false), _highQuality(false), _upscale(false), _width(0), _height(0), _stride(0)
 {
 	create(L"STATIC", NULL, 0, 0, parent);
 }
@@ -17,6 +17,17 @@ void PreviewDisplay::draw()
 	}
 	else
 	{
+		invalidate();
+	}
+}
+
+void PreviewDisplay::setActive(bool active)
+{
+	ExclusiveLockHolder holder(&_lock);
+	if (_active != active)
+	{
+		_active = active;
+		_dirty = true;
 		invalidate();
 	}
 }
@@ -138,6 +149,11 @@ void PreviewDisplay::drawPreviewDisabled(Graphics& graphics)
 	graphics.drawString(L"Preview Disabled", AlignmentMiddleCenter, 0, getSize());
 }
 
+void PreviewDisplay::drawPreviewInactive(Graphics& graphics)
+{
+	graphics.clear(0);
+}
+
 void PreviewDisplay::onResize()
 {
 	ExclusiveLockHolder holder(&_lock);
@@ -147,7 +163,11 @@ void PreviewDisplay::onResize()
 void PreviewDisplay::doPaint(Graphics& graphics)
 {
 	ExclusiveLockHolder holder(&_lock);
-	if (_disabled)
+	if (!_active)
+	{
+		drawPreviewInactive(graphics);
+	}
+	else if (_disabled)
 	{
 		drawPreviewDisabled(graphics);
 	}

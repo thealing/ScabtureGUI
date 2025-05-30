@@ -37,6 +37,10 @@ void WindowCapture::onTimer()
 	{
 		signalFrame();
 	}
+	else
+	{
+		signalError();
+	}
 }
 
 Capture* WindowCapture::createCapture(const CaptureSource& source, CaptureMethod method)
