@@ -10,7 +10,9 @@ public:
 
 private:
 
-	void updatePreview();
+	void onFrame();
+
+	void onError();
 
 private:
 

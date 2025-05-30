@@ -7,7 +7,8 @@ PreviewPresenter::PreviewPresenter(PreviewDisplay* previewDisplay, VideoCaptureM
 	_mainSettingsManager = mainSettingsManager;
 	_videoSettingsManager = videoSettingsManager;
 	_recordingManager = recordingManager;
-	_eventDispatcher.addEntry(videoCaptureManager->getFrameEvent(), BIND(PreviewPresenter, updatePreview, this));
+	_eventDispatcher.addEntry(videoCaptureManager->getFrameEvent(), BIND(PreviewPresenter, onFrame, this));
+	_eventDispatcher.addEntry(videoCaptureManager->getErrorEvent(), BIND(PreviewPresenter, onError, this));
 	_eventDispatcher.start();
 }
 
@@ -16,7 +17,7 @@ PreviewPresenter::~PreviewPresenter()
 	_eventDispatcher.stop();
 }
 
-void PreviewPresenter::updatePreview()
+void PreviewPresenter::onFrame()
 {
 	MainSettings mainSettings = _mainSettingsManager->getSettings();
 	VideoSettings videoSettings = _videoSettingsManager->getSettings();
@@ -32,8 +33,18 @@ void PreviewPresenter::updatePreview()
 		{
 			_previewDisplay->setBuffer(*buffer);
 		}
+		_previewDisplay->setActive(true);
+	}
+	else
+	{
+		_previewDisplay->setActive(false);
 	}
 	_videoCaptureManager->unlockCapture();
 	_previewDisplay->draw();
 	DwmFlush();
+}
+
+void PreviewPresenter::onError()
+{
+	_previewDisplay->setActive(false);
 }
