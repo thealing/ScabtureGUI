@@ -30,7 +30,7 @@ void CpuMonitor::update()
 	uint64_t currentTotalTime;
 	uint64_t currentUsedTime;
 	getTimes(&currentTotalTime, &currentUsedTime);
-	_usage = (int)(100 * (currentUsedTime - _previousUsedTime) / max(1ULL, currentTotalTime - _previousTotalTime));
+	_usage = (int)(100 * (currentUsedTime - _previousUsedTime) / max(currentTotalTime - _previousTotalTime, 1ull));
 	_previousTotalTime = currentTotalTime;
 	_previousUsedTime = currentUsedTime;
 	_updateEvent.set();
