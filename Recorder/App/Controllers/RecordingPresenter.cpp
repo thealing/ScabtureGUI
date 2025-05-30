@@ -1,18 +1,30 @@
 #include "RecordingPresenter.h"
 
-RecordingPresenter::RecordingPresenter(RecordingDisplay* recordingDisplay, RecordingManager* recordingManager, VideoCaptureManager* videoCaptureManager) : _eventDispatcher(recordingDisplay)
+RecordingPresenter::RecordingPresenter(RecordingDisplay* recordingDisplay, RecordingManager* recordingManager, VideoCaptureManager* videoCaptureManager)
 {
 	_recordingDisplay = recordingDisplay;
 	_recordingManager = recordingManager;
 	_videoCaptureManager = videoCaptureManager;
-	_eventDispatcher.addEntry(_recordingManager->getEncodeEvent(), BIND(RecordingPresenter, update, this));
-	_eventDispatcher.addEntry(_videoCaptureManager->getChangeEvent(), BIND(RecordingPresenter, reset, this));
+	_eventDispatcher.addEntry(recordingManager->getEncodeEvent(), BIND(RecordingPresenter, onEncodeEvent, this));
+	_eventDispatcher.addEntry(videoCaptureManager->getChangeEvent(), BIND(RecordingPresenter, onCaptureChange, this));
 	_eventDispatcher.start();
 }
 
 RecordingPresenter::~RecordingPresenter()
 {
 	_eventDispatcher.stop();
+}
+
+void RecordingPresenter::onEncodeEvent()
+{
+	_recordingDisplay->postTask(BIND(RecordingPresenter, update, this));
+	DwmFlush();
+}
+
+void RecordingPresenter::onCaptureChange()
+{
+	_recordingDisplay->postTask(BIND(RecordingPresenter, reset, this));
+	DwmFlush();
 }
 
 void RecordingPresenter::update()
