@@ -382,6 +382,10 @@ LRESULT Window::windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lPar
 		{
 			return 0;
 		}
+		case WM_LBUTTONDBLCLK:
+		{
+			return SendMessage(window, WM_LBUTTONDOWN, wParam, lParam);
+		}
 		case WM_CTLCOLORSTATIC:
 		{
 			return (LRESULT)GetStockObject(WHITE_BRUSH);
