@@ -21,6 +21,7 @@ void RecordingManager::start(SinkWriter* sinkWriter, Encoder* videoEncoder, Enco
 	_audioEncoder = audioEncoder;
 	_eventDispatcher = new EventDispatcher();
 	_eventDispatcher->addEntry(_videoEncoder->getEncodeEvent(), BIND(RecordingManager, onEncodedFrame, this));
+	_eventDispatcher->addEntry(_audioEncoder->getEncodeEvent(), BIND(RecordingManager, onEncodedFrame, this));
 	_eventDispatcher->start();
 	_sinkWriter->start();
 	_videoEncoder->start();
