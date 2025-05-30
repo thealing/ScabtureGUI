@@ -16,8 +16,8 @@ public:
 private:
 
 	mutable ExclusiveLock _lock;
+	mutable EventPool _updateEventPool;
 
 	Settings _settings;
 	LatchEvent _initEvent;
-	EventPool _updateEventPool;
 };
