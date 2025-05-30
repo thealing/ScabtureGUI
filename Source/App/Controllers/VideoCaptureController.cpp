@@ -7,6 +7,7 @@ VideoCaptureController::VideoCaptureController(VideoCaptureManager* videoCapture
 	_windowSourceManager = windowSourceManager;
 	_videoSettingsManager = videoSettingsManager;
 	_keyboardListener = keyboardListener;
+	_eventDispatcher.addEntry(videoCaptureManager->getErrorEvent(), BIND(VideoCaptureController, onCaptureFailed, this));
 	_eventDispatcher.addEntry(videoResizerFactory->getChangeEvent(), BIND(VideoCaptureController, onResizerChanged, this));
 	_eventDispatcher.addEntry(windowSourceManager->getChangeEvent(), BIND(VideoCaptureController, onSourceChanged, this));
 	_eventDispatcher.addEntry(keyboardListener->getRefreshEvent(), BIND(VideoCaptureController, onRefreshHotkeyPressed, this));
@@ -18,6 +19,12 @@ VideoCaptureController::~VideoCaptureController()
 {
 	_eventDispatcher.stop();
 	LogUtil::logDebug(L"VideoCaptureController: Stopped.");
+}
+
+void VideoCaptureController::onCaptureFailed()
+{
+	LogUtil::logInfo(L"VideoCaptureController: Capture failed.");
+	_videoCaptureManager->reset();
 }
 
 void VideoCaptureController::onSourceChanged()

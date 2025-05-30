@@ -10,6 +10,8 @@ public:
 
 private:
 
+	void onCaptureFailed();
+
 	void onSourceChanged();
 
 	void onResizerChanged();

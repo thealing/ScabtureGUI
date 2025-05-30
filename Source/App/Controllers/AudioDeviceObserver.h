@@ -14,6 +14,10 @@ private:
 
 	void onOutputDeviceChanged();
 
+	void onInputMeterError();
+
+	void onOutputMeterError();
+
 	void onResamplerChanged();
 
 	void updateInputDevice();

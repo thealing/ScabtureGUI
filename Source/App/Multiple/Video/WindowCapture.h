@@ -1,6 +1,6 @@
 #pragma once
 
-class WindowCapture : public VideoCapture
+class WindowCapture : public FrameEmitter, public virtual VideoCapture
 {
 public:
 

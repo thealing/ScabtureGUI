@@ -48,7 +48,28 @@ const Event* AudioVolumeListener::getUpdateEvent() const
 	return _updateEventPool.getEvent();
 }
 
+const Event* AudioVolumeListener::getInputMeterErrorEvent() const
+{
+	return _inputMeterErrorEventPool.getEvent();
+}
+
+const Event* AudioVolumeListener::getOutputMeterErrorEvent() const
+{
+	return _outputMeterErrorEventPool.getEvent();
+}
+
 void AudioVolumeListener::update()
 {
-	_updateEventPool.setEvents();
+	if (_inputMeter != NULL || _outputMeter != NULL)
+	{
+		_updateEventPool.setEvents();
+	}
+	if (_inputMeter != NULL && _inputMeter->isInvalidated())
+	{
+		_inputMeterErrorEventPool.setEvents();
+	}
+	if (_outputMeter != NULL && _outputMeter->isInvalidated())
+	{
+		_outputMeterErrorEventPool.setEvents();
+	}
 }
