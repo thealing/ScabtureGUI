@@ -1064,10 +1064,10 @@
     <None Include="Library\Windows\Window.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="Library\Windows\WindowClass.cpp">
+    <None Include="Library\Windows\CustomWindow.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Library\Windows\WindowClass.h">
+    <None Include="Library\Windows\CustomWindow.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Multiple\AsyncSettingsManager.h">

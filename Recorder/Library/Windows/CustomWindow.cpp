@@ -1,9 +1,9 @@
-#include "WindowClass.h"
+#include "CustomWindow.h"
 
-WindowClass::WindowClass(const wchar_t* name)
+CustomWindow::CustomWindow(const wchar_t* className)
 {
 	WNDCLASS windowClass = {};
-	windowClass.lpszClassName = name;
+	windowClass.lpszClassName = className;
 	windowClass.lpfnWndProc = DefWindowProc;
 	windowClass.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
 	windowClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
@@ -11,7 +11,7 @@ WindowClass::WindowClass(const wchar_t* name)
 	_atom = RegisterClass(&windowClass);
 }
 
-WindowClass::~WindowClass()
+CustomWindow::~CustomWindow()
 {
 	HMODULE module = GetModuleHandle(NULL);
 	UnregisterClass(MAKEINTATOM(_atom), module);

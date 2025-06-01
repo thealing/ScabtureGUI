@@ -1,6 +1,6 @@
 #include "DialogWindow.h"
 
-DialogWindow::DialogWindow(Window* parent, const wchar_t* title, int width, int height, int margin, int spacing) : _windowClass(title)
+DialogWindow::DialogWindow(Window* parent, const wchar_t* title, int width, int height, int margin, int spacing) : CustomWindow(title)
 {
 	create(title, title, WS_POPUP | WS_CAPTION | WS_SYSMENU, parent);
 	setSize(Vector(width, 0));

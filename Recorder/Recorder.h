@@ -65,7 +65,7 @@
 #include "Library\Windows\Editbox.h"
 #include "Library\Windows\Label.h"
 #include "Library\Windows\Picture.h"
-#include "Library\Windows\WindowClass.h"
+#include "Library\Windows\CustomWindow.h"
 #include "App\Models\AudioBitrate.h"
 #include "App\Models\AudioChannelLayout.h"
 #include "App\Models\AudioFormat.h"
