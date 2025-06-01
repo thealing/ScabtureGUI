@@ -54,8 +54,6 @@ public:
 
 	void postTask(const Callback& callback);
 
-	void setData(intptr_t data);
-
 	int showMessageBox(const wchar_t* title, const wchar_t* content, UINT type) const;
 
 	void getTitle(wchar_t* buffer, int size) const;
@@ -69,8 +67,6 @@ public:
 	Vector getPosition() const;
 
 	Vector getSize() const;
-
-	intptr_t getData() const;
 
 	virtual ~Window();
 

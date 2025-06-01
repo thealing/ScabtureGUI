@@ -1,7 +1,5 @@
 #include "Window.h"
 
-#define INSTANCE_PROPERTY_NAME L"Instance"
-
 Window::Window() : _handle(NULL), _context(NULL), _renderContext(NULL), _renderBitmap(NULL), _foregroundColor(0), _backgroundColor(255)
 {
 }
@@ -155,11 +153,6 @@ void Window::postTask(const Callback& callback)
 	postMessage(WM_USER, (WPARAM)callback.getFunction(), (LPARAM)callback.getArgument());
 }
 
-void Window::setData(intptr_t data)
-{
-	SetWindowLongPtr(_handle, GWLP_USERDATA, data);
-}
-
 int Window::showMessageBox(const wchar_t* title, const wchar_t* content, UINT type) const
 {
 	return MessageBox(_handle, content, title, type);
@@ -205,16 +198,10 @@ Vector Window::getSize() const
 	return Vector(rect.right - rect.left, rect.bottom - rect.top);
 }
 
-intptr_t Window::getData() const
-{
-	return GetWindowLongPtr(_handle, GWLP_USERDATA);
-}
-
 Window::~Window()
 {
 	removeCallback(windowProc);
 	destroyRenderObjects();
-	RemoveProp(_handle, INSTANCE_PROPERTY_NAME);
 	ReleaseDC(_handle, _context);
 	DestroyWindow(_handle);
 }
@@ -250,7 +237,7 @@ void Window::create(const wchar_t* className, const wchar_t* windowName, long st
 	style |= WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE;
 	_handle = CreateWindowEx(exStyle, className, windowName, style, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, parentHandle, NULL, NULL, NULL);
 	_context = GetDC(_handle);
-	SetProp(_handle, INSTANCE_PROPERTY_NAME, this);
+	SetWindowLongPtr(_handle, GWLP_USERDATA, (LONG_PTR)this);
 	createRenderObjects();
 	addCallback(windowProc);
 	activate();
@@ -318,7 +305,7 @@ void Window::destroyRenderObjects()
 
 Window* Window::fromHandle(HWND handle)
 {
-	void* data = GetProp(handle, INSTANCE_PROPERTY_NAME);
+	LONG_PTR data = GetWindowLongPtr(handle, GWLP_USERDATA);
 	return (Window*)data;
 }
 
