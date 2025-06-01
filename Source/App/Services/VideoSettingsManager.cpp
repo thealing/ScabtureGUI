@@ -48,10 +48,10 @@ void VideoSettingsManager::validate(VideoSettings& settings) const
 		LogUtil::logWarning(L"VideoSettingsManager: Found invalid framerate %i.", settings.frameRate);
 		settings.frameRate = clamp(settings.frameRate, 1, 150);
 	}
-	if (settings.bitRate < 32 || settings.bitRate > 250000)
+	if (settings.bitRate < 100 || settings.bitRate > 250000)
 	{
 		LogUtil::logWarning(L"VideoSettingsManager: Found invalid bitrate %i.", settings.bitRate);
-		settings.bitRate = clamp(settings.bitRate, 32, 250000);
+		settings.bitRate = clamp(settings.bitRate, 100, 250000);
 	}
 	if (settings.width < 1 || settings.width > 5000 || settings.width % 2 != 0)
 	{
