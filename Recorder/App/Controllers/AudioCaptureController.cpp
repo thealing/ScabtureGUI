@@ -10,6 +10,7 @@ AudioCaptureController::AudioCaptureController(AudioCaptureManager* audioCapture
 	_eventDispatcher.addEntry(audioDeviceProvider->getInputChangeEvent(), BIND(AudioCaptureController, onInputDeviceChanged, this));
 	_eventDispatcher.addEntry(audioDeviceProvider->getOutputChangeEvent(), BIND(AudioCaptureController, onOutputDeviceChanged, this));
 	_eventDispatcher.addEntry(audioSourceManager->getSelectionEvent(), BIND(AudioCaptureController, onSourceChanged, this));
+	_eventDispatcher.addEntry(audioCaptureManager->getErrorEvent(), BIND(AudioCaptureController, onCaptureError, this));
 	_eventDispatcher.start();
 	LogUtil::logDebug(L"AudioCaptureController: Started on thread %i.", _eventDispatcher.getThreadId());
 }
@@ -44,10 +45,19 @@ void AudioCaptureController::onSourceChanged()
 	updateCapture();
 }
 
+void AudioCaptureController::onCaptureError()
+{
+	LogUtil::logInfo(L"AudioCaptureController: Audio capture failed.");
+	updateCapture();
+}
+
 void AudioCaptureController::updateCapture()
 {
 	LogUtil::logInfo(L"AudioCaptureController: Updating capture.");
 	AudioSource source = _audioSourceManager->getSource();
+#ifdef FUZZ_TESTING
+	source = (AudioSource)(rand()%2+1);
+#endif
 	switch (source)
 	{
 		case AudioSourceNone:

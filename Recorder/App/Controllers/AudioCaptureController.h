@@ -18,6 +18,8 @@ private:
 
 	void onSourceChanged();
 
+	void onCaptureError();
+
 	void updateCapture();
 
 private:
