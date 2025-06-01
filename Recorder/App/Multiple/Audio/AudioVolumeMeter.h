@@ -10,7 +10,7 @@ public:
 
 	bool getVolumes(Volumes* volumes) const;
 
-	bool isInvalidated() const;
+	bool isFailed() const;
 
 private:
 
@@ -26,6 +26,6 @@ private:
 	int _channelCount;
 	int _sampleSize;
 	Volumes _volumes;
-	bool _invalidated;
+	bool _failed;
 };
 
