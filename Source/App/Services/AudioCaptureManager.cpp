@@ -4,10 +4,29 @@ AudioCaptureManager::AudioCaptureManager()
 {
 }
 
+AudioCaptureManager::~AudioCaptureManager()
+{
+	if (_dispatcher != NULL)
+	{
+		_dispatcher->stop();
+	}
+}
+
 void AudioCaptureManager::setCapture(AudioCapture* capture)
 {
 	_lock.beginWriting();
+	if (_dispatcher != NULL)
+	{
+		_dispatcher->stop();
+		_dispatcher = NULL;
+	}
 	_capture = capture;
+	if (_capture != NULL)
+	{
+		_dispatcher = new EventDispatcher();
+		_dispatcher->addEntry(_capture->getErrorEvent(), BIND(AudioCaptureManager, onError, this));
+		_dispatcher->start();
+	}
 	_lock.endWriting();
 }
 
@@ -20,4 +39,14 @@ AudioCapture* AudioCaptureManager::lockCapture()
 void AudioCaptureManager::unlockCapture()
 {
 	_lock.endReading();
+}
+
+const Event* AudioCaptureManager::getErrorEvent() const
+{
+    return _errorEventPool.getEvent();
+}
+
+void AudioCaptureManager::onError()
+{
+	_errorEventPool.setEvents();
 }
