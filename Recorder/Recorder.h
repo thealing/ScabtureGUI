@@ -26,6 +26,8 @@
 #include <functiondiscoverykeys.h>
 #include <wmcodecdsp.h>
 #include <wincodec.h>
+#include <shlobj.h>
+#include <knownfolders.h>
 #include <intrin.h>
 
 // Project Headers

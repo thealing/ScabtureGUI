@@ -1,13 +1,23 @@
 #include "FileUtil.h"
 
-const wchar_t* FileUtil::generateRecordingFilePath()
+const wchar_t* FileUtil::generateRecordingSavePath()
 {
-	return generateFilePath(L".", L"Recording", L"mp4");
+	PWSTR videosFolder = NULL;
+	SHGetKnownFolderPath(FOLDERID_Videos, 0, NULL, &videosFolder);
+	UniquePointer<const wchar_t> path = StringUtil::formatString(L"%ls\\Scabture", videosFolder);
+	CoTaskMemFree(videosFolder);
+	SHCreateDirectory(NULL, path);
+	return generateFilePath(path, L"Recording", L"mp4");
 }
 
-const wchar_t* FileUtil::generateSnapshotFilePath()
+const wchar_t* FileUtil::generateSnapshotSavePath()
 {
-	return generateFilePath(L".", L"Snapshot", L"png");
+	PWSTR picturesFolder = NULL;
+	SHGetKnownFolderPath(FOLDERID_Pictures, 0, NULL, &picturesFolder);
+	UniquePointer<const wchar_t> path = StringUtil::formatString(L"%ls\\Scabture", picturesFolder);
+	CoTaskMemFree(picturesFolder);
+	SHCreateDirectory(NULL, path);
+	return generateFilePath(path, L"Snapshot", L"png");
 }
 
 const wchar_t* FileUtil::generateFilePath(const wchar_t* directory, const wchar_t* label, const wchar_t* extension)
@@ -16,6 +26,6 @@ const wchar_t* FileUtil::generateFilePath(const wchar_t* directory, const wchar_
 	return StringUtil::formatString(L"%ls.%ls", label, extension);
 #else
 	Date date = getDate();
-	return StringUtil::formatString(L"%ls\\%ls %02hi %02hi %02hi %02hi %02hi %02hi.%ls", directory, label, date.year % 100, date.month, date.day, date.hour, date.minute, date.second, extension);
+	return StringUtil::formatString(L"%ls\\%ls %04i-%02i-%02i %02i-%02i-%02i.%ls", directory, label, date.year, date.month, date.day, date.hour, date.minute, date.second, extension);
 #endif
 }

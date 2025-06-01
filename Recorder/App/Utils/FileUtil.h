@@ -4,9 +4,9 @@ class FileUtil
 {
 public:
 
-	static const wchar_t* generateRecordingFilePath();
+	static const wchar_t* generateRecordingSavePath();
 
-	static const wchar_t* generateSnapshotFilePath();
+	static const wchar_t* generateSnapshotSavePath();
 
 private:
 
