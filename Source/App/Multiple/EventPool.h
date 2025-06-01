@@ -16,6 +16,7 @@ public:
 
 private:
 
+	mutable ExclusiveLock _lock;
 	mutable UniqueStorage<Event> _events;
 
 	bool _set;
