@@ -2,6 +2,10 @@
 
 BaseEventDispatcher::BaseEventDispatcher()
 {
+#ifdef FUZZ_TESTING
+	delete _stopEvent._DEBUG_TIMER;
+	_stopEvent._DEBUG_TIMER=NULL;
+#endif
 	_events = new const Event*[Capacity + 1];
 	_count = 0;
 	_events[0] = &_stopEvent;
