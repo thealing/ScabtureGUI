@@ -18,6 +18,7 @@ void ComboBox::setOptions(const wchar_t** options, int count)
 	sendMessage(CB_RESETCONTENT, 0, 0);
 	for (int i = 0; i < count; i++)
 	{
+		_selection = 0; //debug
 		sendMessage(CB_ADDSTRING, 0, (LPARAM)options[i]);
 	}
 }
