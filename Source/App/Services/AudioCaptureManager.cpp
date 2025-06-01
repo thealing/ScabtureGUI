@@ -43,7 +43,7 @@ void AudioCaptureManager::unlockCapture()
 
 const Event* AudioCaptureManager::getErrorEvent() const
 {
-    return _errorEventPool.getEvent();
+	return _errorEventPool.getEvent();
 }
 
 void AudioCaptureManager::onError()

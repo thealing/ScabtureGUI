@@ -83,7 +83,7 @@ void Graphics::clear(Color color)
 	bitmapInfo.bmiHeader.biCompression = BI_RGB;
 	int width = GetDeviceCaps(_handle, HORZRES);
 	int height = GetDeviceCaps(_handle, VERTRES);
-	StretchDIBits(_handle, 0, 0, width, height, 0, 0, 1, 1, &pixel, &bitmapInfo, DIB_RGB_COLORS, SRCCOPY);  
+	StretchDIBits(_handle, 0, 0, width, height, 0, 0, 1, 1, &pixel, &bitmapInfo, DIB_RGB_COLORS, SRCCOPY);
 }
 
 HDC Graphics::getHandle() const

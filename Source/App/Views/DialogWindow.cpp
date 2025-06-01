@@ -91,14 +91,14 @@ void DialogWindow::finalize()
 
 void DialogWindow::onConfirmed()
 {
-	UniquePointer<const wchar_t> title(DialogUtil::getTitle(this));
+	UniquePointer<const wchar_t> title = DialogUtil::getTitle(this);
 	LogUtil::logInfo(L"Confirmed dialog \"%ls\".", title.get());
 	_confirmCallback.invoke();
 }
 
 void DialogWindow::onCancelled()
 {
-	UniquePointer<const wchar_t> title(DialogUtil::getTitle(this));
+	UniquePointer<const wchar_t> title = DialogUtil::getTitle(this);
 	LogUtil::logInfo(L"Cancelled dialog \"%ls\".", title.get());
 	_cancelCallback.invoke();
 }
