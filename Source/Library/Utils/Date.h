@@ -11,4 +11,4 @@ struct Date
 	int millisecond;
 };
 
-void getDate(Date* date);
+Date getDate();
