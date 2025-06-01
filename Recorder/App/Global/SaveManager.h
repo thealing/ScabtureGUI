@@ -6,13 +6,9 @@ public:
 
 	static SaveManager& getInstance();
 
-	bool loadBytes(const wchar_t* name, int count, void* bytes);
+	bool loadData(const wchar_t* name, int count, void* data);
 
-	bool saveBytes(const wchar_t* name, int count, const void* bytes);
-
-	bool loadString(const wchar_t* name, const wchar_t** string);
-
-	bool saveString(const wchar_t* name, const wchar_t* string);
+	bool saveData(const wchar_t* name, int count, const void* data);
 
 private:
 

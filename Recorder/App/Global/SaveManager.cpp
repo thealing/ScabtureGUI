@@ -8,10 +8,10 @@ SaveManager& SaveManager::getInstance()
 	return instance;
 }
 
-bool SaveManager::loadBytes(const wchar_t* name, int count, void* bytes)
+bool SaveManager::loadData(const wchar_t* name, int count, void* data)
 {
 	DWORD size = count;
-	LSTATUS result = RegQueryValueEx(_key, name, 0, NULL, (LPBYTE)bytes, &size);
+	LSTATUS result = RegQueryValueEx(_key, name, 0, NULL, (LPBYTE)data, &size);
 	if (result != ERROR_SUCCESS)
 	{
 		LogUtil::logWarning(L"SaveManager: Failed to query registry value \"%ls\" (error %i).", name, result);
@@ -20,57 +20,10 @@ bool SaveManager::loadBytes(const wchar_t* name, int count, void* bytes)
 	return true;
 }
 
-bool SaveManager::saveBytes(const wchar_t* name, int count, const void* bytes)
+bool SaveManager::saveData(const wchar_t* name, int count, const void* data)
 {
 	DWORD size = count;
-	LSTATUS result = RegSetValueEx(_key, name, 0, REG_BINARY, (LPBYTE)bytes, size);
-	if (result != ERROR_SUCCESS)
-	{
-		LogUtil::logWarning(L"SaveManager: Failed to set registry value \"%ls\" (error %i).", name, result);
-		return false;
-	}
-	return true;
-}
-
-bool SaveManager::loadString(const wchar_t* name, const wchar_t** string)
-{
-	DWORD type = 0;
-	DWORD size = 0;
-	LSTATUS result = RegQueryValueEx(_key, name, NULL, &type, NULL, &size);
-	if (result != ERROR_SUCCESS)
-	{
-		LogUtil::logWarning(L"SaveManager: Failed to query registry value \"%ls\" (error %i).", name, result);
-		return false;
-	}
-	if (type != REG_SZ)
-	{
-		LogUtil::logWarning(L"SaveManager: The value \"%ls\" is not a string.", name);
-		return false;
-	}
-	DWORD length = size / sizeof(wchar_t);
-	if (length == 0)
-	{
-		LogUtil::logWarning(L"SaveManager: The value \"%ls\" has zero length.", name);
-		return false;
-	}
-	wchar_t* data = new wchar_t[length];
-	result = RegQueryValueEx(_key, name, NULL, NULL, (BYTE*)data, &size);
-	data[length - 1] = '\0';
-	if (result != ERROR_SUCCESS)
-	{
-		LogUtil::logWarning(L"SaveManager: Failed to query registry value \"%ls\" (error %i).", name, result);
-		delete[] data;
-		return false;
-	}
-	*string = data;
-	return true;
-}
-
-bool SaveManager::saveString(const wchar_t* name, const wchar_t* string)
-{
-	DWORD length = (DWORD)wcslen(string) + 1;
-	DWORD size = length * sizeof(wchar_t);
-	LSTATUS result = RegSetValueEx(_key, name, 0, REG_SZ, (LPBYTE)string, size);
+	LSTATUS result = RegSetValueEx(_key, name, 0, REG_BINARY, (LPBYTE)data, size);
 	if (result != ERROR_SUCCESS)
 	{
 		LogUtil::logWarning(L"SaveManager: Failed to set registry value \"%ls\" (error %i).", name, result);

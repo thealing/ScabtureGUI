@@ -6,8 +6,6 @@ public:
 
 	AudioResampler(const AudioResamplerSettings& settings, AudioCapture* source);
 
-	virtual ~AudioResampler();
-
 	virtual HRESULT getFormat(IMFMediaType** format) override;
 
 	virtual HRESULT getSample(IMFSample** sample) override;
