@@ -1,6 +1,6 @@
 #pragma once
 
-class MediaSource : public virtual FrameSource
+class MediaSource : public FrameSource
 {
 public:
 

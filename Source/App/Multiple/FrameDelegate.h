@@ -1,6 +1,7 @@
 #pragma once
 
-class FrameDelegate : public virtual FrameSource
+template<class Base>
+class FrameDelegate : public Base
 {
 public:
 

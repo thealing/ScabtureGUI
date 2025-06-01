@@ -1,6 +1,6 @@
 #pragma once
 
-class AudioCapture : public virtual MediaSource
+class AudioCapture : public MediaSource
 {
 public:
 
