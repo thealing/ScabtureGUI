@@ -51,7 +51,7 @@ void MainSettingsObserver::updateKeyboardSettings(const MainSettings& mainSettin
 void MainSettingsObserver::updateSinkWriterSettings(const MainSettings& mainSettings)
 {
 	SinkWriterSettings settings = {};
-	settings.lowLatency = mainSettings.lowLatencyEncoder;
+	settings.lowLatency = mainSettings.lowLatencyMode;
 	settings.useGpu = mainSettings.useHardwareEncoder;
 	if (_sinkWriterFactory->setSettings(settings))
 	{
