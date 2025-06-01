@@ -18,6 +18,8 @@ public:
 
 	const Event* getEncodeEvent() const;
 
+	const Event* getErrorEvent() const;
+
 protected:
 
 	HRESULT addStream(IMFMediaType* inputType, IMFMediaType* outputType);
@@ -38,7 +40,8 @@ private:
 
 private:
 
-	EventPool _eventPool;
+	EventPool _encodeEventPool;
+	EventPool _errorEventPool;
 	WeakPointer<SinkWriter> _sinkWriter;
 	DWORD _streamIndex;
 	LONGLONG _startTime;
