@@ -7,7 +7,7 @@ RecordingManager::RecordingManager()
 	_paused = false;
 }
 
-void RecordingManager::start(SinkWriter* sinkWriter, Encoder* videoEncoder, Encoder* audioEncoder)
+void RecordingManager::start(const wchar_t* title, SinkWriter* sinkWriter, Encoder* videoEncoder, Encoder* audioEncoder)
 {
 	WriteLockHolder holder(&_lock);
 	assert(!_running);
@@ -16,29 +16,22 @@ void RecordingManager::start(SinkWriter* sinkWriter, Encoder* videoEncoder, Enco
 	assert(_audioEncoder == NULL);
 	_running = true;
 	_paused = false;
+	_title = title;
 	_sinkWriter = sinkWriter;
 	_videoEncoder = videoEncoder;
 	_audioEncoder = audioEncoder;
+	_videoErrorEventPool.resetEvents();
+	_audioErrorEventPool.resetEvents();
 	_eventDispatcher = new EventDispatcher();
 	_eventDispatcher->addEntry(_videoEncoder->getEncodeEvent(), BIND(RecordingManager, onEncodedFrame, this));
 	_eventDispatcher->addEntry(_audioEncoder->getEncodeEvent(), BIND(RecordingManager, onEncodedFrame, this));
+	_eventDispatcher->addEntry(_videoEncoder->getErrorEvent(), BIND(RecordingManager, onVideoError, this));
+	_eventDispatcher->addEntry(_audioEncoder->getErrorEvent(), BIND(RecordingManager, onAudioError, this));
 	_eventDispatcher->start();
 	_sinkWriter->start();
 	_videoEncoder->start();
 	_audioEncoder->start();
 	_fpsCounter.reset();
-}
-
-void RecordingManager::cleanup()
-{
-	WriteLockHolder holder(&_lock);
-	assert(_sinkWriter != NULL);
-	assert(_videoEncoder != NULL);
-	assert(_audioEncoder != NULL);
-	_videoEncoder = NULL;
-	_audioEncoder = NULL;
-	_sinkWriter = NULL;
-	_eventDispatcher = NULL;
 }
 
 void RecordingManager::stop()
@@ -54,6 +47,10 @@ void RecordingManager::stop()
 	_audioEncoder->stop();
 	_sinkWriter->finalize();
 	_eventDispatcher->stop();
+	_videoEncoder = NULL;
+	_audioEncoder = NULL;
+	_sinkWriter = NULL;
+	_eventDispatcher = NULL;
 }
 
 void RecordingManager::pause()
@@ -113,21 +110,19 @@ void RecordingManager::getAudioStatistics(MF_SINK_WRITER_STATISTICS* statistics)
 	}
 }
 
-const wchar_t* RecordingManager::getPath() const
+const wchar_t* RecordingManager::getTitle() const
 {
 	ReadLockHolder holder(&_lock);
-	if (_sinkWriter != NULL)
+	if (_title != NULL)
 	{
-		return _sinkWriter->getPath();
+		return StringUtil::formatString(_title);
 	}
-	else
-	{
-		return NULL;
-	}
+	return NULL;
 }
 
 const FpsCounter& RecordingManager::getFpsCounter() const
 {
+	ReadLockHolder holder(&_lock);
 	return _fpsCounter;
 }
 
@@ -136,8 +131,28 @@ const Event* RecordingManager::getEncodeEvent() const
 	return _encodeEventPool.getEvent();
 }
 
+const Event* RecordingManager::getVideoErrorEvent() const
+{
+    return _videoErrorEventPool.getEvent();
+}
+
+const Event* RecordingManager::getAudioErrorEvent() const
+{
+    return _audioErrorEventPool.getEvent();
+}
+
 void RecordingManager::onEncodedFrame()
 {
 	_fpsCounter.recordFrame();
 	_encodeEventPool.setEvents();
+}
+
+void RecordingManager::onVideoError()
+{
+	_videoErrorEventPool.setEvents();
+}
+
+void RecordingManager::onAudioError()
+{
+	_audioErrorEventPool.setEvents();
 }

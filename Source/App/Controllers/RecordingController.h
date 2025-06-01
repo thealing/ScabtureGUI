@@ -40,6 +40,10 @@ private:
 
 	void updateControls(bool recording);
 
+	void onVideoError();
+
+	void onAudioError();
+
 private:
 
 	WindowEventDispatcher _eventDispatcher;

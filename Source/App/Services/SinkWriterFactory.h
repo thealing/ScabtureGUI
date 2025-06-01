@@ -8,7 +8,7 @@ public:
 
 	bool setSettings(const SinkWriterSettings& settings);
 
-	SinkWriter* createSinkWriter();
+	SinkWriter* createSinkWriter(const wchar_t* path);
 
 private:
 
