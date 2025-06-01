@@ -17,7 +17,7 @@ MouseOverlay::~MouseOverlay()
 
 void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
 {
-	// This function is very dodgy but oh well...
+	// TODO: Clean this function
 	CURSORINFO cursorInfo = {};
 	cursorInfo.cbSize = sizeof(cursorInfo);
 	if (!GetCursorInfo(&cursorInfo))
