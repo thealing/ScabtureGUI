@@ -16,9 +16,11 @@ RecordingController::RecordingController(MainWindow* mainWindow, RecordingManage
 	_eventDispatcher.addEntry(recordingPanel->getStopClickEvent(), BIND(RecordingController, onStopButtonClicked, this));
 	_eventDispatcher.addEntry(recordingPanel->getPauseClickEvent(), BIND(RecordingController, onPauseButtonClicked, this));
 	_eventDispatcher.addEntry(keyboardListener->getStartEvent(), BIND(RecordingController, onStartHotkeyPressed, this));
+	_eventDispatcher.addEntry(keyboardListener->getStartEvent(), BIND(RecordingController, onStartHotkeyPressed, this));
 	_eventDispatcher.addEntry(keyboardListener->getStopEvent(), BIND(RecordingController, onStopHotkeyPressed, this));
 	_eventDispatcher.addEntry(keyboardListener->getPauseEvent(), BIND(RecordingController, onPauseHotkeyPressed, this));
-	_eventDispatcher.addEntry(keyboardListener->getResumeEvent(), BIND(RecordingController, onResumeHotkeyPressed, this));
+	_eventDispatcher.addEntry(recordingManager->getVideoErrorEvent(), BIND(RecordingController, onVideoError, this));
+	_eventDispatcher.addEntry(recordingManager->getAudioErrorEvent(), BIND(RecordingController, onAudioError, this));
 	_eventDispatcher.start();
 	LogUtil::logDebug(L"RecordingController: Started on thread %i.", _eventDispatcher.getThreadId());
 }
@@ -79,6 +81,26 @@ void RecordingController::onResumeHotkeyPressed()
 	resumeRecording();
 }
 
+void RecordingController::onVideoError()
+{
+	LogUtil::logError(L"RecordingController: Video recording failed.");
+	MainSettings settings = _mainSettingsManager->getSettings();
+	if (settings.stopOnVideoError)
+	{
+		stopRecording();
+	}
+}
+
+void RecordingController::onAudioError()
+{
+	LogUtil::logError(L"RecordingController: Audio recording failed.");
+	MainSettings settings = _mainSettingsManager->getSettings();
+	if (settings.stopOnAudioError)
+	{
+		stopRecording();
+	}
+}
+
 void RecordingController::startRecording()
 {
 	if (_recordingManager->isRunning())
@@ -87,13 +109,14 @@ void RecordingController::startRecording()
 		return;
 	}
 	LogUtil::logInfo(L"RecordingController: Starting recording.");
-	SinkWriter* sinkWriter = _sinkWriterFactory->createSinkWriter();
+	const wchar_t* outputPath = FileUtil::generateRecordingFilePath();
+	SinkWriter* sinkWriter = _sinkWriterFactory->createSinkWriter(outputPath);
 	VideoCapture* videoCapture = _videoCaptureManager->lockCapture();
 	Encoder* videoEncoder = _videoEncoderFactory->createEncoder(videoCapture, sinkWriter);
 	AudioCapture* audioCapture = _audioCaptureManager->lockCapture();
 	Encoder* audioEncoder = _audioEncoderFactory->createEncoder(audioCapture, sinkWriter);
 	doActionsBeforeRecording();
-	_recordingManager->start(sinkWriter, videoEncoder, audioEncoder);
+	_recordingManager->start(outputPath, sinkWriter, videoEncoder, audioEncoder);
 	LogUtil::logInfo(L"RecordingController: Started recording.");
 }
 
@@ -107,7 +130,6 @@ void RecordingController::stopRecording()
 	LogUtil::logInfo(L"RecordingController: Stopping recording.");
 	_recordingManager->stop();
 	doActionsAfterRecording();
-	_recordingManager->cleanup();
 	_videoCaptureManager->unlockCapture();
 	_audioCaptureManager->unlockCapture();
 	LogUtil::logInfo(L"RecordingController: Stopped recording.");
@@ -173,12 +195,12 @@ void RecordingController::doActionsAfterRecording()
 	{
 		_mainWindow->showState(SW_RESTORE);
 	}
-	if (settings.askToPlayTheSavedRecording)
+	if (settings.askToPlayTheRecording)
 	{
-		int result = _mainWindow->showMessageBox(L"Recording finished", L"Open the recorded video?", MB_YESNO | MB_ICONQUESTION);
+		int result = _mainWindow->showMessageBox(L"Recording finished", L"Play the recorded video?", MB_YESNO | MB_ICONQUESTION);
 		if (result == IDYES)
 		{
-			const wchar_t* path = _recordingManager->getPath();
+			UniquePointer<const wchar_t> path = _recordingManager->getTitle();
 			ShellExecute(NULL, L"open", path, NULL, NULL, SW_SHOWNORMAL);
 		}
 	}

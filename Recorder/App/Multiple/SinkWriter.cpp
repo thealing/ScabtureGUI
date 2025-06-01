@@ -1,15 +1,11 @@
 #include "SinkWriter.h"
 
-SinkWriter::SinkWriter(const SinkWriterSettings& settings, const wchar_t* path) : _path(path)
+SinkWriter::SinkWriter(const SinkWriterSettings& settings, const wchar_t* path)
 {
 	ComPointer<IMFAttributes> attributes;
-	if (_path == NULL)
-	{
-		_status = E_INVALIDARG;
-	}
 	if (_status)
 	{
-		_status = MFCreateAttributes(&attributes, 3);
+		_status = MFCreateAttributes(&attributes, 2);
 	}
 	if (_status)
 	{
@@ -21,7 +17,7 @@ SinkWriter::SinkWriter(const SinkWriterSettings& settings, const wchar_t* path) 
 	}
 	if (_status)
 	{
-		_status = MFCreateSinkWriterFromURL(_path, NULL, attributes, &_writer);
+		_status = MFCreateSinkWriterFromURL(path, NULL, attributes, &_writer);
 	}
 	if (!_status)
 	{
@@ -160,9 +156,4 @@ HRESULT SinkWriter::finalize()
 		LogUtil::logComError(__FUNCTION__, result);
 	}
 	return result;
-}
-
-const wchar_t* SinkWriter::getPath() const
-{
-	return _path;
 }

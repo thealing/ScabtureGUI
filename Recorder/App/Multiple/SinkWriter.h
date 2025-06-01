@@ -18,12 +18,9 @@ public:
 
 	HRESULT finalize();
 
-	const wchar_t* getPath() const;
-
 private:
 
 	Status _status;
-	UniquePointer<const wchar_t> _path;
 	ComPointer<IMFSinkWriter> _writer;
 };
 
