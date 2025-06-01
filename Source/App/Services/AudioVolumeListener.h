@@ -31,11 +31,11 @@ private:
 	mutable ExclusiveLock _inputLock;
 	mutable ExclusiveLock _outputLock;
 
-	UniquePointer<AudioVolumeMeter> _inputMeter;
-	UniquePointer<AudioVolumeMeter> _outputMeter;
-	UniquePointer<Timer> _timer;
 	EventPool _updateEventPool;
 	EventPool _inputMeterErrorEventPool;
 	EventPool _outputMeterErrorEventPool;
+	UniquePointer<AudioVolumeMeter> _inputMeter;
+	UniquePointer<AudioVolumeMeter> _outputMeter;
+	UniquePointer<Timer> _timer;
 };
 
