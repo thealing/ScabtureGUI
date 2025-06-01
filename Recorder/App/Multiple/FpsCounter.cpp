@@ -7,6 +7,7 @@ FpsCounter::FpsCounter()
 
 void FpsCounter::reset()
 {
+	_timer = NULL;
 	WriteLockHolder holder(&_lock);
 	_frameCounter = 0;
 	_measuredFps = -1;
