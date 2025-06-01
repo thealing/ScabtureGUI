@@ -133,12 +133,12 @@ const Event* RecordingManager::getEncodeEvent() const
 
 const Event* RecordingManager::getVideoErrorEvent() const
 {
-    return _videoErrorEventPool.getEvent();
+	return _videoErrorEventPool.getEvent();
 }
 
 const Event* RecordingManager::getAudioErrorEvent() const
 {
-    return _audioErrorEventPool.getEvent();
+	return _audioErrorEventPool.getEvent();
 }
 
 void RecordingManager::onEncodedFrame()

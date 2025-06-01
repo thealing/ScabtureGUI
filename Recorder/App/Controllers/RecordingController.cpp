@@ -1,6 +1,6 @@
 #include "RecordingController.h"
 
-RecordingController::RecordingController(MainWindow* mainWindow, RecordingManager* recordingManager, VideoCaptureManager* videoCaptureManager, VideoEncoderFactory* videoEncoderFactory, AudioCaptureManager* audioCaptureManager, AudioEncoderFactory* audioEncoderFactory, SinkWriterFactory* sinkWriterFactory,  MainSettingsManager* mainSettingsManager, KeyboardListener* keyboardListener) : _eventDispatcher(mainWindow)
+RecordingController::RecordingController(MainWindow* mainWindow, RecordingManager* recordingManager, VideoCaptureManager* videoCaptureManager, VideoEncoderFactory* videoEncoderFactory, AudioCaptureManager* audioCaptureManager, AudioEncoderFactory* audioEncoderFactory, SinkWriterFactory* sinkWriterFactory, MainSettingsManager* mainSettingsManager, KeyboardListener* keyboardListener) : _eventDispatcher(mainWindow)
 {
 	_mainWindow = mainWindow;
 	_recordingManager = recordingManager;

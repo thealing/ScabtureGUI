@@ -8,11 +8,6 @@ SettingsDialog<Settings>::SettingsDialog()
 template<class Settings>
 void SettingsDialog<Settings>::show(Window* parent, const Settings& settings, const Callback& callback)
 {
-	if ((_settings != NULL) ^ (_window != NULL))
-	{
-		LogUtil::logError(L"SettingsDialog: Inconsistent dialog state detected.");
-		return;
-	}
 	if (_window != NULL)
 	{
 		LogUtil::logWarning(L"SettingsDialog: Window is already visible.");
