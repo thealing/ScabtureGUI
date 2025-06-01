@@ -1,7 +1,12 @@
 #include "AudioVolumeMeter.h"
 
-AudioVolumeMeter::AudioVolumeMeter(AudioCapture* source) : _source(source), _volumes(), _sampleSize(0), _channelCount(0)
+AudioVolumeMeter::AudioVolumeMeter(AudioCapture* source)
 {
+	_source = source;
+	_sampleSize = 0;
+	_channelCount = 0;
+	_volumes = {};
+	_failed = false;
 	ComPointer<IMFMediaType> format;
 	GUID subtype;
 	UINT32 numChannels = 0;

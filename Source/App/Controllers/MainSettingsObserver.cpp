@@ -1,13 +1,13 @@
 #include "MainSettingsObserver.h"
 
-MainSettingsObserver::MainSettingsObserver(MainWindow* mainWindow, MainSettingsManager* mainSettingsManager, KeyboardListener* keyboardListener, SinkWriterFactory* sinkWriterFactory) : _eventDispatcher(mainWindow)
+MainSettingsObserver::MainSettingsObserver(MainWindow* mainWindow, MainSettingsManager* mainSettingsManager, KeyboardListener* keyboardListener, SinkWriterFactory* sinkWriterFactory)
 {
 	_mainWindow = mainWindow;
 	_mainSettingsManager = mainSettingsManager;
 	_keyboardListener = keyboardListener;
 	_sinkWriterFactory = sinkWriterFactory;
 	_eventDispatcher.addEntry(mainSettingsManager->getChangeEvent(), BIND(MainSettingsObserver, onSettingsChanged, this));
-	_eventDispatcher.start();
+	_eventDispatcher.start(mainWindow);
 	LogUtil::logDebug(L"MainSettingsObserver: Started on thread %i.", _eventDispatcher.getThreadId());
 }
 

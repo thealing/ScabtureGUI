@@ -1,12 +1,12 @@
 #include "WindowSelectionController.h"
 
-WindowSelectionController::WindowSelectionController(MainWindow* mainWindow, VideoSourceManager* videoSourceManager, WindowSourceManager* windowSourceManager) : _eventDispatcher(mainWindow)
+WindowSelectionController::WindowSelectionController(MainWindow* mainWindow, VideoSourceManager* videoSourceManager, WindowSourceManager* windowSourceManager)
 {
 	_mainWindow = mainWindow;
 	_videoSourceManager = videoSourceManager;
 	_windowSourceManager = windowSourceManager;
 	_eventDispatcher.addEntry(videoSourceManager->getSelectionEvent(), BIND(WindowSelectionController, onSelection, this));
-	_eventDispatcher.start();
+	_eventDispatcher.start(mainWindow);
 	LogUtil::logDebug(L"WindowSelectionController: Started on thread %i.", _eventDispatcher.getThreadId());
 }
 

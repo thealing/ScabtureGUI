@@ -1,7 +1,8 @@
 #include "Combobox.h"
 
-ComboBox::ComboBox(Window* parent) : _selection(-1)
+ComboBox::ComboBox(Window* parent)
 {
+	_selection = -1;
 	create(L"COMBOBOX", NULL, CBS_AUTOHSCROLL | CBS_DROPDOWN | CBS_HASSTRINGS, parent);
 	HWND listWindow = getHandle();
 	HWND editWindow = FindWindowEx(listWindow, NULL, L"EDIT", NULL);

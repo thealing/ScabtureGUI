@@ -1,8 +1,10 @@
 #include "SettingsManager.h"
 
 template<class Settings>
-SettingsManager<Settings>::SettingsManager(const wchar_t* name) : _name(name), _settings()
+SettingsManager<Settings>::SettingsManager(const wchar_t* name)
 {
+	_name = name;
+	_settings = {};
 }
 
 template<class Settings>

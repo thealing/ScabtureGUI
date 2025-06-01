@@ -1,11 +1,13 @@
 #include "Status.h"
 
-Status::Status() : _result(S_OK)
+Status::Status()
 {
+	_result = S_OK;
 }
 
-Status::Status(HRESULT result) : _result(result)
+Status::Status(HRESULT result)
 {
+	_result = result;
 }
 
 Status::operator bool() const

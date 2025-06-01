@@ -1,7 +1,8 @@
 #include "MouseOverlay.h"
 
-MouseOverlay::MouseOverlay(const CaptureSource& source, bool draw) : _draw(draw)
+MouseOverlay::MouseOverlay(const CaptureSource& source, bool draw)
 {
+	_draw = draw;
 	_window = source.window;
 	_client = source.client;
 	_iconInfo = {};

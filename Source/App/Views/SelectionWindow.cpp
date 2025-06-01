@@ -1,7 +1,9 @@
 #include "SelectionWindow.h"
 
-SelectionWindow::SelectionWindow() : OverlayWindow(L"Selection Window"), _rect(), _clicked(false)
+SelectionWindow::SelectionWindow() : OverlayWindow(L"Selection Window")
 {
+	_rect = {};
+	_clicked = false;
 	setAlpha(100);
 	postMessage(WM_PAINT, 0, 0);
 }

@@ -1,7 +1,9 @@
 #include "WindowSelector.h"
 
-WindowSelector::WindowSelector(WindowArea area) : _area(area), _selectedWindow(NULL)
+WindowSelector::WindowSelector(WindowArea area)
 {
+	_area = area;
+	_selectedWindow = NULL;
 }
 
 bool WindowSelector::hasSelectedWindow() const

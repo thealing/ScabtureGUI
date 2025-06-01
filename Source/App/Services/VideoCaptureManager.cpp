@@ -2,8 +2,6 @@
 
 VideoCaptureManager::VideoCaptureManager()
 {
-	_dispatcher = new EventDispatcher();
-	_dispatcher->start();
 }
 
 VideoCaptureManager::~VideoCaptureManager()

@@ -3,11 +3,12 @@
 // There is no way to pass user data to the hook procedure, so a global value have to be used.
 static KeyboardListener* _globalKeyboardListener;
 
-KeyboardListener::KeyboardListener() : _settings()
+KeyboardListener::KeyboardListener()
 {
 	assert(_globalKeyboardListener == NULL);
 	_globalKeyboardListener = this;
 	HMODULE module = GetModuleHandle(NULL);
+	_settings = {};
 	_hook = SetWindowsHookEx(WH_KEYBOARD_LL, hookProc, module, 0);
 	if (_hook == NULL)
 	{

@@ -1,6 +1,6 @@
 #include "ResizeController.h"
 
-ResizeController::ResizeController(ResizePanel* resizePanel, WindowSourceManager* windowSourceManager, VideoCaptureManager* videoCaptureManager, VideoSettingsManager* videoSettingsManager) : _eventDispatcher(resizePanel)
+ResizeController::ResizeController(ResizePanel* resizePanel, WindowSourceManager* windowSourceManager, VideoCaptureManager* videoCaptureManager, VideoSettingsManager* videoSettingsManager)
 {
 	_resizePanel = resizePanel;
 	_windowSourceManager = windowSourceManager;
@@ -12,7 +12,7 @@ ResizeController::ResizeController(ResizePanel* resizePanel, WindowSourceManager
 	_eventDispatcher.addEntry(resizePanel->getKeepRatioChangeEvent(), BIND(ResizeController, onKeepRatioChanged, this));
 	_eventDispatcher.addEntry(videoCaptureManager->getChangeEvent(), BIND(ResizeController, onVideoCaptureChanged, this));
 	_eventDispatcher.addEntry(videoSettingsManager->getChangeEvent(), BIND(ResizeController, onVideoSettingsChanged, this));
-	_eventDispatcher.start();
+	_eventDispatcher.start(resizePanel);
 	LogUtil::logDebug(L"ResizeController: Started on thread %i.", _eventDispatcher.getThreadId());
 }
 

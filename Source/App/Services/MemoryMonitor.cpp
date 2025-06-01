@@ -1,7 +1,8 @@
 #include "MemoryMonitor.h"
 
-MemoryMonitor::MemoryMonitor() : _usage(0)
+MemoryMonitor::MemoryMonitor()
 {
+	_usage = 0;
 }
 
 void MemoryMonitor::start()

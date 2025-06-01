@@ -1,7 +1,13 @@
 #include "Window.h"
 
-Window::Window() : _handle(NULL), _context(NULL), _renderContext(NULL), _renderBitmap(NULL), _foregroundColor(0), _backgroundColor(255)
+Window::Window()
 {
+	_handle = NULL;
+	_context = NULL;
+	_renderContext = NULL;
+	_renderBitmap = NULL;
+	_foregroundColor = 0;
+	_backgroundColor = 255;
 }
 
 void Window::show()

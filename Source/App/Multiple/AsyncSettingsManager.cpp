@@ -1,8 +1,9 @@
 #include "AsyncSettingsManager.h"
 
 template<class Settings>
-AsyncSettingsManager<Settings>::AsyncSettingsManager() : _settings()
+AsyncSettingsManager<Settings>::AsyncSettingsManager()
 {
+	_settings = {};
 }
 
 template<class Settings>
