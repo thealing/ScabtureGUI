@@ -1,8 +1,25 @@
 #include "PreviewDisplay.h"
 
-PreviewDisplay::PreviewDisplay(Window* parent) : _dirty(true), _active(true), _disabled(false), _highQuality(false), _upscale(false), _width(0), _height(0), _stride(0)
+PreviewDisplay::PreviewDisplay(Window* parent)
 {
+	_dirty = true;
+	_active = true;
+	_disabled = false;
+	_highQuality = false;
+	_upscale = false;
+	_width = 0;
+	_height = 0;
+	_stride = 0;
+	_pixels = NULL;
 	create(L"STATIC", NULL, 0, 0, parent);
+}
+
+PreviewDisplay::~PreviewDisplay()
+{
+	if (_pixels != NULL)
+	{
+		BufferUtil::freeBuffer(_pixels);
+	}
 }
 
 void PreviewDisplay::draw()
@@ -77,6 +94,10 @@ void PreviewDisplay::setBuffer(const Buffer& buffer)
 		BufferUtil::copyBuffer(_pixels, source, _stride * _height);
 		buffer.endReading();
 		return;
+	}
+	if (_pixels != NULL)
+	{
+		BufferUtil::freeBuffer(_pixels);
 	}
 	_width = width;
 	_height = height;

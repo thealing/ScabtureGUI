@@ -6,6 +6,8 @@ public:
 
 	PreviewDisplay(Window* parent);
 
+	~PreviewDisplay();
+
 	void draw();
 
 	void setActive(bool active);
