@@ -21,4 +21,15 @@ public:
 private:
 
 	HANDLE _handle;
+
+#ifdef FUZZ_TESTING
+public:
+	Timer* _DEBUG_TIMER;
+
+	void _DEBUG_TIMER_PROC(){
+		if (rand() % 10 == 0) {
+			SetEvent(_handle);
+		}
+	}
+#endif
 };
