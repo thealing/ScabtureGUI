@@ -1,31 +1,37 @@
 #include "FrameEmitter.h"
 
-const Event* FrameEmitter::getFrameEvent()
+template<class Base>
+const Event* FrameEmitter<Base>::getFrameEvent()
 {
 	return _frameEventPool.getEvent();
 }
 
-const Event* FrameEmitter::getErrorEvent()
+template<class Base>
+const Event* FrameEmitter<Base>::getErrorEvent()
 {
 	return _errorEventPool.getEvent();
 }
 
-void FrameEmitter::releaseFrameEvent(const Event* event)
+template<class Base>
+void FrameEmitter<Base>::releaseFrameEvent(const Event* event)
 {
 	_frameEventPool.deleteEvent(event);
 }
 
-void FrameEmitter::releaseErrorEvent(const Event* event)
+template<class Base>
+void FrameEmitter<Base>::releaseErrorEvent(const Event* event)
 {
 	_errorEventPool.deleteEvent(event);
 }
 
-void FrameEmitter::signalFrame()
+template<class Base>
+void FrameEmitter<Base>::signalFrame()
 {
 	_frameEventPool.setEvents();
 }
 
-void FrameEmitter::signalError()
+template<class Base>
+void FrameEmitter<Base>::signalError()
 {
 	_errorEventPool.setEvents();
 }

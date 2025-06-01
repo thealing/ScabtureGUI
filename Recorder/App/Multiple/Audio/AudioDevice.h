@@ -1,6 +1,6 @@
 #pragma once
 
-class AudioDevice : public FrameEmitter, public virtual AudioCapture
+class AudioDevice : public FrameEmitter<AudioCapture>
 {
 public:
 

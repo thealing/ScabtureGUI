@@ -1,6 +1,6 @@
 #pragma once
 
-class AudioResampler : public FrameDelegate, public virtual AudioCapture
+class AudioResampler : public FrameDelegate<AudioCapture>
 {
 public:
 

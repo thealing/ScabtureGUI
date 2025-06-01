@@ -1,6 +1,6 @@
 #pragma once
 
-class VideoResizer : public FrameEmitter, public virtual VideoCapture
+class VideoResizer : public FrameEmitter<VideoCapture>
 {
 public:
 

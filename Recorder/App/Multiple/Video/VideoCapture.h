@@ -1,6 +1,6 @@
 #pragma once
 
-class VideoCapture : public virtual FrameSource
+class VideoCapture : public FrameSource
 {
 public:
 

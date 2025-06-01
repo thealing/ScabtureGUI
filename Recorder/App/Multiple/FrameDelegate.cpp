@@ -1,26 +1,31 @@
 #include "FrameDelegate.h"
 
-FrameDelegate::FrameDelegate(FrameSource* source)
+template<class Base>
+FrameDelegate<Base>::FrameDelegate(FrameSource* source)
 {
 	_source = source;
 }
 
-const Event* FrameDelegate::getFrameEvent()
+template<class Base>
+const Event* FrameDelegate<Base>::getFrameEvent()
 {
 	return _source->getFrameEvent();
 }
 
-const Event* FrameDelegate::getErrorEvent()
+template<class Base>
+const Event* FrameDelegate<Base>::getErrorEvent()
 {
 	return _source->getErrorEvent();
 }
 
-void FrameDelegate::releaseFrameEvent(const Event* event)
+template<class Base>
+void FrameDelegate<Base>::releaseFrameEvent(const Event* event)
 {
 	_source->releaseFrameEvent(event);
 }
 
-void FrameDelegate::releaseErrorEvent(const Event* event)
+template<class Base>
+void FrameDelegate<Base>::releaseErrorEvent(const Event* event)
 {
 	_source->releaseErrorEvent(event);
 }

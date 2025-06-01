@@ -1,6 +1,7 @@
 #pragma once
 
-class FrameEmitter : public virtual FrameSource
+template<class Base>
+class FrameEmitter : public Base
 {
 public:
 
