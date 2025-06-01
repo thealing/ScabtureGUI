@@ -109,7 +109,7 @@ void RecordingController::startRecording()
 		return;
 	}
 	LogUtil::logInfo(L"RecordingController: Starting recording.");
-	const wchar_t* outputPath = FileUtil::generateRecordingFilePath();
+	const wchar_t* outputPath = FileUtil::generateRecordingSavePath();
 	SinkWriter* sinkWriter = _sinkWriterFactory->createSinkWriter(outputPath);
 	VideoCapture* videoCapture = _videoCaptureManager->lockCapture();
 	Encoder* videoEncoder = _videoEncoderFactory->createEncoder(videoCapture, sinkWriter);
