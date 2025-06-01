@@ -60,15 +60,17 @@ const Event* AudioVolumeListener::getOutputMeterErrorEvent() const
 
 void AudioVolumeListener::update()
 {
+	ExclusiveLockHolder inputHolder(&_inputLock);
+	ExclusiveLockHolder outputHolder(&_outputLock);
 	if (_inputMeter != NULL || _outputMeter != NULL)
 	{
 		_updateEventPool.setEvents();
 	}
-	if (_inputMeter != NULL && _inputMeter->isInvalidated())
+	if (_inputMeter != NULL && _inputMeter->isFailed())
 	{
 		_inputMeterErrorEventPool.setEvents();
 	}
-	if (_outputMeter != NULL && _outputMeter->isInvalidated())
+	if (_outputMeter != NULL && _outputMeter->isFailed())
 	{
 		_outputMeterErrorEventPool.setEvents();
 	}

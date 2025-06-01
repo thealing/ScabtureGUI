@@ -1,5 +1,7 @@
 #pragma once
 
+//#define FUZZ_TESTING
+
 // External Headers
 
 #include <stdio.h>
@@ -40,6 +42,7 @@
 #include "Library\Utils\Time.h"
 #include "Library\System\Brush.h"
 #include "Library\System\DynamicLibrary.h"
+#include "Library\System\Timer.h"
 #include "Library\System\Event.h"
 #include "Library\System\ExclusiveLock.h"
 #include "Library\System\Font.h"
@@ -49,7 +52,6 @@
 #include "Library\System\Profiler.h"
 #include "Library\System\ReadWriteLock.h"
 #include "Library\System\Thread.h"
-#include "Library\System\Timer.h"
 #include "Library\Windows\Alignment.h"
 #include "Library\Windows\Anchor.h"
 #include "Library\Windows\Graphics.h"
@@ -104,7 +106,6 @@
 #include "App\Multiple\EventPool.h"
 #include "App\Multiple\FpsCounter.h"
 #include "App\Multiple\PropVariant.h"
-#include "App\Multiple\SettingsProvider.h"
 #include "App\Multiple\AsyncSettingsManager.h"
 #include "App\Multiple\Status.h"
 #include "App\Multiple\WaveFormat.h"
@@ -115,8 +116,8 @@
 #include "App\Multiple\FrameSink.h"
 #include "App\Multiple\MediaSource.h"
 #include "App\Multiple\SinkWriter.h"
-#include "App\Multiple\SilencePlayer.h"
 #include "App\Multiple\Encoder.h"
+#include "App\Multiple\Audio\SilencePlayer.h"
 #include "App\Multiple\Audio\AudioCapture.h"
 #include "App\Multiple\Audio\AudioDevice.h"
 #include "App\Multiple\Audio\AudioVolumeMeter.h"
@@ -140,14 +141,17 @@
 #include "App\Global\FontStore.h"
 #include "App\Global\ImageStore.h"
 #include "App\Global\Logger.h"
+#include "App\Global\SaveManager.h"
 #include "App\Utils\MemoryUtil.h"
 #include "App\Utils\ControlUtil.h"
 #include "App\Utils\DialogUtil.h"
 #include "App\Utils\LogUtil.h"
 #include "App\Utils\BufferUtil.h"
+#include "App\Utils\FileUtil.h"
 #include "App\Utils\RectUtil.h"
 #include "App\Utils\WindowUtil.h"
 #include "App\Utils\SaveUtil.h"
+#include "App\Utils\StringUtil.h"
 #include "App\Utils\Converter.h"
 #include "App\Services\SourceManager.h"
 #include "App\Services\SettingsManager.h"

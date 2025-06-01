@@ -14,7 +14,7 @@ bool SettingsManager<Settings>::setSettings(const Settings& settings)
 	}
 	_settings = settings;
 	validate(_settings);
-	_provider.save(_name, &_settings);
+	SaveUtil::saveSettings(_name, &_settings);
 	_changeEventPool.setEvents();
 	return true;
 }
@@ -39,15 +39,7 @@ SettingsManager<Settings>::~SettingsManager()
 template<class Settings>
 void SettingsManager<Settings>::init()
 {
-	Settings settings = {};
-	if (_provider.load(_name, &settings))
-	{
-		LogUtil::logInfo(L"Successfully loaded \"%ls\".", _name);
-	}
-	else
-	{
-		LogUtil::logInfo(L"Using default values for \"%ls\".", _name);
-		settings = getDefault();
-	}
+	Settings settings = getDefault();
+	SaveUtil::loadSettings(_name, &settings);
 	setSettings(settings);
 }

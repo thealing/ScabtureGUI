@@ -187,7 +187,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="App\Multiple\SilencePlayer.h" />
+    <None Include="App\Utils\StringUtil.h" />
+    <None Include="App\Global\SaveManager.h" />
+    <None Include="App\Multiple\Audio\SilencePlayer.h" />
     <None Include="App\Controllers\AudioCaptureController.h" />
     <None Include="App\Controllers\AudioDeviceObserver.h" />
     <None Include="App\Controllers\AudioPresenter.h" />
@@ -270,7 +272,6 @@
     <None Include="App\Multiple\Resizers\BilinearResizer.h" />
     <None Include="App\Multiple\Resizers\NearestResizer.h" />
     <None Include="App\Multiple\Resizers\Resizer.h" />
-    <None Include="App\Multiple\SettingsProvider.h" />
     <None Include="App\Multiple\SinkWriter.h" />
     <None Include="App\Multiple\UniquePointer.h" />
     <None Include="App\Multiple\UniqueStorage.h" />
@@ -381,11 +382,14 @@
     <None Include="App\Multiple\FrameSink.h" />
     <None Include="App\Multiple\FrameEmitter.h" />
     <None Include="App\Multiple\FrameDelegate.h" />
+    <None Include="App\Utils\FileUtil.h" />
     <ClInclude Include="Recorder.h" />
     <ClInclude Include="Resources\Resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App\Multiple\SilencePlayer.cpp" />
+    <None Include="App\Utils\StringUtil.cpp" />
+    <None Include="App\Global\SaveManager.cpp" />
+    <None Include="App\Multiple\Audio\SilencePlayer.cpp" />
     <None Include="App\Controllers\AudioCaptureController.cpp" />
     <None Include="App\Controllers\AudioDeviceObserver.cpp" />
     <None Include="App\Controllers\AudioPresenter.cpp" />
@@ -438,7 +442,6 @@
     <None Include="App\Multiple\Resizers\BilinearResizer.cpp" />
     <None Include="App\Multiple\Resizers\NearestResizer.cpp" />
     <None Include="App\Multiple\Resizers\Resizer.cpp" />
-    <None Include="App\Multiple\SettingsProvider.cpp" />
     <None Include="App\Multiple\SinkWriter.cpp" />
     <None Include="App\Multiple\UniquePointer.cpp" />
     <None Include="App\Multiple\UniqueStorage.cpp" />
@@ -547,6 +550,7 @@
     <None Include="App\Multiple\FrameSink.cpp" />
     <None Include="App\Multiple\FrameEmitter.cpp" />
     <None Include="App\Multiple\FrameDelegate.cpp" />
+    <None Include="App\Utils\FileUtil.cpp" />
     <ClCompile Include="Recorder.cpp" />
   </ItemGroup>
   <ItemGroup>

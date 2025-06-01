@@ -11,11 +11,11 @@ MainSettings MainSettingsManager::getDefault() const
 	settings.windowVisibility = WindowVisibilityMinimized;
 	settings.highQualityPreview = true;
 	settings.disablePreviewWhileRecording = true;
-	settings.stopWhenTheWindowChanges = true;
-	settings.stopWhenTheAudioDeviceChanges = true;
-	settings.askToPlayTheSavedRecording = true;
+	settings.stopOnVideoError = true;
+	settings.stopOnAudioError = true;
+	settings.askToPlayTheRecording = true;
 	settings.useHardwareEncoder = true;
-	settings.lowLatencyEncoder = true;
+	settings.lowLatencyMode = true;
 	return settings;
 }
 
