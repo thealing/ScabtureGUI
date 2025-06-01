@@ -29,7 +29,6 @@ void FpsDisplay::doPaint(Graphics& graphics)
 		graphics.setTextColor(Color(200, 0, 0));
 	}
 	int minFps = min(_captureFps, _encodeFps);
-	wchar_t fpsText[12] = {};
-	swprintf(fpsText, ARRAYSIZE(fpsText), L"%3i", minFps);
+	UniquePointer<const wchar_t> fpsText = StringUtil::formatString(L"%3i", minFps);
 	graphics.drawString(fpsText, AlignmentMiddleCenter, Vector(0, 0), getSize());
 }

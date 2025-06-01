@@ -4,12 +4,14 @@ void ControlUtil::setText(Control* control, const wchar_t* format, ...)
 {
 	va_list args;
 	va_start(args, format);
-	int length = _vscwprintf(format, args);
-	wchar_t* text = new wchar_t[length + 1];
-	vswprintf(text, length + 1, format, args);
+	setText(control, format, args);
 	va_end(args);
+}
+
+void ControlUtil::setText(Control* control, const wchar_t* format, va_list args)
+{
+	UniquePointer<const wchar_t> text = StringUtil::formatString(format, args);
 	control->setText(text);
-	delete[] text;
 }
 
 void ControlUtil::setValue(Control* control, int value)
@@ -27,8 +29,7 @@ const wchar_t* ControlUtil::getText(const Control* control)
 
 int ControlUtil::getValue(const Control* control)
 {
-	const wchar_t* text = getText(control);
+	UniquePointer<const wchar_t> text = getText(control);
 	int value = _wtoi(text);
-	delete text;
 	return value;
 }
