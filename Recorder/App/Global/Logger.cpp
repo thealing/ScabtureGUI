@@ -92,7 +92,7 @@ void Logger::setMode(LogMode mode)
 		case LogModeNewFiles:
 		{
 			Date date = getDate();
-			UniquePointer<const wchar_t> path = StringUtil::formatString(L"%ls [%04i.%02i.%02i.] [%02i.%02i.%02i.%03i].txt", LOG_FILE_NAME, date.year, date.month, date.day, date.hour, date.minute, date.second, date.millisecond);
+			UniquePointer<const wchar_t> path = StringUtil::formatString(L"%ls %04i.%02i.%02i. %02i.%02i.%02i.%03i.txt", LOG_FILE_NAME, date.year, date.month, date.day, date.hour, date.minute, date.second, date.millisecond);
 			_file = _wfopen(path, L"w");
 			break;
 		}
