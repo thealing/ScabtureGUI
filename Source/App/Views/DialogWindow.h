@@ -1,6 +1,6 @@
 #pragma once
 
-class DialogWindow : public Window
+class DialogWindow : public CustomWindow
 {
 public:
 
@@ -42,11 +42,10 @@ private:
 
 private:
 
-	WindowClass _windowClass;
-	Callback _confirmCallback;
-	Callback _cancelCallback;
 	EventDispatcher _eventDispatcher;
 	UniqueStorage<Control> _controls;
+	Callback _confirmCallback;
+	Callback _cancelCallback;
 	int _width;
 	int _height;
 	int _margin;

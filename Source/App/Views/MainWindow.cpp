@@ -3,8 +3,9 @@
 #define CLASS_NAME L"CaptureBit Window Class"
 #define WINDOW_NAME L"CaptureBit v4.0"
 
-MainWindow::MainWindow() : _class(CLASS_NAME), _closeable(true)
+MainWindow::MainWindow() : CustomWindow(CLASS_NAME)
 {	
+	_closeable = true;
 	create(CLASS_NAME, WINDOW_NAME);
 	setRedraw(false);
 	_sourcePanel = new SourcePanel(this);

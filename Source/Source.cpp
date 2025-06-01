@@ -163,4 +163,4 @@
 #include "Library\Windows\Label.cpp"
 #include "Library\Windows\Picture.cpp"
 #include "Library\Windows\Window.cpp"
-#include "Library\Windows\WindowClass.cpp"
+#include "Library\Windows\CustomWindow.cpp"

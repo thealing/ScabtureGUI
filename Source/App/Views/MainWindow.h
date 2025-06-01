@@ -1,6 +1,6 @@
 #pragma once
 
-class MainWindow : public Window
+class MainWindow : public CustomWindow
 {
 public:
 
@@ -36,7 +36,6 @@ protected:
 
 private:
 
-	WindowClass _class;
 	UniquePointer<SourcePanel> _sourcePanel;
 	UniquePointer<ResizePanel> _resizePanel;
 	UniquePointer<QualityPanel> _qualityPanel;

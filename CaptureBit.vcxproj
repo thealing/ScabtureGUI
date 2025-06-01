@@ -374,7 +374,7 @@
     <None Include="Library\Windows\Label.h" />
     <None Include="Library\Windows\Picture.h" />
     <None Include="Library\Windows\Window.h" />
-    <None Include="Library\Windows\WindowClass.h" />
+    <None Include="Library\Windows\CustomWindow.h" />
     <None Include="App\Multiple\AsyncSettingsManager.h" />
     <None Include="Library\System\LatchEvent.h" />
     <None Include="App\Multiple\Status.h" />
@@ -542,7 +542,7 @@
     <None Include="Library\Windows\Label.cpp" />
     <None Include="Library\Windows\Picture.cpp" />
     <None Include="Library\Windows\Window.cpp" />
-    <None Include="Library\Windows\WindowClass.cpp" />
+    <None Include="Library\Windows\CustomWindow.cpp" />
     <None Include="App\Multiple\AsyncSettingsManager.cpp" />
     <None Include="Library\System\LatchEvent.cpp" />
     <None Include="App\Multiple\Status.cpp" />
