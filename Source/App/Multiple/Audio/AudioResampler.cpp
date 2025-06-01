@@ -57,10 +57,6 @@ AudioResampler::AudioResampler(const AudioResamplerSettings& settings, AudioCapt
 	}
 }
 
-AudioResampler::~AudioResampler()
-{
-}
-
 HRESULT AudioResampler::getFormat(IMFMediaType** format)
 {
 	Status result;

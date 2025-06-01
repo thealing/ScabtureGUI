@@ -4,12 +4,12 @@ template<class Settings>
 bool SaveUtil::loadSettings(const wchar_t* name, Settings* settings)
 {
 	SaveManager& saveManager = SaveManager::getInstance();
-	return saveManager.loadBytes(name, sizeof(Settings), settings);
+	return saveManager.loadData(name, sizeof(Settings), settings);
 }
 
 template<class Settings>
 bool SaveUtil::saveSettings(const wchar_t* name, const Settings* settings)
 {
 	SaveManager& saveManager = SaveManager::getInstance();
-	return saveManager.saveBytes(name, sizeof(Settings), settings);
+	return saveManager.saveData(name, sizeof(Settings), settings);
 }
