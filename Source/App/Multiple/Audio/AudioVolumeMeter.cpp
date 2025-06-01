@@ -64,9 +64,9 @@ bool AudioVolumeMeter::getVolumes(Volumes* volumes) const
 	return _status;
 }
 
-bool AudioVolumeMeter::isInvalidated() const
+bool AudioVolumeMeter::isFailed() const
 {
-	return _invalidated;
+	return _failed;
 }
 
 void AudioVolumeMeter::onFrame()
@@ -122,6 +122,7 @@ void AudioVolumeMeter::onFrame()
 				newVolumes.left = values[0];
 				newVolumes.right = values[1];
 			}
+			delete[] values;
 			_volumes.left = (_volumes.left + newVolumes.left) / 2;
 			_volumes.right = (_volumes.right + newVolumes.right) / 2;
 		}
@@ -140,5 +141,5 @@ void AudioVolumeMeter::onFrame()
 
 void AudioVolumeMeter::onError()
 {
-	_invalidated = true;
+	_failed = true;
 }
