@@ -54,7 +54,12 @@ HRESULT Encoder::getStatistics(MF_SINK_WRITER_STATISTICS* statistics) const
 
 const Event* Encoder::getEncodeEvent() const
 {
-	return _eventPool.getEvent();
+	return _encodeEventPool.getEvent();
+}
+
+const Event* Encoder::getErrorEvent() const
+{
+	return _errorEventPool.getEvent();
 }
 
 HRESULT Encoder::addStream(IMFMediaType* inputType, IMFMediaType* outputType)
@@ -107,7 +112,7 @@ void Encoder::onFrame()
 	}
 	if (result)
 	{
-		_eventPool.setEvents();
+		_encodeEventPool.setEvents();
 	}
 	if (!result)
 	{
@@ -122,6 +127,10 @@ void Encoder::onError()
 	{
 		LONGLONG timestamp = MFGetSystemTime() - _startTime;
 		result = sendStreamTick(timestamp);
+	}
+	if (result)
+	{
+		_errorEventPool.setEvents();
 	}
 	if (!result)
 	{
