@@ -54,7 +54,7 @@ void SnapshotController::takeSnapshot()
 	}
 	if (result)
 	{
-		UniquePointer<const wchar_t> path(SaveUtil::generateFileName(L"Snapshot", L"png"));
+		UniquePointer<const wchar_t> path = FileUtil::generateSnapshotFilePath();
 		result = stream->InitializeFromFilename(path, GENERIC_WRITE);
 	}
 	if (result)

@@ -476,12 +476,6 @@
     <None Include="App\Multiple\PropVariant.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Multiple\SettingsProvider.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="App\Multiple\SettingsProvider.h">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="App\Multiple\SinkWriter.cpp">
       <Filter>Source Files</Filter>
     </None>
@@ -1100,10 +1094,10 @@
     <None Include="App\Multiple\Captures\Overlay.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Multiple\SilencePlayer.cpp">
+    <None Include="App\Multiple\Audio\SilencePlayer.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="App\Multiple\SilencePlayer.h">
+    <None Include="App\Multiple\Audio\SilencePlayer.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Multiple\FrameSink.h">
@@ -1122,6 +1116,24 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="App\Multiple\FrameDelegate.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Global\SaveManager.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Global\SaveManager.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Utils\FileUtil.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Utils\FileUtil.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Utils\StringUtil.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Utils\StringUtil.h">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

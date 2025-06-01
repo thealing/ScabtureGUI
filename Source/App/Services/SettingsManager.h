@@ -27,6 +27,5 @@ private:
 
 	const wchar_t* _name;
 	Settings _settings;
-	SettingsProvider<Settings> _provider;
 	EventPool _changeEventPool;
 };

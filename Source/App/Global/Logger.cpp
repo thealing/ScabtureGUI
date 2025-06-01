@@ -11,31 +11,15 @@ void Logger::init(bool debug)
 	}
 	else
 	{
-		SettingsProvider<LogMode> provider;
-		LogMode mode;
-		if (provider.load(LOG_MODE_SETTING_NAME, &mode))
-		{
-			wprintf(L"Loaded log mode %i.\n", mode);
-			setMode(mode);
-		}
-		else
-		{
-			wprintf(L"No saved log mode found.\n");
-		}
+		LogMode mode = LogModeNone;
+		SaveUtil::loadSettings(LOG_MODE_SETTING_NAME, &mode);
+		setMode(mode);
 	}
 }
 
 void Logger::saveMode(LogMode mode)
 {
-	SettingsProvider<LogMode> provider;
-	if (provider.save(LOG_MODE_SETTING_NAME, &mode))
-	{
-		wprintf(L"Saved log mode %i.\n", mode);
-	}
-	else
-	{
-		wprintf(L"Failed to save log mode %i.", mode);
-	}
+	SaveUtil::saveSettings(LOG_MODE_SETTING_NAME, &mode);
 }
 
 void Logger::logFormat(const wchar_t* format, va_list args)
@@ -59,14 +43,10 @@ void Logger::logFormat(const wchar_t* format, ...)
 
 void Logger::logMessage(const wchar_t* label, const wchar_t* format, va_list args)
 {
-	int length = _vscwprintf(format, args) + 1;
-	wchar_t* message = new wchar_t[length];
-	vswprintf(message, length, format, args);
-	Date date;
-	getDate(&date);
+	UniquePointer<const wchar_t> message = StringUtil::formatString(format, args);
+	Date date = getDate();
 	DWORD threadId = GetCurrentThreadId();
 	logFormat(L"[%02i:%02i:%02i.%03i] Thread %u: %ls: %ls\n", date.hour, date.minute, date.second, date.millisecond, threadId, label, message);
-	delete[] message;
 }
 
 void Logger::logMessage(const wchar_t* label, const wchar_t* format, ...)
@@ -105,18 +85,15 @@ void Logger::setMode(LogMode mode)
 		}
 		case LogModeSingleFile:
 		{
-			wchar_t fileName[MAX_PATH];
-			swprintf(fileName, ARRAYSIZE(fileName), L"%ls.txt", LOG_FILE_NAME);
-			_file = _wfopen(fileName, L"w");
+			UniquePointer<const wchar_t> path = StringUtil::formatString(L"%ls.txt", LOG_FILE_NAME);
+			_file = _wfopen(path, L"w");
 			break;
 		}
 		case LogModeNewFiles:
 		{
-			Date date;
-			getDate(&date);
-			wchar_t fileName[MAX_PATH];
-			swprintf(fileName, ARRAYSIZE(fileName), L"%ls [%04i.%02i.%02i.] [%02i.%02i.%02i.%03i].txt", LOG_FILE_NAME, date.year, date.month, date.day, date.hour, date.minute, date.second, date.millisecond);
-			_file = _wfopen(fileName, L"w");
+			Date date = getDate();
+			UniquePointer<const wchar_t> path = StringUtil::formatString(L"%ls [%04i.%02i.%02i.] [%02i.%02i.%02i.%03i].txt", LOG_FILE_NAME, date.year, date.month, date.day, date.hour, date.minute, date.second, date.millisecond);
+			_file = _wfopen(path, L"w");
 			break;
 		}
 		case LogModeConsole:

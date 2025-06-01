@@ -4,9 +4,9 @@
 
 AudioSourceManager::AudioSourceManager() : SourceManager(AudioSourceNone)
 {
-	SettingsProvider<AudioSource> provider;
 	AudioSource source;
-	if (provider.load(AUDIO_SOURCE_SETTING_NAME, &source))
+	bool loaded = SaveUtil::loadSettings(AUDIO_SOURCE_SETTING_NAME, &source);
+	if (loaded)
 	{
 		LogUtil::logInfo(L"AudioSourceManager: Loaded audio source %i.", source);
 		SourceManager::selectSource(source);
@@ -19,8 +19,8 @@ AudioSourceManager::AudioSourceManager() : SourceManager(AudioSourceNone)
 
 void AudioSourceManager::selectSource(AudioSource source)
 {
-	SettingsProvider<AudioSource> provider;
-	if (provider.save(AUDIO_SOURCE_SETTING_NAME, &source))
+	bool saved = SaveUtil::saveSettings(AUDIO_SOURCE_SETTING_NAME, &source);
+	if (saved)
 	{
 		LogUtil::logInfo(L"AudioSourceManager: Saved audio source %i.", source);
 	}

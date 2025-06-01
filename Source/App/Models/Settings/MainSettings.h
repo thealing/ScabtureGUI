@@ -6,11 +6,11 @@ struct MainSettings
 	WindowVisibility windowVisibility;
 	bool highQualityPreview;
 	bool disablePreviewWhileRecording;
-	bool stopWhenTheWindowChanges;
-	bool stopWhenTheAudioDeviceChanges;
-	bool askToPlayTheSavedRecording;
+	bool stopOnVideoError;
+	bool stopOnAudioError;
+	bool askToPlayTheRecording;
 	bool useHardwareEncoder;
-	bool lowLatencyEncoder;
+	bool lowLatencyMode;
 	Hotkey startHotkey;
 	Hotkey stopHotkey;
 	Hotkey pauseHotkey;

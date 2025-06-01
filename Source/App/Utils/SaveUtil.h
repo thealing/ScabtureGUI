@@ -4,6 +4,9 @@ class SaveUtil
 {
 public:
 
-	static const wchar_t* generateFileName(const wchar_t* label, const wchar_t* extension);
-};
+	template<class Settings>
+	static bool loadSettings(const wchar_t* name, Settings* settings);
 
+	template<class Settings>
+	static bool saveSettings(const wchar_t* name, const Settings* settings);
+};
