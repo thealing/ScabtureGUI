@@ -1,7 +1,9 @@
 #include "WindowSourceManager.h"
 
-WindowSourceManager::WindowSourceManager() : _settings(), _source()
+WindowSourceManager::WindowSourceManager()
 {
+	_settings = {};
+	_source = {};
 }
 
 bool WindowSourceManager::setSettings(const WindowSourceSettings& settings)

@@ -1,6 +1,6 @@
 #include "RecordingController.h"
 
-RecordingController::RecordingController(MainWindow* mainWindow, RecordingManager* recordingManager, VideoCaptureManager* videoCaptureManager, VideoEncoderFactory* videoEncoderFactory, AudioCaptureManager* audioCaptureManager, AudioEncoderFactory* audioEncoderFactory, SinkWriterFactory* sinkWriterFactory, MainSettingsManager* mainSettingsManager, KeyboardListener* keyboardListener) : _eventDispatcher(mainWindow)
+RecordingController::RecordingController(MainWindow* mainWindow, RecordingManager* recordingManager, VideoCaptureManager* videoCaptureManager, VideoEncoderFactory* videoEncoderFactory, AudioCaptureManager* audioCaptureManager, AudioEncoderFactory* audioEncoderFactory, SinkWriterFactory* sinkWriterFactory, MainSettingsManager* mainSettingsManager, KeyboardListener* keyboardListener)
 {
 	_mainWindow = mainWindow;
 	_recordingManager = recordingManager;
@@ -21,7 +21,7 @@ RecordingController::RecordingController(MainWindow* mainWindow, RecordingManage
 	_eventDispatcher.addEntry(keyboardListener->getPauseEvent(), BIND(RecordingController, onPauseHotkeyPressed, this));
 	_eventDispatcher.addEntry(recordingManager->getVideoErrorEvent(), BIND(RecordingController, onVideoError, this));
 	_eventDispatcher.addEntry(recordingManager->getAudioErrorEvent(), BIND(RecordingController, onAudioError, this));
-	_eventDispatcher.start();
+	_eventDispatcher.start(mainWindow);
 	LogUtil::logDebug(L"RecordingController: Started on thread %i.", _eventDispatcher.getThreadId());
 }
 

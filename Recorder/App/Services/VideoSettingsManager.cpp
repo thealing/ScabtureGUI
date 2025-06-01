@@ -43,17 +43,11 @@ void VideoSettingsManager::validate(VideoSettings& settings) const
 		LogUtil::logWarning(L"VideoSettingsManager: Found invalid resize mode %i.", settings.resizeMode);
 		settings.resizeMode = ResizeModeStretch;
 	}
-
-#ifndef _DEBUG
-
 	if (settings.frameRate < 1 || settings.frameRate > 150)
 	{
 		LogUtil::logWarning(L"VideoSettingsManager: Found invalid framerate %i.", settings.frameRate);
 		settings.frameRate = clamp(settings.frameRate, 1, 150);
 	}
-
-#endif
-
 	if (settings.bitRate < 32 || settings.bitRate > 250000)
 	{
 		LogUtil::logWarning(L"VideoSettingsManager: Found invalid bitrate %i.", settings.bitRate);

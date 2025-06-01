@@ -1,12 +1,12 @@
 #include "AudioSettingsController.h"
 
-AudioSettingsController::AudioSettingsController(SourcePanel* sourcePanel, AudioSettingsDialog* audioSettingsDialog, AudioSettingsManager* audioSettingsManager) : _eventDispatcher(sourcePanel)
+AudioSettingsController::AudioSettingsController(SourcePanel* sourcePanel, AudioSettingsDialog* audioSettingsDialog, AudioSettingsManager* audioSettingsManager)
 {
 	_sourcePanel = sourcePanel;
 	_audioSettingsDialog = audioSettingsDialog;
 	_audioSettingsManager = audioSettingsManager;
 	_eventDispatcher.addEntry(sourcePanel->getAudioOptionsClickEvent(), BIND(AudioSettingsController, onButtonClicked, this));
-	_eventDispatcher.start();
+	_eventDispatcher.start(sourcePanel);
 	LogUtil::logDebug(L"AudioSettingsController: Started on thread %i.", _eventDispatcher.getThreadId());
 }
 

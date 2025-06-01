@@ -1,7 +1,9 @@
 #include "VolumeMeter.h"
 
-VolumeMeter::VolumeMeter(Window* parent) : _leftVolume(0), _rightVolume(0)
+VolumeMeter::VolumeMeter(Window* parent)
 {
+	_leftVolume = 0;
+	_rightVolume = 0;
 	create(L"STATIC", NULL, 0, parent);
 }
 

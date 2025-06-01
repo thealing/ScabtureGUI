@@ -1,7 +1,10 @@
 #include "CpuMonitor.h"
 
-CpuMonitor::CpuMonitor() : _usage(0), _previousTotalTime(0), _previousUsedTime(0)
+CpuMonitor::CpuMonitor()
 {
+	_usage = 0;
+	_previousTotalTime = 0;
+	_previousUsedTime = 0;
 }
 
 void CpuMonitor::start()

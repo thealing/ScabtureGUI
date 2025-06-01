@@ -1,12 +1,12 @@
 #include "MainSettingsController.h"
 
-MainSettingsController::MainSettingsController(SettingsPanel* settingsPanel, MainSettingsDialog* mainSettingsDialog, MainSettingsManager* mainSettingsManager) : _eventDispatcher(settingsPanel)
+MainSettingsController::MainSettingsController(SettingsPanel* settingsPanel, MainSettingsDialog* mainSettingsDialog, MainSettingsManager* mainSettingsManager)
 {
 	_settingsPanel = settingsPanel;
 	_mainSettingsDialog = mainSettingsDialog;
 	_mainSettingsManager = mainSettingsManager;
 	_eventDispatcher.addEntry(settingsPanel->getSettingsClickEvent(), BIND(MainSettingsController, onButtonClicked, this));
-	_eventDispatcher.start();
+	_eventDispatcher.start(settingsPanel);
 	LogUtil::logDebug(L"MainSettingsController: Started on thread %i.", _eventDispatcher.getThreadId());
 }
 

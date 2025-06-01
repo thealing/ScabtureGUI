@@ -1,7 +1,8 @@
 #include "HotkeyEdit.h"
 
-HotkeyEdit::HotkeyEdit(Window* parent, Hotkey* value) : _value(value)
+HotkeyEdit::HotkeyEdit(Window* parent, Hotkey* value)
 {
+	_value = value;
 	create(L"EDIT", NULL, WS_BORDER | ES_LEFT, parent);
 	addCallback(hotkeyProc);
 	update();

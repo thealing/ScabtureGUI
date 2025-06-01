@@ -1,13 +1,13 @@
 #include "UsagePresenter.h"
 
-UsagePresenter::UsagePresenter(SettingsPanel* settingsPanel, CpuMonitor* cpuMonitor, MemoryMonitor* memoryMonitor) : _eventDispatcher(settingsPanel)
+UsagePresenter::UsagePresenter(SettingsPanel* settingsPanel, CpuMonitor* cpuMonitor, MemoryMonitor* memoryMonitor)
 {
 	_settingsPanel = settingsPanel;
 	_cpuMonitor = cpuMonitor;
 	_memoryMonitor = memoryMonitor;
 	_eventDispatcher.addEntry(cpuMonitor->getUpdateEvent(), BIND(UsagePresenter, updateCpuUsage, this));
 	_eventDispatcher.addEntry(memoryMonitor->getUpdateEvent(), BIND(UsagePresenter, updateMemoryUsage, this));
-	_eventDispatcher.start();
+	_eventDispatcher.start(settingsPanel);
 	_cpuMonitor->start();
 	_memoryMonitor->start();
 }

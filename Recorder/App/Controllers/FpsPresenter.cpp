@@ -1,6 +1,6 @@
 #include "FpsPresenter.h"
 
-FpsPresenter::FpsPresenter(FpsDisplay* fpsDisplay, VideoCaptureManager* videoCaptureManager, RecordingManager* recordingManager) : _eventDispatcher(fpsDisplay)
+FpsPresenter::FpsPresenter(FpsDisplay* fpsDisplay, VideoCaptureManager* videoCaptureManager, RecordingManager* recordingManager)
 {
 	_fpsDisplay = fpsDisplay;
 	_videoCaptureManager = videoCaptureManager;
@@ -9,7 +9,7 @@ FpsPresenter::FpsPresenter(FpsDisplay* fpsDisplay, VideoCaptureManager* videoCap
 	const FpsCounter& encodeFpsCounter = _recordingManager->getFpsCounter();
 	_eventDispatcher.addEntry(captureFpsCounter.getUpdateEvent(), BIND(FpsPresenter, updateFps, this));
 	_eventDispatcher.addEntry(encodeFpsCounter.getUpdateEvent(), BIND(FpsPresenter, updateFps, this));
-	_eventDispatcher.start();
+	_eventDispatcher.start(fpsDisplay);
 }
 
 FpsPresenter::~FpsPresenter()

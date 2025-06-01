@@ -1,6 +1,6 @@
 #include "SourceController.h"
 
-SourceController::SourceController(SourcePanel* sourcePanel, VideoSourceManager* videoSourceManager, AudioSourceManager* audioSourceManager) : _eventDispatcher(sourcePanel)
+SourceController::SourceController(SourcePanel* sourcePanel, VideoSourceManager* videoSourceManager, AudioSourceManager* audioSourceManager)
 {
 	_sourcePanel = sourcePanel;
 	_videoSourceManager = videoSourceManager;
@@ -9,7 +9,7 @@ SourceController::SourceController(SourcePanel* sourcePanel, VideoSourceManager*
 	_eventDispatcher.addEntry(sourcePanel->getAudioChangeEvent(), BIND(SourceController, onAudioSourceChanged, this));
 	_eventDispatcher.addEntry(videoSourceManager->getSelectionEvent(), BIND(SourceController, updateVideoSource, this));
 	_eventDispatcher.addEntry(audioSourceManager->getSelectionEvent(), BIND(SourceController, updateAudioSource, this));
-	_eventDispatcher.start();
+	_eventDispatcher.start(sourcePanel);
 	LogUtil::logDebug(L"SourceController: Started on thread %i.", _eventDispatcher.getThreadId());
 }
 

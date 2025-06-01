@@ -1,13 +1,13 @@
 #include "QualityController.h"
 
-QualityController::QualityController(QualityPanel* qualityPanel, VideoSettingsManager* videoSettingsManager) : _eventDispatcher(qualityPanel)
+QualityController::QualityController(QualityPanel* qualityPanel, VideoSettingsManager* videoSettingsManager)
 {
 	_qualityPanel = qualityPanel;
 	_videoSettingsManager = videoSettingsManager;
 	_eventDispatcher.addEntry(qualityPanel->getFrameRateChangeEvent(), BIND(QualityController, onFrameRateChanged, this));
 	_eventDispatcher.addEntry(qualityPanel->getBitRateChangeEvent(), BIND(QualityController, onBitRateChanged, this));
 	_eventDispatcher.addEntry(videoSettingsManager->getChangeEvent(), BIND(QualityController, onVideoSettingsChanged, this));
-	_eventDispatcher.start();
+	_eventDispatcher.start(qualityPanel);
 	LogUtil::logDebug(L"QualityController: Started on thread %i.", _eventDispatcher.getThreadId());
 }
 

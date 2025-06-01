@@ -12,6 +12,6 @@ protected:
 
 private:
 
-	Pen _borderPen;
+	UniquePointer<Pen> _borderPen;
 };
 

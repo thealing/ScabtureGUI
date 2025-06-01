@@ -1,12 +1,12 @@
 #include "VideoSettingsController.h"
 
-VideoSettingsController::VideoSettingsController(SourcePanel* sourcePanel, VideoSettingsDialog* videoSettingsDialog, VideoSettingsManager* videoSettingsManager) : _eventDispatcher(sourcePanel)
+VideoSettingsController::VideoSettingsController(SourcePanel* sourcePanel, VideoSettingsDialog* videoSettingsDialog, VideoSettingsManager* videoSettingsManager)
 {
 	_sourcePanel = sourcePanel;
 	_videoSettingsDialog = videoSettingsDialog;
 	_videoSettingsManager = videoSettingsManager;
 	_eventDispatcher.addEntry(sourcePanel->getVideoOptionsClickEvent(), BIND(VideoSettingsController, onButtonClicked, this));
-	_eventDispatcher.start();
+	_eventDispatcher.start(sourcePanel);
 	LogUtil::logDebug(L"VideoSettingsController: Started on thread %i.", _eventDispatcher.getThreadId());
 }
 

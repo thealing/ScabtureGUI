@@ -1,13 +1,13 @@
 #include "AudioPresenter.h"
 
-AudioPresenter::AudioPresenter(VolumeDisplay* volumeDisplay, AudioVolumeListener* audioVolumeListener, AudioSourceManager* audioSourceManager) : _eventDispatcher(volumeDisplay)
+AudioPresenter::AudioPresenter(VolumeDisplay* volumeDisplay, AudioVolumeListener* audioVolumeListener, AudioSourceManager* audioSourceManager)
 {
 	_volumeDisplay = volumeDisplay;
 	_audioVolumeListener = audioVolumeListener;
 	_audioSourceManager = audioSourceManager;
 	_eventDispatcher.addEntry(audioVolumeListener->getUpdateEvent(), BIND(AudioPresenter, onUpdate, this));
 	_eventDispatcher.addEntry(audioSourceManager->getSelectionEvent(), BIND(AudioPresenter, onSelection, this));
-	_eventDispatcher.start();
+	_eventDispatcher.start(volumeDisplay);
 }
 
 AudioPresenter::~AudioPresenter()

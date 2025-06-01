@@ -1,7 +1,10 @@
 #include "Control.h"
 
-Control::Control() : _parent(NULL), _anchor(AnchorTopLeft), _bounds()
+Control::Control()
 {
+	_parent = NULL;
+	_anchor = AnchorTopLeft;
+	_bounds = {};
 }
 
 void Control::setAnchor(Anchor anchor)

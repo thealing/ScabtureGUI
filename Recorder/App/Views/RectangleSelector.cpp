@@ -1,7 +1,11 @@
 #include "RectangleSelector.h"
 
-RectangleSelector::RectangleSelector() : _clicked(false), _startX(0), _startY(0), _selectedRect()
+RectangleSelector::RectangleSelector()
 {
+	_clicked = false;
+	_startX = 0;
+	_startY = 0;
+	_selectedRect = {};
 }
 
 bool RectangleSelector::hasSelectedRect() const

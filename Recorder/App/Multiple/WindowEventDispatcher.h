@@ -4,7 +4,11 @@ class WindowEventDispatcher : public EventDispatcher
 {
 public:
 
-	WindowEventDispatcher(Window* window);
+	WindowEventDispatcher();
+
+	void start(Window* window);
+
+	void stop();
 
 private:
 

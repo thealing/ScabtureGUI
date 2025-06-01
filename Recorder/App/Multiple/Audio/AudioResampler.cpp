@@ -2,9 +2,9 @@
 
 AudioResampler::AudioResampler(const AudioResamplerSettings& settings, AudioCapture* source) : FrameDelegate(source)
 {
+	_source = source;
 	_inputSampleRate = 0;
 	_outputSampleRate = 0;
-	_source = source;
 	if (_source == NULL)
 	{
 		_status = E_INVALIDARG;
