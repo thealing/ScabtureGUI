@@ -8,26 +8,27 @@ BilinearResizer::BilinearResizer(Vector inputSize, Vector outputSize, const Rect
 	int inputHeight = inputRect.upper.y - inputRect.lower.y;
 	int outputWidth = outputRect.upper.x - outputRect.lower.x;
 	int outputHeight = outputRect.upper.y - outputRect.lower.y;
+	const int resolution = 1024;
 	for (int outputY = 0; outputY < outputHeight; outputY++)
 	{
 		double inputY = (outputY + 0.5) * inputHeight / outputHeight - 0.5;
-		double fractionY = inputY - floor(inputY);
-		double weightsY[2] = { 1 - fractionY, fractionY };
-		double indicesY[2] = { floor(inputY), ceil(inputY) };
+		int fractionY = (int)(inputY - floor(inputY)) * resolution;
+		int weightsY[2] = { resolution - fractionY, fractionY };
+		int indicesY[2] = { (int)floor(inputY), (int)ceil(inputY) };
 		for (int outputX = 0; outputX < outputWidth; outputX++)
 		{
 			double inputX = (outputX + 0.5) * inputWidth / outputWidth - 0.5;
-			double fractionX = inputX - floor(inputX);
-			double weightsX[2] = { 1 - fractionX, fractionX };
-			double indicesX[2] = { floor(inputX), ceil(inputX) };
+			int fractionX = (int)(inputX - floor(inputX)) * resolution;
+			int weightsX[2] = { resolution - fractionX, fractionX };
+			int indicesX[2] = { (int)floor(inputX), (int)ceil(inputX) };
 			int index = outputSize.x * (outputRect.lower.y + outputY) + (outputRect.lower.x + outputX);
 			for (int i = 0; i < 4; i++)
 			{
-				int x = round<int>(indicesX[i % 2]);
-				int y = round<int>(indicesY[i / 2]);
+				int x = indicesX[i % 2];
+				int y = indicesY[i / 2];
 				_indexBuffer[index * 4 + i] = inputSize.x * (inputRect.lower.y + y) + (inputRect.lower.x + x);
-				double weight = (weightsX[i % 2] + weightsY[i / 2]) / 2;
-				_weightBuffer[index] |= round<int>(weight * 64) << (i * 8);
+				int weight = (weightsX[i % 2] + weightsY[i / 2]) * 64 / resolution / 2;
+				_weightBuffer[index] |= weight << i * 8;
 			}
 		}
 	}
