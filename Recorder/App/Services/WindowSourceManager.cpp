@@ -97,8 +97,6 @@ bool WindowSourceManager::selectSource(VideoSource source)
 
 Vector WindowSourceManager::getWindowSize() const
 {
-	_settingsInitEvent.wait();
-	_sourceInitEvent.wait();
 	ReadLockHolder holder(&_lock);
 	int width = RectUtil::getRectWidth(_source.rect);
 	int height = RectUtil::getRectHeight(_source.rect);
@@ -107,8 +105,6 @@ Vector WindowSourceManager::getWindowSize() const
 
 VideoCapture* WindowSourceManager::createCapture() const
 {
-	_settingsInitEvent.wait();
-	_sourceInitEvent.wait();
 	ReadLockHolder holder(&_lock);
 	return new WindowCapture(_settings.captureSettings, _source);
 }
