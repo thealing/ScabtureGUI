@@ -16,6 +16,8 @@ public:
 
 	HRESULT getStatistics(MF_SINK_WRITER_STATISTICS* statistics) const;
 
+	Status getStatus() const;
+
 	const Event* getEncodeEvent() const;
 
 	const Event* getErrorEvent() const;
@@ -37,6 +39,10 @@ private:
 	HRESULT writeSample(IMFSample* sample);
 
 	HRESULT sendStreamTick(LONGLONG timestamp);
+
+protected:
+
+	Status _status;
 
 private:
 

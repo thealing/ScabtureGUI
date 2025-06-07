@@ -52,6 +52,11 @@ HRESULT Encoder::getStatistics(MF_SINK_WRITER_STATISTICS* statistics) const
 	return result;
 }
 
+Status Encoder::getStatus() const
+{
+	return _status;
+}
+
 const Event* Encoder::getEncodeEvent() const
 {
 	return _encodeEventPool.getEvent();

@@ -12,7 +12,6 @@ private:
 
 private:
 
-	Status _status;
 	VideoEncoderSettings _settings;
 	WeakPointer<VideoCapture> _source;
 };

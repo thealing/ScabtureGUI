@@ -27,36 +27,31 @@ SinkWriter::SinkWriter(const SinkWriterSettings& settings, const wchar_t* path)
 
 HRESULT SinkWriter::addStream(IMFMediaType* inputType, IMFMediaType* outputType, DWORD* streamIndex)
 {
-	Status result;
-	if (result && _writer == NULL)
+	if (_status && inputType == NULL)
 	{
-		result = E_POINTER;
+		_status = E_INVALIDARG;
 	}
-	if (result && inputType == NULL)
+	if (_status && outputType == NULL)
 	{
-		result = E_INVALIDARG;
+		_status = E_INVALIDARG;
 	}
-	if (result && outputType == NULL)
+	if (_status && streamIndex == NULL)
 	{
-		result = E_INVALIDARG;
+		_status = E_INVALIDARG;
 	}
-	if (result && streamIndex == NULL)
+	if (_status)
 	{
-		result = E_INVALIDARG;
+		_status = _writer->AddStream(outputType, streamIndex);
 	}
-	if (result)
+	if (_status)
 	{
-		result = _writer->AddStream(outputType, streamIndex);
+		_status = _writer->SetInputMediaType(*streamIndex, inputType, NULL);
 	}
-	if (result)
+	if (!_status)
 	{
-		result = _writer->SetInputMediaType(*streamIndex, inputType, NULL);
+		LogUtil::logComError(__FUNCTION__, _status);
 	}
-	if (!result)
-	{
-		LogUtil::logComError(__FUNCTION__, result);
-	}
-	return result;
+	return _status;
 }
 
 HRESULT SinkWriter::writeSample(DWORD streamIndex, IMFSample* sample)
@@ -156,4 +151,9 @@ HRESULT SinkWriter::finalize()
 		LogUtil::logComError(__FUNCTION__, result);
 	}
 	return result;
+}
+
+Status SinkWriter::getStatus() const
+{
+    return _status;
 }

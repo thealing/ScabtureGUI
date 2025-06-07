@@ -18,6 +18,8 @@ public:
 
 	HRESULT finalize();
 
+	Status getStatus() const;
+
 private:
 
 	Status _status;
