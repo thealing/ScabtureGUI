@@ -1,46 +1,34 @@
 #include "MouseOverlay.h"
 
-MouseOverlay::MouseOverlay(const CaptureSource& source, bool draw)
+MouseOverlay::MouseOverlay(const CaptureSource& source)
 {
-	_draw = draw;
 	_window = source.window;
 	_client = source.client;
-	_iconInfo = {};
-	_context = CreateCompatibleDC(NULL);
-}
-
-MouseOverlay::~MouseOverlay()
-{
-	DeleteObject(_iconInfo.hbmColor);
-	DeleteObject(_iconInfo.hbmMask);
-	DeleteDC(_context);
+	_offset = { source.rect.left, source.rect.top };
 }
 
 void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
 {
-	// TODO: Clean this function
 	CURSORINFO cursorInfo = {};
 	cursorInfo.cbSize = sizeof(cursorInfo);
 	if (!GetCursorInfo(&cursorInfo))
 	{
 		return;
 	}
-	if (cursorInfo.flags != CURSOR_SHOWING && !_draw)
+	if (cursorInfo.flags != CURSOR_SHOWING)
 	{
 		return;
 	}
 	ICONINFO iconInfo = {};
-	if (GetIconInfo(cursorInfo.hCursor, &iconInfo))
-	{
-		DeleteObject(_iconInfo.hbmColor);
-		DeleteObject(_iconInfo.hbmMask);
-		_iconInfo = iconInfo;
-	}
-	if (_iconInfo.hbmColor == NULL && _iconInfo.hbmMask == NULL)
+	if (!GetIconInfo(cursorInfo.hCursor, &iconInfo))
 	{
 		return;
 	}
-	POINT offset = {};
+	if (iconInfo.hbmColor == NULL && iconInfo.hbmMask == NULL)
+	{
+		return;
+	}
+	POINT offset = _offset;
 	if (_client)
 	{
 		ClientToScreen(_window, &offset);
@@ -57,15 +45,15 @@ void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
 	BITMAP iconBitmap = {};
 	int iconWidth = 0;
 	int iconHeight = 0;
-	if (_iconInfo.hbmColor != NULL)
+	if (iconInfo.hbmColor != NULL)
 	{
-		GetObject(_iconInfo.hbmColor, sizeof(BITMAP), &iconBitmap);
+		GetObject(iconInfo.hbmColor, sizeof(BITMAP), &iconBitmap);
 		iconWidth = iconBitmap.bmWidth;
 		iconHeight = iconBitmap.bmHeight;
 	}
 	else
 	{
-		GetObject(_iconInfo.hbmMask, sizeof(BITMAP), &iconBitmap);
+		GetObject(iconInfo.hbmMask, sizeof(BITMAP), &iconBitmap);
 		iconWidth = iconBitmap.bmWidth;
 		iconHeight = iconBitmap.bmHeight / 2;
 	}
@@ -79,16 +67,18 @@ void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
 	bitmapInfo.bmiHeader.biCompression = BI_RGB;
 	uint8_t* imageBits = new uint8_t[iconWidth * iconHeight * 4];
 	uint8_t* maskBits = new uint8_t[iconWidth * iconHeight * 4];
-	if (_iconInfo.hbmColor != NULL)
+	HDC context = CreateCompatibleDC(NULL);
+	if (iconInfo.hbmColor != NULL)
 	{
-		GetDIBits(_context, _iconInfo.hbmColor, 0, iconHeight, imageBits, &bitmapInfo, DIB_RGB_COLORS);
-		GetDIBits(_context, _iconInfo.hbmMask, 0, iconHeight, maskBits, &bitmapInfo, DIB_RGB_COLORS);
+		GetDIBits(context, iconInfo.hbmColor, 0, iconHeight, imageBits, &bitmapInfo, DIB_RGB_COLORS);
+		GetDIBits(context, iconInfo.hbmMask, 0, iconHeight, maskBits, &bitmapInfo, DIB_RGB_COLORS);
 	}
 	else
 	{
-		GetDIBits(_context, _iconInfo.hbmMask, 0, iconHeight, imageBits, &bitmapInfo, DIB_RGB_COLORS);
-		GetDIBits(_context, _iconInfo.hbmMask, iconHeight, iconHeight, maskBits, &bitmapInfo, DIB_RGB_COLORS);
+		GetDIBits(context, iconInfo.hbmMask, 0, iconHeight, imageBits, &bitmapInfo, DIB_RGB_COLORS);
+		GetDIBits(context, iconInfo.hbmMask, iconHeight, iconHeight, maskBits, &bitmapInfo, DIB_RGB_COLORS);
 	}
+	DeleteDC(context);
 	for (int i = 0; i < iconHeight; i++)
 	{
 		for (int j = 0; j < iconWidth; j++)
@@ -99,14 +89,14 @@ void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
 			{
 				continue;
 			}
-			int x = cursorInfo.ptScreenPos.x - _iconInfo.xHotspot + j;
-			int y = cursorInfo.ptScreenPos.y - _iconInfo.yHotspot + i;
+			int x = cursorInfo.ptScreenPos.x - iconInfo.xHotspot + j;
+			int y = cursorInfo.ptScreenPos.y - iconInfo.yHotspot + i;
 			if (x < 0 || x >= width || y < 0 || y >= height)
 			{
 				continue;
 			}
 			uint8_t* dest = (uint8_t*)(pixels + y * stride + x);
-			if (_iconInfo.hbmColor != NULL)
+			if (iconInfo.hbmColor != NULL)
 			{
 				for (int k = 0; k < 4; k++)
 				{
@@ -122,6 +112,8 @@ void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
 			}
 		}
 	}
+	DeleteObject(iconInfo.hbmColor);
+	DeleteObject(iconInfo.hbmMask);
 	delete[] imageBits;
 	delete[] maskBits;
 }
