@@ -12,7 +12,6 @@ private:
 
 private:
 
-	Status _status;
 	AudioEncoderSettings _settings;
 	WeakPointer<AudioCapture> _source;
 };
