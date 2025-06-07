@@ -9,7 +9,7 @@ struct MainSettings
 	bool stopOnVideoError;
 	bool stopOnAudioError;
 	bool askToPlayTheRecording;
-	bool useHardwareEncoder;
+	bool useHardwareEncoders;
 	bool lowLatencyMode;
 	Hotkey startHotkey;
 	Hotkey stopHotkey;

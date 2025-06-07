@@ -15,7 +15,7 @@ WindowCapture::WindowCapture(const WindowCaptureSettings& settings, const Window
 	_capture = createCapture(captureSource, settings.method);
 	if (settings.showCursor)
 	{
-		Overlay* mouseOverlay = new MouseOverlay(captureSource, settings.drawCursor);
+		Overlay* mouseOverlay = new MouseOverlay(captureSource);
 		_capture->addOverlay(mouseOverlay);
 	}
 	_timer = new Timer(0, 1.0 / settings.frameRate, BIND(WindowCapture, onTimer, this));

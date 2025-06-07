@@ -33,7 +33,6 @@ void VideoSettingsObserver::updateWindowSourceSettings(const VideoSettings& vide
 	settings.captureSettings.method = videoSettings.captureMethod;
 	settings.captureSettings.frameRate = videoSettings.frameRate;
 	settings.captureSettings.showCursor = videoSettings.showCursor;
-	settings.captureSettings.drawCursor = videoSettings.drawCursor;
 	if (_windowSourceManager->setSettings(settings))
 	{
 		LogUtil::logInfo(L"VideoSettingsObserver: Window source settings changed.");

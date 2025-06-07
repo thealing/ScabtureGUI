@@ -10,7 +10,7 @@ MainSettingsDialog::~MainSettingsDialog()
 
 DialogWindow* MainSettingsDialog::createWindow(Window* parent)
 {
-	return new DialogWindow(parent, L"Settings", 450, 26, 10, 6);
+	return new DialogWindow(parent, L"Settings", 390, 26, 10, 5);
 }
 
 void MainSettingsDialog::createControls(DialogWindow* window, MainSettings* settings)
@@ -24,13 +24,14 @@ void MainSettingsDialog::createControls(DialogWindow* window, MainSettings* sett
 	window->addSeparator();
 	window->addCheckBox(L"Stop recording if the video capture ends", 16, &settings->stopOnVideoError);
 	window->addCheckBox(L"Stop recording if the audio capture ends", 16, &settings->stopOnAudioError);
-	window->addCheckBox(L"Ask to play the recording when finished", 16, &settings->askToPlayTheRecording);
 	window->addSeparator();
 	window->addCheckBox(L"High quality preview", 16, &settings->highQualityPreview);
 	window->addCheckBox(L"Disable preview while recording", 16, &settings->disablePreviewWhileRecording);
 	window->addSeparator();
-	window->addCheckBox(L"Use hardware encoder", 16, &settings->useHardwareEncoder);
+	window->addCheckBox(L"Use hardware-accelerated encoders", 16, &settings->useHardwareEncoders);
 	window->addCheckBox(L"Low latency mode", 16, &settings->lowLatencyMode);
+	window->addSeparator();
+	window->addCheckBox(L"Ask to play the recorded video", 16, &settings->askToPlayTheRecording);
 	window->addSeparator();
 	window->addHotkeyEdit(L"Start recording", 120, &settings->startHotkey);
 	window->addHotkeyEdit(L"Stop recording", 120, &settings->stopHotkey);
@@ -43,5 +44,5 @@ void MainSettingsDialog::createControls(DialogWindow* window, MainSettings* sett
 	logModeNames[LogModeNone] = L"None";
 	logModeNames[LogModeSingleFile] = L"Single file";
 	logModeNames[LogModeNewFiles] = L"Time-stamped files";
-	window->addComboBox(L"Logging (requires restart)", 160, (int*)&settings->logMode, logModeNames, ARRAYSIZE(logModeNames));
+	window->addComboBox(L"Logging output", 160, (int*)&settings->logMode, logModeNames, ARRAYSIZE(logModeNames));
 }

@@ -11,7 +11,6 @@ VideoSettings VideoSettingsManager::getDefault() const
 	settings.windowArea = WindowAreaVisible;
 	settings.captureMethod = CaptureMethodDefault;
 	settings.showCursor = true;
-	settings.drawCursor = false;
 	settings.frameRate = 60;
 	settings.bitRate = 16000;
 	settings.width = 640;
