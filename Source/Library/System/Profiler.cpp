@@ -1,6 +1,6 @@
 #include "Profiler.h"
 
-static int _level;
+static volatile int _level;
 static Thread* _thread;
 
 static void threadProc(void*)
@@ -45,16 +45,20 @@ static void threadProc(void*)
 				enterTime = 0;
 			}
 		}
-		wprintf(L"Profiler: Usage: %i %% Duration: %f ms", activeCount * 100 / totalCount, durationSum * 1000 / max(1, durationCount));
+		wprintf(L"Profiler: Usage: %i %% Duration: %f ms\n", activeCount * 100 / totalCount, durationSum * 1000 / max(1, durationCount));
 	}
 }
 
-void enterBlock()
+void startProfiler()
 {
 	if (_thread == NULL)
 	{
 		_thread = new Thread(Callback(threadProc, NULL));
 	}
+}
+
+void enterBlock()
+{
 	_level++;
 }
 
