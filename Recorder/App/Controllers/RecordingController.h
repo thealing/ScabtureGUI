@@ -47,6 +47,7 @@ private:
 private:
 
 	WindowEventDispatcher _eventDispatcher;
+	UniquePointer<const wchar_t> _outputPath; // Very bad!
 	WeakPointer<MainWindow> _mainWindow;
 	WeakPointer<RecordingManager> _recordingManager;
 	WeakPointer<VideoCaptureManager> _videoCaptureManager;
