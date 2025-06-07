@@ -16,9 +16,9 @@ RecordingController::RecordingController(MainWindow* mainWindow, RecordingManage
 	_eventDispatcher.addEntry(recordingPanel->getStopClickEvent(), BIND(RecordingController, onStopButtonClicked, this));
 	_eventDispatcher.addEntry(recordingPanel->getPauseClickEvent(), BIND(RecordingController, onPauseButtonClicked, this));
 	_eventDispatcher.addEntry(keyboardListener->getStartEvent(), BIND(RecordingController, onStartHotkeyPressed, this));
-	_eventDispatcher.addEntry(keyboardListener->getStartEvent(), BIND(RecordingController, onStartHotkeyPressed, this));
 	_eventDispatcher.addEntry(keyboardListener->getStopEvent(), BIND(RecordingController, onStopHotkeyPressed, this));
 	_eventDispatcher.addEntry(keyboardListener->getPauseEvent(), BIND(RecordingController, onPauseHotkeyPressed, this));
+	_eventDispatcher.addEntry(keyboardListener->getResumeEvent(), BIND(RecordingController, onResumeHotkeyPressed, this));
 	_eventDispatcher.addEntry(recordingManager->getVideoErrorEvent(), BIND(RecordingController, onVideoError, this));
 	_eventDispatcher.addEntry(recordingManager->getAudioErrorEvent(), BIND(RecordingController, onAudioError, this));
 	_eventDispatcher.start(mainWindow);
@@ -29,6 +29,13 @@ RecordingController::~RecordingController()
 {
 	_eventDispatcher.stop();
 	LogUtil::logDebug(L"RecordingController: Stopped.");
+	// In case the main window gets killed externally, we could get here while the recording is still running.
+	// This would cause a deadlock in the capture controllers.
+	// So then we must stop the recording here to prevent that from happening.
+	if (_recordingManager->isRunning())
+	{
+		stopRecording(); 
+	}
 }
 
 void RecordingController::onStartButtonClicked()
@@ -109,15 +116,29 @@ void RecordingController::startRecording()
 		return;
 	}
 	LogUtil::logInfo(L"RecordingController: Starting recording.");
-	const wchar_t* outputPath = FileUtil::generateRecordingSavePath();
-	SinkWriter* sinkWriter = _sinkWriterFactory->createSinkWriter(outputPath);
+	_outputPath = FileUtil::generateRecordingSavePath();
+	SinkWriter* sinkWriter = _sinkWriterFactory->createSinkWriter(_outputPath);
 	VideoCapture* videoCapture = _videoCaptureManager->lockCapture();
 	Encoder* videoEncoder = _videoEncoderFactory->createEncoder(videoCapture, sinkWriter);
 	AudioCapture* audioCapture = _audioCaptureManager->lockCapture();
 	Encoder* audioEncoder = _audioEncoderFactory->createEncoder(audioCapture, sinkWriter);
-	doActionsBeforeRecording();
-	_recordingManager->start(outputPath, sinkWriter, videoEncoder, audioEncoder);
-	LogUtil::logInfo(L"RecordingController: Started recording.");
+	Status status = sinkWriter->getStatus();
+	if (status)
+	{
+		doActionsBeforeRecording();
+		_recordingManager->start(sinkWriter, videoEncoder, audioEncoder);
+		LogUtil::logInfo(L"RecordingController: Started recording.");
+	}
+	else
+	{
+		delete videoEncoder;
+		delete audioEncoder;
+		delete sinkWriter;
+		_videoCaptureManager->unlockCapture();
+		_audioCaptureManager->unlockCapture();
+		UniquePointer<const wchar_t> errorMessage = StringUtil::formatString(L"Failed to start the recording!\nError: 0x%08X", status);
+		_mainWindow->showMessageBox(L"Recording failed", errorMessage, MB_OK | MB_ICONERROR);
+	}
 }
 
 void RecordingController::stopRecording()
@@ -129,9 +150,9 @@ void RecordingController::stopRecording()
 	}
 	LogUtil::logInfo(L"RecordingController: Stopping recording.");
 	_recordingManager->stop();
-	doActionsAfterRecording();
 	_videoCaptureManager->unlockCapture();
 	_audioCaptureManager->unlockCapture();
+	doActionsAfterRecording();
 	LogUtil::logInfo(L"RecordingController: Stopped recording.");
 }
 
@@ -197,11 +218,10 @@ void RecordingController::doActionsAfterRecording()
 	}
 	if (settings.askToPlayTheRecording)
 	{
-		int result = _mainWindow->showMessageBox(L"Recording finished", L"Play the recorded video?", MB_YESNO | MB_ICONQUESTION);
+		int result = _mainWindow->showMessageBox(L"Recording finished", L"Open the recorded video?", MB_YESNO | MB_ICONQUESTION);
 		if (result == IDYES)
 		{
-			UniquePointer<const wchar_t> path = _recordingManager->getTitle();
-			ShellExecute(NULL, L"open", path, NULL, NULL, SW_SHOWNORMAL);
+			ShellExecute(NULL, L"open", _outputPath, NULL, NULL, SW_SHOWNORMAL);
 		}
 	}
 }
