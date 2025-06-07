@@ -14,7 +14,7 @@ MainSettings MainSettingsManager::getDefault() const
 	settings.stopOnVideoError = true;
 	settings.stopOnAudioError = true;
 	settings.askToPlayTheRecording = true;
-	settings.useHardwareEncoder = true;
+	settings.useHardwareEncoders = true;
 	settings.lowLatencyMode = true;
 	return settings;
 }

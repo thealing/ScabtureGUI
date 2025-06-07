@@ -52,7 +52,7 @@ void MainSettingsObserver::updateSinkWriterSettings(const MainSettings& mainSett
 {
 	SinkWriterSettings settings = {};
 	settings.lowLatency = mainSettings.lowLatencyMode;
-	settings.useGpu = mainSettings.useHardwareEncoder;
+	settings.useGpu = mainSettings.useHardwareEncoders;
 	if (_sinkWriterFactory->setSettings(settings))
 	{
 		LogUtil::logInfo(L"MainSettingsObserver: Sink writer settings changed.");

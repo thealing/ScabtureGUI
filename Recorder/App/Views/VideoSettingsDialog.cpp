@@ -10,7 +10,7 @@ VideoSettingsDialog::~VideoSettingsDialog()
 
 DialogWindow* VideoSettingsDialog::createWindow(Window* parent)
 {
-	return new DialogWindow(parent, L"Video Options", 340, 28, 10, 6);
+	return new DialogWindow(parent, L"Video Options", 340, 28, 10, 5);
 }
 
 void VideoSettingsDialog::createControls(DialogWindow* window, VideoSettings* settings)
@@ -26,7 +26,6 @@ void VideoSettingsDialog::createControls(DialogWindow* window, VideoSettings* se
 	window->addComboBox(L"Window area", 140, (int*)&settings->windowArea, areaNames, ARRAYSIZE(areaNames));
 	window->addSeparator();
 	window->addCheckBox(L"Show mouse cursor", 16, &settings->showCursor);
-	window->addCheckBox(L"Draw cursor when it is invisible", 16, &settings->drawCursor);
 	window->addSeparator();
 	const wchar_t* resizeModeNames[ResizeModeCount] = {};
 	resizeModeNames[ResizeModeStretch] = L"Stretch";
