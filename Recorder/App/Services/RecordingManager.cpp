@@ -7,7 +7,7 @@ RecordingManager::RecordingManager()
 	_paused = false;
 }
 
-void RecordingManager::start(const wchar_t* title, SinkWriter* sinkWriter, Encoder* videoEncoder, Encoder* audioEncoder)
+void RecordingManager::start(SinkWriter* sinkWriter, Encoder* videoEncoder, Encoder* audioEncoder)
 {
 	WriteLockHolder holder(&_lock);
 	assert(!_running);
@@ -16,7 +16,6 @@ void RecordingManager::start(const wchar_t* title, SinkWriter* sinkWriter, Encod
 	assert(_audioEncoder == NULL);
 	_running = true;
 	_paused = false;
-	_title = title;
 	_sinkWriter = sinkWriter;
 	_videoEncoder = videoEncoder;
 	_audioEncoder = audioEncoder;
@@ -97,7 +96,11 @@ void RecordingManager::getVideoStatistics(MF_SINK_WRITER_STATISTICS* statistics)
 	ReadLockHolder holder(&_lock);
 	if (_videoEncoder != NULL)
 	{
-		_videoEncoder->getStatistics(statistics);
+		Status status = _videoEncoder->getStatus();
+		if (status)
+		{
+			_videoEncoder->getStatistics(statistics);
+		}
 	}
 }
 
@@ -106,18 +109,12 @@ void RecordingManager::getAudioStatistics(MF_SINK_WRITER_STATISTICS* statistics)
 	ReadLockHolder holder(&_lock);
 	if (_audioEncoder != NULL)
 	{
-		_audioEncoder->getStatistics(statistics);
+		Status status = _audioEncoder->getStatus();
+		if (status)
+		{
+			_audioEncoder->getStatistics(statistics);
+		}
 	}
-}
-
-const wchar_t* RecordingManager::getTitle() const
-{
-	ReadLockHolder holder(&_lock);
-	if (_title != NULL)
-	{
-		return StringUtil::formatString(_title);
-	}
-	return NULL;
 }
 
 const FpsCounter& RecordingManager::getFpsCounter() const
