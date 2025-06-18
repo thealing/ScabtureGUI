@@ -6,6 +6,11 @@ WindowSourceManager::WindowSourceManager()
 	_source = {};
 }
 
+const Event* WindowSourceManager::getChangeEvent()
+{
+	return _changeEventPool.getEvent();
+}
+
 bool WindowSourceManager::setSettings(const WindowSourceSettings& settings)
 {
 	WriteLockHolder holder(&_lock);
@@ -107,9 +112,4 @@ VideoCapture* WindowSourceManager::createCapture() const
 {
 	ReadLockHolder holder(&_lock);
 	return new WindowCapture(_settings.captureSettings, _source);
-}
-
-const Event* WindowSourceManager::getChangeEvent() const
-{
-	return _changeEventPool.getEvent();
 }

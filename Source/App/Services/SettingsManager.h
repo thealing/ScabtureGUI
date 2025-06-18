@@ -7,11 +7,11 @@ public:
 
 	SettingsManager(const wchar_t* name);
 
+	const Event* getChangeEvent();
+
 	bool setSettings(const Settings& settings);
 
 	Settings getSettings() const;
-
-	const Event* getChangeEvent() const;
 
 	virtual ~SettingsManager();
 

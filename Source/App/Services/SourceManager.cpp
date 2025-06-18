@@ -8,6 +8,12 @@ SourceManager<Source>::SourceManager(Source source)
 }
 
 template<class Source>
+const Event* SourceManager<Source>::getSelectionEvent()
+{
+	return _selectionEventPool.getEvent();
+}
+
+template<class Source>
 void SourceManager<Source>::selectSource(Source source)
 {
 	_source = source;
@@ -18,10 +24,4 @@ template<class Source>
 Source SourceManager<Source>::getSource() const
 {
 	return _source;
-}
-
-template<class Source>
-const Event* SourceManager<Source>::getSelectionEvent() const
-{
-	return _selectionEventPool.getEvent();
 }

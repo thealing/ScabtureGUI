@@ -4,6 +4,11 @@ AudioResamplerFactory::AudioResamplerFactory()
 {
 }
 
+const Event* AudioResamplerFactory::getChangeEvent()
+{
+	return _settingsManager.getChangeEvent();
+}
+
 bool AudioResamplerFactory::setSettings(const AudioResamplerSettings& settings)
 {
 	return _settingsManager.setSettings(settings);
@@ -13,9 +18,4 @@ AudioResampler* AudioResamplerFactory::createResampler(AudioCapture* source) con
 {
 	AudioResamplerSettings settings = _settingsManager.getSettings();
 	return new AudioResampler(settings, source);
-}
-
-const Event* AudioResamplerFactory::getChangeEvent() const
-{
-	return _settingsManager.getChangeEvent();
 }

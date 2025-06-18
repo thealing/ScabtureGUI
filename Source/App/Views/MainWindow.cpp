@@ -24,6 +24,16 @@ MainWindow::MainWindow() : CustomWindow(CLASS_NAME)
 	repaint();
 }
 
+void MainWindow::openOutputFile()
+{
+	openFile(_outputPath);
+}
+
+void MainWindow::setOutputPath(const wchar_t* path)
+{
+	_outputPath = path;
+}
+
 void MainWindow::setCloseable(bool closeable)
 {
 	_closeable = closeable;

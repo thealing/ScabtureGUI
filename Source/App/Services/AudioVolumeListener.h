@@ -6,6 +6,12 @@ public:
 
 	AudioVolumeListener();
 
+	const Event* getUpdateEvent();
+
+	const Event* getInputMeterErrorEvent();
+
+	const Event* getOutputMeterErrorEvent();
+
 	void setInputVolumeMeter(AudioVolumeMeter* meter);
 
 	void setOutputVolumeMeter(AudioVolumeMeter* meter);
@@ -13,12 +19,6 @@ public:
 	bool getInputVolumes(Volumes* volumes) const;
 
 	bool getOutputVolumes(Volumes* volumes) const;
-
-	const Event* getUpdateEvent() const;
-
-	const Event* getInputMeterErrorEvent() const;
-
-	const Event* getOutputMeterErrorEvent() const;
 
 private:
 

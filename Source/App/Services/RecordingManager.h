@@ -6,6 +6,12 @@ public:
 
 	RecordingManager();
 
+	const Event* getEncodeEvent();
+
+	const Event* getVideoErrorEvent();
+
+	const Event* getAudioErrorEvent();
+
 	void start(SinkWriter* sinkWriter, Encoder* videoEncoder, Encoder* audioEncoder);
 
 	void stop();
@@ -24,12 +30,6 @@ public:
 
 	const FpsCounter& getFpsCounter() const;
 
-	const Event* getEncodeEvent() const;
-
-	const Event* getVideoErrorEvent() const;
-
-	const Event* getAudioErrorEvent() const;
-
 private:
 
 	void onEncodedFrame();
@@ -46,10 +46,10 @@ private:
 	UniquePointer<Encoder> _videoEncoder;
 	UniquePointer<Encoder> _audioEncoder;
 	UniquePointer<EventDispatcher> _eventDispatcher;
-	FpsCounter _fpsCounter;
 	EventPool _encodeEventPool;
 	EventPool _videoErrorEventPool;
 	EventPool _audioErrorEventPool;
+	FpsCounter _fpsCounter;
 	bool _running;
 	bool _paused;
 };

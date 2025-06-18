@@ -16,13 +16,13 @@ public:
 
 	void unlockCapture();
 
+	const Event* getChangeEvent();
+
+	const Event* getFrameEvent();
+
+	const Event* getErrorEvent();
+
 	const FpsCounter& getFpsCounter() const;
-
-	const Event* getChangeEvent() const;
-
-	const Event* getFrameEvent() const;
-
-	const Event* getErrorEvent() const;
 
 private:
 
@@ -35,9 +35,9 @@ private:
 	CaptureLock _lock;
 	UniquePointer<VideoCapture> _capture;
 	UniquePointer<EventDispatcher> _dispatcher;
-	FpsCounter _fpsCounter;
 	EventPool _changeEventPool;
 	EventPool _frameEventPool;
 	EventPool _errorEventPool;
+	FpsCounter _fpsCounter;
 };
 

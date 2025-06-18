@@ -6,6 +6,8 @@ public:
 
 	WindowSourceManager();
 
+	const Event* getChangeEvent();
+
 	bool setSettings(const WindowSourceSettings& settings);
 
 	bool selectSource(VideoSource source);
@@ -13,8 +15,6 @@ public:
 	Vector getWindowSize() const;
 
 	VideoCapture* createCapture() const;
-
-	const Event* getChangeEvent() const;
 
 private:
 

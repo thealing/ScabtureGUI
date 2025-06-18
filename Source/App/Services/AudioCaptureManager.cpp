@@ -12,6 +12,11 @@ AudioCaptureManager::~AudioCaptureManager()
 	}
 }
 
+const Event* AudioCaptureManager::getErrorEvent()
+{
+	return _errorEventPool.getEvent();
+}
+
 void AudioCaptureManager::setCapture(AudioCapture* capture)
 {
 	_lock.beginWriting();
@@ -39,11 +44,6 @@ AudioCapture* AudioCaptureManager::lockCapture()
 void AudioCaptureManager::unlockCapture()
 {
 	_lock.endReading();
-}
-
-const Event* AudioCaptureManager::getErrorEvent() const
-{
-	return _errorEventPool.getEvent();
 }
 
 void AudioCaptureManager::onError()

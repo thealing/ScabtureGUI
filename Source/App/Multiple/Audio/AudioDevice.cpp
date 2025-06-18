@@ -22,11 +22,13 @@ AudioDevice::AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole 
 	{
 		if (flow == eRender)
 		{
-			LogUtil::logInfo(L"Output device format: %d ch / %d bit / %d Hz.", _waveFormat->nChannels, _waveFormat->wBitsPerSample, _waveFormat->nSamplesPerSec);
+			UniquePointer<const wchar_t> format = _waveFormat.toString();
+			LogUtil::logInfo(L"Output device format: %ls.", format);
 		}
 		if (flow == eCapture)
 		{
-			LogUtil::logInfo(L"Input device format: %d ch / %d bit / %d Hz.", _waveFormat->nChannels, _waveFormat->wBitsPerSample, _waveFormat->nSamplesPerSec);
+			UniquePointer<const wchar_t> format = _waveFormat.toString();
+			LogUtil::logInfo(L"Input device format: %ls.", format);
 		}
 		DWORD flags = 0;
 		if (flow == eRender)
@@ -198,6 +200,10 @@ void AudioDevice::onFrame()
 	}
 	else
 	{
-		signalError();
+		if (_status)
+		{
+			_status = result;
+			signalError();
+		}
 	}
 }

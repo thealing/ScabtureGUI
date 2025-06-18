@@ -29,12 +29,12 @@ RecordingController::~RecordingController()
 {
 	_eventDispatcher.stop();
 	LogUtil::logDebug(L"RecordingController: Stopped.");
-	// In case the main window gets killed externally, we could get here while the recording is still running.
+	// In case the main window closes abruptly, we could get here while the recording is still running.
 	// This would cause a deadlock in the capture controllers.
 	// So then we must stop the recording here to prevent that from happening.
 	if (_recordingManager->isRunning())
 	{
-		stopRecording(); 
+		stopRecording(true); 
 	}
 }
 
@@ -47,7 +47,7 @@ void RecordingController::onStartButtonClicked()
 void RecordingController::onStopButtonClicked()
 {
 	LogUtil::logInfo(L"RecordingController: Stop button clicked.");
-	stopRecording();
+	stopRecording(true); 
 }
 
 void RecordingController::onPauseButtonClicked()
@@ -73,7 +73,7 @@ void RecordingController::onStartHotkeyPressed()
 void RecordingController::onStopHotkeyPressed()
 {
 	LogUtil::logInfo(L"RecordingController: Stop hotkey pressed.");
-	stopRecording();
+	stopRecording(true); 
 }
 
 void RecordingController::onPauseHotkeyPressed()
@@ -91,33 +91,29 @@ void RecordingController::onResumeHotkeyPressed()
 void RecordingController::onVideoError()
 {
 	LogUtil::logError(L"RecordingController: Video recording failed.");
-	MainSettings settings = _mainSettingsManager->getSettings();
-	if (settings.stopOnVideoError)
-	{
-		stopRecording();
-	}
+	// A video error just means that the target window was closed.
+	// This might have been intentional, so we call this a success.
+	stopRecording(true);
 }
 
 void RecordingController::onAudioError()
 {
 	LogUtil::logError(L"RecordingController: Audio recording failed.");
-	MainSettings settings = _mainSettingsManager->getSettings();
-	if (settings.stopOnAudioError)
-	{
-		stopRecording();
-	}
+	// An audio error means that either the device was unplugged or some settings were changed.
+	// This was probably unintentional, so we call this a failure.
+	stopRecording(false); 
 }
 
 void RecordingController::startRecording()
-{
+{ 
 	if (_recordingManager->isRunning())
 	{
 		LogUtil::logWarning(L"RecordingController: Cannot start recording because it is already running.");
 		return;
 	}
 	LogUtil::logInfo(L"RecordingController: Starting recording.");
-	_outputPath = FileUtil::generateRecordingSavePath();
-	SinkWriter* sinkWriter = _sinkWriterFactory->createSinkWriter(_outputPath);
+	const wchar_t* outputPath = FileUtil::generateRecordingSavePath();
+	SinkWriter* sinkWriter = _sinkWriterFactory->createSinkWriter(outputPath);
 	VideoCapture* videoCapture = _videoCaptureManager->lockCapture();
 	Encoder* videoEncoder = _videoEncoderFactory->createEncoder(videoCapture, sinkWriter);
 	AudioCapture* audioCapture = _audioCaptureManager->lockCapture();
@@ -127,6 +123,7 @@ void RecordingController::startRecording()
 	{
 		doActionsBeforeRecording();
 		_recordingManager->start(sinkWriter, videoEncoder, audioEncoder);
+		_mainWindow->setOutputPath(outputPath);
 		LogUtil::logInfo(L"RecordingController: Started recording.");
 	}
 	else
@@ -134,6 +131,7 @@ void RecordingController::startRecording()
 		delete videoEncoder;
 		delete audioEncoder;
 		delete sinkWriter;
+		delete outputPath;
 		_videoCaptureManager->unlockCapture();
 		_audioCaptureManager->unlockCapture();
 		UniquePointer<const wchar_t> errorMessage = StringUtil::formatString(L"Failed to start the recording!\nError: 0x%08X", status);
@@ -141,7 +139,7 @@ void RecordingController::startRecording()
 	}
 }
 
-void RecordingController::stopRecording()
+void RecordingController::stopRecording(bool success)
 {
 	if (!_recordingManager->isRunning())
 	{
@@ -152,6 +150,7 @@ void RecordingController::stopRecording()
 	_recordingManager->stop();
 	_videoCaptureManager->unlockCapture();
 	_audioCaptureManager->unlockCapture();
+	MessageBeep(success ? MB_OK : MB_ICONERROR);
 	doActionsAfterRecording();
 	LogUtil::logInfo(L"RecordingController: Stopped recording.");
 }
@@ -221,9 +220,9 @@ void RecordingController::doActionsAfterRecording()
 		int result = _mainWindow->showMessageBox(L"Recording finished", L"Open the recorded video?", MB_YESNO | MB_ICONQUESTION);
 		if (result == IDYES)
 		{
-			ShellExecute(NULL, L"open", _outputPath, NULL, NULL, SW_SHOWNORMAL);
+			_mainWindow->openOutputFile();
 		}
-	}
+	} 
 }
 
 void RecordingController::updatePanel(bool recording, bool paused)

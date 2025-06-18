@@ -7,6 +7,21 @@ RecordingManager::RecordingManager()
 	_paused = false;
 }
 
+const Event* RecordingManager::getEncodeEvent()
+{
+	return _encodeEventPool.getEvent();
+}
+
+const Event* RecordingManager::getVideoErrorEvent()
+{
+	return _videoErrorEventPool.getEvent();
+}
+
+const Event* RecordingManager::getAudioErrorEvent()
+{
+	return _audioErrorEventPool.getEvent();
+}
+
 void RecordingManager::start(SinkWriter* sinkWriter, Encoder* videoEncoder, Encoder* audioEncoder)
 {
 	WriteLockHolder holder(&_lock);
@@ -121,21 +136,6 @@ const FpsCounter& RecordingManager::getFpsCounter() const
 {
 	ReadLockHolder holder(&_lock);
 	return _fpsCounter;
-}
-
-const Event* RecordingManager::getEncodeEvent() const
-{
-	return _encodeEventPool.getEvent();
-}
-
-const Event* RecordingManager::getVideoErrorEvent() const
-{
-	return _videoErrorEventPool.getEvent();
-}
-
-const Event* RecordingManager::getAudioErrorEvent() const
-{
-	return _audioErrorEventPool.getEvent();
 }
 
 void RecordingManager::onEncodedFrame()

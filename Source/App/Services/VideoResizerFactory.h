@@ -6,11 +6,11 @@ public:
 
 	VideoResizerFactory();
 
+	const Event* getChangeEvent();
+
 	bool setSettings(const VideoResizerSettings& settings);
 
 	VideoCapture* createResizer(VideoCapture* source) const;
-
-	const Event* getChangeEvent() const;
 
 private:
 

@@ -4,6 +4,11 @@ VideoResizerFactory::VideoResizerFactory()
 {
 }
 
+const Event* VideoResizerFactory::getChangeEvent()
+{
+	return _settingsManager.getChangeEvent();
+}
+
 bool VideoResizerFactory::setSettings(const VideoResizerSettings& settings)
 {
 	return _settingsManager.setSettings(settings);
@@ -29,11 +34,6 @@ VideoCapture* VideoResizerFactory::createResizer(VideoCapture* source) const
 	{
 		return source;
 	}
-}
-
-const Event* VideoResizerFactory::getChangeEvent() const
-{
-	return _settingsManager.getChangeEvent();
 }
 
 Resizer* VideoResizerFactory::createResizer(Vector inputSize, Vector outputSize) const

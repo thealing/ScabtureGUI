@@ -29,6 +29,16 @@ AudioDeviceProvider::~AudioDeviceProvider()
 	}
 }
 
+const Event* AudioDeviceProvider::getInputChangeEvent()
+{
+	return _inputChangeEventPool.getEvent();
+}
+
+const Event* AudioDeviceProvider::getOutputChangeEvent()
+{
+	return _outputChangeEventPool.getEvent();
+}
+
 AudioDevice* AudioDeviceProvider::getInputDevice() const
 {
 	return new AudioDevice(_enumerator, eCapture, eConsole);
@@ -37,16 +47,6 @@ AudioDevice* AudioDeviceProvider::getInputDevice() const
 AudioDevice* AudioDeviceProvider::getOutputDevice() const
 {
 	return new AudioDevice(_enumerator, eRender, eConsole);
-}
-
-const Event* AudioDeviceProvider::getInputChangeEvent() const
-{
-	return _inputChangeEventPool.getEvent();
-}
-
-const Event* AudioDeviceProvider::getOutputChangeEvent() const
-{
-	return _outputChangeEventPool.getEvent();
 }
 
 HRESULT AudioDeviceProvider::GetDeviceName(LPCWSTR deviceId, PROPVARIANT* deviceName) const

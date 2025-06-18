@@ -20,6 +20,7 @@ private:
 
 private:
 
+	mutable EventPool _updateEventPool;
 	mutable ReadWriteLock _lock;
 
 	int _frameCounter;
@@ -27,6 +28,5 @@ private:
 	double _lastFrameTime;
 	double _lastMeasureTime;
 	UniquePointer<Timer> _timer;
-	EventPool _updateEventPool;
 };
 

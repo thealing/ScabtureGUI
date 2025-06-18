@@ -16,6 +16,7 @@ private:
 
 private:
 
+	HWND _window;
 	UniquePointer<Buffer> _buffer;
 	UniquePointer<Capture> _capture;
 	UniquePointer<Timer> _timer;

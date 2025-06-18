@@ -2,6 +2,7 @@
 
 WindowCapture::WindowCapture(const WindowCaptureSettings& settings, const WindowSource& source)
 {
+	_window = source.window;
 	int width = RectUtil::getRectWidth(source.rect);
 	int height = RectUtil::getRectHeight(source.rect);
 	_buffer = new Buffer(width, height);
@@ -32,14 +33,22 @@ const Buffer* WindowCapture::getBuffer() const
 
 void WindowCapture::onTimer()
 {
-	bool captured = _capture->getFrame(_buffer);
-	if (captured)
+	if (_window == NULL)
+	{
+		return;
+	}
+	bool capturedFrame = _capture->getFrame(_buffer);
+	if (capturedFrame)
 	{
 		signalFrame();
 	}
 	else
 	{
-		signalError();
+		if (!IsWindow(_window))
+		{
+			_window = NULL;
+			signalError();
+		}
 	}
 }
 

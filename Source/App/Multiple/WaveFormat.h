@@ -26,6 +26,8 @@ public:
 
 	int getSize() const;
 
+	const wchar_t* toString() const;
+
 private:
 
 	void reset();

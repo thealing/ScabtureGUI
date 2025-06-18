@@ -10,14 +10,13 @@ public:
 
 	void resetEvents();
 
-	const Event* getEvent() const;
+	const Event* getEvent();
 
-	void deleteEvent(const Event* event) const;
+	void deleteEvent(const Event* event);
 
 private:
 
-	mutable ExclusiveLock _lock;
-	mutable UniqueStorage<Event> _events;
-
+	ExclusiveLock _lock;
+	UniqueStorage<Event> _events;
 	bool _set;
 };

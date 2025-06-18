@@ -56,6 +56,8 @@ public:
 
 	int showMessageBox(const wchar_t* title, const wchar_t* content, UINT type) const;
 
+	void openFile(const wchar_t* path);
+
 	void getTitle(wchar_t* buffer, int size) const;
 
 	int getTitleLength() const;

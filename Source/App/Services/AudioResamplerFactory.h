@@ -6,11 +6,11 @@ public:
 
 	AudioResamplerFactory();
 
+	const Event* getChangeEvent();
+
 	bool setSettings(const AudioResamplerSettings& settings);
 
 	AudioResampler* createResampler(AudioCapture* source) const;
-
-	const Event* getChangeEvent() const;
 
 private:
 

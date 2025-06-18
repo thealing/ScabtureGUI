@@ -1,10 +1,11 @@
 #include "VideoCaptureController.h"
 
-VideoCaptureController::VideoCaptureController(VideoCaptureManager* videoCaptureManager, VideoResizerFactory* videoResizerFactory, WindowSourceManager* windowSourceManager, VideoSettingsManager* videoSettingsManager, KeyboardListener* keyboardListener)
+VideoCaptureController::VideoCaptureController(VideoCaptureManager* videoCaptureManager, VideoResizerFactory* videoResizerFactory, WindowSourceManager* windowSourceManager, VideoSourceManager* videoSourceManager, VideoSettingsManager* videoSettingsManager, KeyboardListener* keyboardListener)
 {
 	_videoCaptureManager = videoCaptureManager;
 	_videoResizerFactory = videoResizerFactory;
 	_windowSourceManager = windowSourceManager;
+	_videoSourceManager = videoSourceManager;
 	_videoSettingsManager = videoSettingsManager;
 	_keyboardListener = keyboardListener;
 	_eventDispatcher.addEntry(videoCaptureManager->getErrorEvent(), BIND(VideoCaptureController, onCaptureFailed, this));
@@ -23,8 +24,8 @@ VideoCaptureController::~VideoCaptureController()
 
 void VideoCaptureController::onCaptureFailed()
 {
-	LogUtil::logInfo(L"VideoCaptureController: Capture failed.");
-	_videoCaptureManager->reset();
+	LogUtil::logInfo(L"VideoCaptureController: The target window closed.");
+	_videoSourceManager->selectSource(VideoSourceFullscreen);
 }
 
 void VideoCaptureController::onSourceChanged()

@@ -140,7 +140,7 @@ HRESULT VideoEncoder::getSample(IMFSample** sample)
 	}
 	if (result)
 	{
-		// TODO: Should this be a delta-time to the next frame instead of a fixed value?
+		// TODO: Should this be the time until the next frame instead of a fixed value?
 		LONGLONG duration = llround(10000000.0 / _settings.frameRate); 
 		result = (*sample)->SetSampleDuration(duration);
 	}
