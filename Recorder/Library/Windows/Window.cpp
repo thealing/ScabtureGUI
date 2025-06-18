@@ -164,6 +164,11 @@ int Window::showMessageBox(const wchar_t* title, const wchar_t* content, UINT ty
 	return MessageBox(_handle, content, title, type);
 }
 
+void Window::openFile(const wchar_t* path)
+{
+	ShellExecute(_handle, L"open", path, NULL, NULL, SW_SHOWNORMAL);
+}
+
 void Window::getTitle(wchar_t* buffer, int size) const
 {
 	int length = GetWindowText(_handle, buffer, size);
@@ -330,6 +335,11 @@ LRESULT Window::windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lPar
 			instance->repaint();
 			break;
 		}
+		case WM_LBUTTONDBLCLK:
+		{
+			SendMessage(window, WM_LBUTTONDOWN, wParam, lParam);
+			break;
+		}
 		case WM_PAINT:
 		{
 			PAINTSTRUCT paint = {};
@@ -374,10 +384,6 @@ LRESULT Window::windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lPar
 		case WM_ERASEBKGND:
 		{
 			return 0;
-		}
-		case WM_LBUTTONDBLCLK:
-		{
-			return SendMessage(window, WM_LBUTTONDOWN, wParam, lParam);
 		}
 		case WM_CTLCOLORSTATIC:
 		{

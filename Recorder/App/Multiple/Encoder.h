@@ -6,6 +6,10 @@ public:
 
 	Encoder(FrameSource* source, SinkWriter* sinkWriter);
 
+	const Event* getEncodeEvent();
+
+	const Event* getErrorEvent();
+
 	void start();
 
 	void stop();
@@ -17,10 +21,6 @@ public:
 	HRESULT getStatistics(MF_SINK_WRITER_STATISTICS* statistics) const;
 
 	Status getStatus() const;
-
-	const Event* getEncodeEvent() const;
-
-	const Event* getErrorEvent() const;
 
 protected:
 

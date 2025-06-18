@@ -7,6 +7,12 @@ AsyncSettingsManager<Settings>::AsyncSettingsManager()
 }
 
 template<class Settings>
+const Event* AsyncSettingsManager<Settings>::getChangeEvent()
+{
+	return _updateEventPool.getEvent();
+}
+
+template<class Settings>
 bool AsyncSettingsManager<Settings>::setSettings(const Settings& settings)
 {
 	ExclusiveLockHolder holder(&_lock);
@@ -32,10 +38,4 @@ Settings AsyncSettingsManager<Settings>::getSettings() const
 	ExclusiveLockHolder holder(&_lock);
 	_updateEventPool.resetEvents();
 	return _settings;
-}
-
-template<class Settings>
-const Event* AsyncSettingsManager<Settings>::getChangeEvent() const
-{
-	return _updateEventPool.getEvent();
 }

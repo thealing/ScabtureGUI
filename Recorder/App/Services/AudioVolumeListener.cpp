@@ -5,6 +5,21 @@ AudioVolumeListener::AudioVolumeListener()
 	_timer = new Timer(0, 1.0 / UpdateFps, BIND(AudioVolumeListener, update, this));
 }
 
+const Event* AudioVolumeListener::getUpdateEvent()
+{
+	return _updateEventPool.getEvent();
+}
+
+const Event* AudioVolumeListener::getInputMeterErrorEvent()
+{
+	return _inputMeterErrorEventPool.getEvent();
+}
+
+const Event* AudioVolumeListener::getOutputMeterErrorEvent()
+{
+	return _outputMeterErrorEventPool.getEvent();
+}
+
 void AudioVolumeListener::setInputVolumeMeter(AudioVolumeMeter* meter)
 {
 	ExclusiveLockHolder holder(&_inputLock);
@@ -41,21 +56,6 @@ bool AudioVolumeListener::getOutputVolumes(Volumes* volumes) const
 	{
 		return false;
 	}
-}
-
-const Event* AudioVolumeListener::getUpdateEvent() const
-{
-	return _updateEventPool.getEvent();
-}
-
-const Event* AudioVolumeListener::getInputMeterErrorEvent() const
-{
-	return _inputMeterErrorEventPool.getEvent();
-}
-
-const Event* AudioVolumeListener::getOutputMeterErrorEvent() const
-{
-	return _outputMeterErrorEventPool.getEvent();
 }
 
 void AudioVolumeListener::update()

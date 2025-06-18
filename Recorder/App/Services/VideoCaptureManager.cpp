@@ -47,24 +47,24 @@ void VideoCaptureManager::unlockCapture()
 	_lock.endReading();
 }
 
-const FpsCounter& VideoCaptureManager::getFpsCounter() const
-{
-	return _fpsCounter;
-}
-
-const Event* VideoCaptureManager::getChangeEvent() const
+const Event* VideoCaptureManager::getChangeEvent()
 {
 	return _changeEventPool.getEvent();
 }
 
-const Event* VideoCaptureManager::getFrameEvent() const
+const Event* VideoCaptureManager::getFrameEvent()
 {
 	return _frameEventPool.getEvent();
 }
 
-const Event* VideoCaptureManager::getErrorEvent() const
+const Event* VideoCaptureManager::getErrorEvent()
 {
 	return _errorEventPool.getEvent();
+}
+
+const FpsCounter& VideoCaptureManager::getFpsCounter() const
+{
+	return _fpsCounter;
 }
 
 void VideoCaptureManager::onFrame()

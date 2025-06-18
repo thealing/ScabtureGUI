@@ -7,11 +7,11 @@ public:
 
 	AsyncSettingsManager();
 
+	const Event* getChangeEvent();
+
 	bool setSettings(const Settings& settings);
 
 	Settings getSettings() const;
-
-	const Event* getChangeEvent() const;
 
 private:
 

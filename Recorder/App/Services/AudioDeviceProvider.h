@@ -8,13 +8,13 @@ public:
 
 	virtual ~AudioDeviceProvider();
 
+	const Event* getInputChangeEvent();
+
+	const Event* getOutputChangeEvent();
+
 	AudioDevice* getInputDevice() const;
 
 	AudioDevice* getOutputDevice() const;
-
-	const Event* getInputChangeEvent() const;
-
-	const Event* getOutputChangeEvent() const;
 
 private:
 

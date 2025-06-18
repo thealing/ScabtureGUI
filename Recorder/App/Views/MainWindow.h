@@ -6,6 +6,10 @@ public:
 
 	MainWindow();
 
+	void openOutputFile();
+
+	void setOutputPath(const wchar_t* path);
+
 	void setCloseable(bool closeable);
 
 	void setTopMost(bool topMost);
@@ -45,5 +49,6 @@ private:
 	UniquePointer<SettingsPanel> _settingsPanel;
 	UniquePointer<PreviewDisplay> _previewDisplay;
 	UniquePointer<VolumeDisplay> _volumeDisplay;
+	UniquePointer<const wchar_t> _outputPath;
 	bool _closeable;
 };

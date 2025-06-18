@@ -25,7 +25,7 @@ void EventPool::resetEvents()
 	_set = false;
 }
 
-const Event* EventPool::getEvent() const
+const Event* EventPool::getEvent()
 {
 	ExclusiveLockHolder holder(&_lock);
 	Event* event = new Event();
@@ -37,7 +37,7 @@ const Event* EventPool::getEvent() const
 	return event;
 }
 
-void EventPool::deleteEvent(const Event* event) const
+void EventPool::deleteEvent(const Event* event)
 {
 	ExclusiveLockHolder holder(&_lock);
 	_events.dispose(event);

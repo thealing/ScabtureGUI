@@ -8,6 +8,16 @@ Encoder::Encoder(FrameSource* source, SinkWriter* sinkWriter) : FrameSink(source
 	_pauseTime = 0;
 }
 
+const Event* Encoder::getEncodeEvent()
+{
+	return _encodeEventPool.getEvent();
+}
+
+const Event* Encoder::getErrorEvent()
+{
+	return _errorEventPool.getEvent();
+}
+
 void Encoder::start()
 {
 	_startTime = MFGetSystemTime();
@@ -55,16 +65,6 @@ HRESULT Encoder::getStatistics(MF_SINK_WRITER_STATISTICS* statistics) const
 Status Encoder::getStatus() const
 {
 	return _status;
-}
-
-const Event* Encoder::getEncodeEvent() const
-{
-	return _encodeEventPool.getEvent();
-}
-
-const Event* Encoder::getErrorEvent() const
-{
-	return _errorEventPool.getEvent();
 }
 
 HRESULT Encoder::addStream(IMFMediaType* inputType, IMFMediaType* outputType)

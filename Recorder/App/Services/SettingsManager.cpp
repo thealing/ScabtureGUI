@@ -8,6 +8,12 @@ SettingsManager<Settings>::SettingsManager(const wchar_t* name)
 }
 
 template<class Settings>
+const Event* SettingsManager<Settings>::getChangeEvent()
+{
+	return _changeEventPool.getEvent();
+}
+
+template<class Settings>
 bool SettingsManager<Settings>::setSettings(const Settings& settings)
 {
 	if (MemoryUtil::areEqual(_settings, settings))
@@ -25,12 +31,6 @@ template<class Settings>
 Settings SettingsManager<Settings>::getSettings() const
 {
 	return _settings;
-}
-
-template<class Settings>
-const Event* SettingsManager<Settings>::getChangeEvent() const
-{
-	return _changeEventPool.getEvent();
 }
 
 template<class Settings>

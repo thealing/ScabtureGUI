@@ -70,6 +70,19 @@ int WaveFormat::getSize() const
 	}
 }
 
+const wchar_t* WaveFormat::toString() const
+{
+	if (_waveFormat->nChannels == 1)
+	{
+		return StringUtil::formatString(L"Mono %d bit %d Hz", _waveFormat->wBitsPerSample, _waveFormat->nSamplesPerSec);
+	}
+	if (_waveFormat->nChannels == 2)
+	{
+		return StringUtil::formatString(L"Stereo %d bit %d Hz", _waveFormat->wBitsPerSample, _waveFormat->nSamplesPerSec);
+	}
+	return StringUtil::formatString(L"%d channels %d bit %d Hz", _waveFormat->nChannels, _waveFormat->wBitsPerSample, _waveFormat->nSamplesPerSec);
+}
+
 void WaveFormat::reset()
 {
 	if (_waveFormat != NULL)

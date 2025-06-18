@@ -8,13 +8,13 @@ public:
 
 	~AudioCaptureManager();
 
+	const Event* getErrorEvent();
+
 	void setCapture(AudioCapture* capture);
 
 	AudioCapture* lockCapture();
 
 	void unlockCapture();
-
-	const Event* getErrorEvent() const;
 
 private:
 

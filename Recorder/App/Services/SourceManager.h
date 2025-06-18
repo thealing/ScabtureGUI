@@ -7,11 +7,11 @@ public:
 
 	SourceManager(Source source);
 
+	const Event* getSelectionEvent();
+
 	void selectSource(Source source);
 
 	Source getSource() const;
-
-	const Event* getSelectionEvent() const;
 
 private:
 
