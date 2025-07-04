@@ -1,10 +1,9 @@
 #include "MouseOverlay.h"
 
-MouseOverlay::MouseOverlay(const CaptureSource& source)
+MouseOverlay::MouseOverlay(HWND window, POINT offset)
 {
-	_window = source.window;
-	_client = source.client;
-	_offset = { source.rect.left, source.rect.top };
+	_window = window;
+	_offset = offset;
 }
 
 void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
@@ -28,20 +27,10 @@ void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
 	{
 		return;
 	}
-	POINT offset = _offset;
-	if (_client)
-	{
-		ClientToScreen(_window, &offset);
-	}
-	else
-	{
-		RECT rect = {};
-		GetWindowRect(_window, &rect);
-		offset.x += rect.left;
-		offset.y += rect.top;
-	}
-	cursorInfo.ptScreenPos.x -= offset.x;
-	cursorInfo.ptScreenPos.y -= offset.y;
+	RECT rect = {};
+	GetWindowRect(_window, &rect);
+	int iconX = cursorInfo.ptScreenPos.x - _offset.x - rect.left;
+	int iconY = cursorInfo.ptScreenPos.y - _offset.y - rect.top;
 	BITMAP iconBitmap = {};
 	int iconWidth = 0;
 	int iconHeight = 0;
@@ -83,31 +72,27 @@ void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
 	{
 		for (int j = 0; j < iconWidth; j++)
 		{
-			uint8_t* pixel = imageBits + (i * iconWidth + j) * 4;
-			uint8_t* mask = maskBits + (i * iconWidth + j) * 4;
-			if (*(uint32_t*)pixel == 0)
-			{
-				continue;
-			}
-			int x = cursorInfo.ptScreenPos.x - iconInfo.xHotspot + j;
-			int y = cursorInfo.ptScreenPos.y - iconInfo.yHotspot + i;
+			int x = iconX - iconInfo.xHotspot + j;
+			int y = iconY - iconInfo.yHotspot + i;
 			if (x < 0 || x >= width || y < 0 || y >= height)
 			{
 				continue;
 			}
-			uint8_t* dest = (uint8_t*)(pixels + y * stride + x);
+			uint8_t* pixel = imageBits + (i * iconWidth + j) * 4;
+			uint8_t* mask = maskBits + (i * iconWidth + j) * 4;
+			uint8_t* source = (uint8_t*)(pixels + y * stride + x);
 			if (iconInfo.hbmColor != NULL)
 			{
 				for (int k = 0; k < 4; k++)
 				{
-					dest[k] = (dest[k] * (255 - pixel[3]) + pixel[k] * pixel[3]) / 255;
+					source[k] = (source[k] * (255 - pixel[3]) + pixel[k] * pixel[3]) / 255;
 				}
 			}
-			else
+			else if ((*(uint32_t*)pixel ^ *(uint32_t*)mask) == 0)
 			{
 				for (int k = 0; k < 4; k++)
 				{
-					dest[k] ^= mask[k];
+					source[k] = (source[k] & pixel[k]) ^ mask[k];
 				}
 			}
 		}

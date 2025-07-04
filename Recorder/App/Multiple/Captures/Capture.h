@@ -6,15 +6,9 @@ public:
 
 	virtual ~Capture();
 
-	virtual bool getFrame(Buffer* buffer) = 0;
+	virtual bool getFrame() = 0;
 
-	void addOverlay(Overlay* overlay);
+	virtual Buffer* getBuffer() = 0;
 
-protected:
-
-	void drawOverlays(uint32_t* pixels, int width, int height, int stride);
-
-private:
-
-	UniqueStorage<Overlay> _overlays;
+	virtual void addOverlay(Overlay* overlay) = 0;
 };

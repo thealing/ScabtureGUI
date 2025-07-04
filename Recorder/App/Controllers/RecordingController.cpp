@@ -30,8 +30,7 @@ RecordingController::~RecordingController()
 	_eventDispatcher.stop();
 	LogUtil::logDebug(L"RecordingController: Stopped.");
 	// In case the main window closes abruptly, we could get here while the recording is still running.
-	// This would cause a deadlock in the capture controllers.
-	// So then we must stop the recording here to prevent that from happening.
+	// This would cause a deadlock in the capture controllers, so the recording must be stopped here to prevent that from happening.
 	if (_recordingManager->isRunning())
 	{
 		stopRecording(true); 
@@ -139,7 +138,7 @@ void RecordingController::startRecording()
 	}
 }
 
-void RecordingController::stopRecording(bool success)
+void RecordingController::stopRecording(bool result)
 {
 	if (!_recordingManager->isRunning())
 	{
@@ -150,7 +149,7 @@ void RecordingController::stopRecording(bool success)
 	_recordingManager->stop();
 	_videoCaptureManager->unlockCapture();
 	_audioCaptureManager->unlockCapture();
-	MessageBeep(success ? MB_OK : MB_ICONERROR);
+	MessageBeep(result ? MB_OK : MB_ICONERROR);
 	doActionsAfterRecording();
 	LogUtil::logInfo(L"RecordingController: Stopped recording.");
 }
@@ -217,6 +216,9 @@ void RecordingController::doActionsAfterRecording()
 	}
 	if (settings.askToPlayTheRecording)
 	{
+#ifdef FUZZ_TESTING
+		return;
+#endif
 		int result = _mainWindow->showMessageBox(L"Recording finished", L"Open the recorded video?", MB_YESNO | MB_ICONQUESTION);
 		if (result == IDYES)
 		{

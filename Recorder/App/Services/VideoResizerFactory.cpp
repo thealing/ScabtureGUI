@@ -17,13 +17,39 @@ bool VideoResizerFactory::setSettings(const VideoResizerSettings& settings)
 VideoCapture* VideoResizerFactory::createResizer(VideoCapture* source) const
 {
 	VideoResizerSettings settings = _settingsManager.getSettings();
-	if (settings.doResize)
+	if (settings.resize)
 	{
 		const Buffer* inputBuffer = source->getBuffer();
 		int inputWidth = inputBuffer->getWidth();
 		int inputHeight = inputBuffer->getHeight();
-		int outputWidth = settings.width;
-		int outputHeight = settings.height;
+		int outputWidth = inputWidth;
+		int outputHeight = inputHeight;
+		if (settings.width > 0 && settings.height > 0)
+		{
+			outputWidth = settings.width;
+			outputHeight = settings.height;
+			if (settings.keepRatio)
+			{
+				outputWidth = min(outputWidth, outputHeight * inputWidth / inputHeight);
+				outputHeight = min(outputHeight, outputWidth * inputHeight / inputWidth);
+			}
+		}
+		else if (settings.width > 0)
+		{
+			outputWidth = settings.width;
+			if (settings.keepRatio)
+			{
+				outputHeight = outputWidth * inputHeight / inputWidth;
+			}
+		}
+		else if (settings.height > 0)
+		{
+			outputHeight = settings.height;
+			if (settings.keepRatio)
+			{
+				outputWidth = outputHeight * inputWidth / inputHeight;
+			}
+		}
 		Vector inputSize(inputWidth, inputHeight);
 		Vector outputSize(outputWidth, outputHeight);
 		Resizer* resizer = createResizer(inputSize, outputSize);

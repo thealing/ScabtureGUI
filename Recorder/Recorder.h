@@ -1,5 +1,7 @@
 #pragma once
 
+//#define _CRTDBG_MAP_ALLOC
+//#include <crtdbg.h>
 //#define FUZZ_TESTING
 
 // External Headers
@@ -80,9 +82,7 @@
 #include "App\Models\Hotkey.h"
 #include "App\Models\LogMode.h"
 #include "App\Models\ResizeMode.h"
-#include "App\Models\WindowSource.h"
 #include "App\Models\VideoSource.h"
-#include "App\Models\WindowArea.h"
 #include "App\Models\WindowVisibility.h"
 #include "App\Models\Volumes.h"
 #include "App\Models\Settings\SinkWriterSettings.h"
@@ -93,8 +93,7 @@
 #include "App\Models\Settings\VideoResizerSettings.h"
 #include "App\Models\Settings\VideoEncoderSettings.h"
 #include "App\Models\Settings\VideoSettings.h"
-#include "App\Models\Settings\WindowCaptureSettings.h"
-#include "App\Models\Settings\WindowSourceSettings.h"
+#include "App\Models\Settings\CaptureSettings.h"
 #include "App\Models\Settings\KeyboardSettings.h"
 #include "App\Models\ResizeConfig.h"
 #include "App\Multiple\CaptureLock.h"
@@ -125,13 +124,11 @@
 #include "App\Multiple\Audio\AudioVolumeMeter.h"
 #include "App\Multiple\Audio\AudioResampler.h"
 #include "App\Multiple\Audio\AudioEncoder.h"
-#include "App\Multiple\Captures\CaptureSource.h"
 #include "App\Multiple\Captures\Overlay.h"
 #include "App\Multiple\Captures\Capture.h"
+#include "App\Multiple\Captures\BaseCapture.h"
 #include "App\Multiple\Captures\MouseOverlay.h"
-#include "App\Multiple\Captures\GdiCapture.h"
-#include "App\Multiple\Captures\BitbltCapture.h"
-#include "App\Multiple\Captures\BitbltGetdibitsCapture.h"
+#include "App\Multiple\Captures\BitBltGetBitmapBitsCapture.h"
 #include "App\Multiple\Resizers\Resizer.h"
 #include "App\Multiple\Resizers\BaseResizer.h"
 #include "App\Multiple\Resizers\NearestResizer.h"
@@ -170,7 +167,7 @@
 #include "App\Services\VideoSourceManager.h"
 #include "App\Services\VideoCaptureManager.h"
 #include "App\Services\AudioCaptureManager.h"
-#include "App\Services\WindowSourceManager.h"
+#include "App\Services\VideoCaptureFactory.h"
 #include "App\Services\AudioDeviceProvider.h"
 #include "App\Services\RecordingManager.h"
 #include "App\Services\VideoEncoderFactory.h"

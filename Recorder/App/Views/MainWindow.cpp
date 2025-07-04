@@ -4,7 +4,7 @@
 #define WINDOW_NAME L"Scabture v4.0"
 
 MainWindow::MainWindow() : CustomWindow(CLASS_NAME)
-{	
+{
 	_closeable = true;
 	create(CLASS_NAME, WINDOW_NAME);
 	setRedraw(false);
@@ -41,6 +41,9 @@ void MainWindow::setCloseable(bool closeable)
 
 void MainWindow::setTopMost(bool topMost)
 {
+#ifdef FUZZ_TESTING
+	return;
+#endif
 	HWND handle = getHandle();
 	SetWindowPos(handle, topMost ? HWND_TOPMOST : HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 }

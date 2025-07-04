@@ -112,12 +112,12 @@ HRESULT VideoEncoder::getSample(IMFSample** sample)
 		{
 			case EncodeFormatIYUV:
 			{
-				Converter::convert_bgr_to_iyuv(inputPixels, data, data + pixelCount, data + pixelCount * 5 / 4, stride, height);
+				Converter::convertBgrToIyuv(inputPixels, data, data + pixelCount, data + pixelCount * 5 / 4, stride, height);
 				break;
 			}
 			case EncodeFormatNV12:
 			{
-				Converter::convert_bgr_to_nv12(inputPixels, data, data + pixelCount, stride, height);
+				Converter::convertBgrToNv12(inputPixels, data, data + pixelCount, stride, height);
 				break;
 			}
 		}

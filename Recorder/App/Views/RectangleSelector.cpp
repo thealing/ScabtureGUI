@@ -10,7 +10,7 @@ RectangleSelector::RectangleSelector()
 
 bool RectangleSelector::hasSelectedRect() const
 {
-	return !IsRectEmpty(&_selectedRect);
+	return _selectedRect.left < _selectedRect.right && _selectedRect.top < _selectedRect.bottom;
 }
 
 RECT RectangleSelector::getSelectedRect() const

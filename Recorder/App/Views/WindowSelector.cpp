@@ -1,14 +1,8 @@
 #include "WindowSelector.h"
 
-WindowSelector::WindowSelector(WindowArea area)
+WindowSelector::WindowSelector()
 {
-	_area = area;
 	_selectedWindow = NULL;
-}
-
-bool WindowSelector::hasSelectedWindow() const
-{
-	return _selectedWindow != NULL;
 }
 
 HWND WindowSelector::getSelectedWindow() const
@@ -16,12 +10,40 @@ HWND WindowSelector::getSelectedWindow() const
 	return _selectedWindow;
 }
 
+HWND WindowSelector::getWindowUnderPoint(POINT point)
+{
+	HWND result = NULL;
+	RECT rect = {};
+	HWND window = GetDesktopWindow();
+	while (window != NULL)
+	{
+		HWND overlayWindow = getHandle();
+		if (window == overlayWindow)
+		{
+			goto Next;
+		}
+		if (!IsWindowVisible(window))
+		{
+			goto Next;
+		}
+		GetWindowRect(window, &rect);
+		if (PtInRect(&rect, point))
+		{
+			result = window;
+			window = GetWindow(window, GW_CHILD);
+			continue;
+		}
+	Next:
+		window = GetWindow(window, GW_HWNDNEXT);
+	}
+	return result;
+}
+
 void WindowSelector::onMouseMove(int mouseX, int mouseY)
 {
 	POINT mousePoint = { mouseX, mouseY };
-	HWND handle = getHandle();
-	_selectedWindow = WindowUtil::findWindowUnderPoint(mousePoint, handle);
-	RECT rect = WindowUtil::getAbsoluteRect(_selectedWindow, _area);
+	_selectedWindow = getWindowUnderPoint(mousePoint);
+	RECT rect = WindowUtil::getAbsoluteClientRect(_selectedWindow);
 	setRect(rect);
 }
 

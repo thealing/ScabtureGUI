@@ -19,11 +19,6 @@ void VideoSettingsDialog::createControls(DialogWindow* window, VideoSettings* se
 	methodNames[CaptureMethodDefault] = L"Default";
 	methodNames[CaptureMethodBitBltGetDIBits] = L"BitBlt + GetDIBits";
 	window->addComboBox(L"Capture method", 170, (int*)&settings->captureMethod, methodNames, ARRAYSIZE(methodNames));
-	const wchar_t* areaNames[WindowAreaCount] = {};
-	areaNames[WindowAreaDefault] = L"Entire Window";
-	areaNames[WindowAreaVisible] = L"Visible Area";
-	areaNames[WindowAreaClient] = L"Client Area";
-	window->addComboBox(L"Window area", 140, (int*)&settings->windowArea, areaNames, ARRAYSIZE(areaNames));
 	window->addSeparator();
 	window->addCheckBox(L"Show mouse cursor", 16, &settings->showCursor);
 	window->addSeparator();

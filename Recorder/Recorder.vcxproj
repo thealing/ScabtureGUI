@@ -105,7 +105,7 @@
       <StringPooling>true</StringPooling>
       <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
@@ -121,19 +121,24 @@
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NOMINMAX;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <ExceptionHandling>false</ExceptionHandling>
       <StringPooling>true</StringPooling>
       <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
       <AdditionalOptions>/PDBALTPATH:%_PDB% %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -149,7 +154,7 @@
       <StringPooling>true</StringPooling>
       <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
@@ -165,19 +170,24 @@
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NOMINMAX;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <ExceptionHandling>false</ExceptionHandling>
       <StringPooling>true</StringPooling>
       <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
       <AdditionalOptions>/PDBALTPATH:%_PDB% %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -235,12 +245,9 @@
     <None Include="App\Models\Settings\VideoEncoderSettings.h" />
     <None Include="App\Models\Settings\VideoResizerSettings.h" />
     <None Include="App\Models\Settings\VideoSettings.h" />
-    <None Include="App\Models\Settings\WindowCaptureSettings.h" />
-    <None Include="App\Models\Settings\WindowSourceSettings.h" />
+    <None Include="App\Models\Settings\CaptureSettings.h" />
     <None Include="App\Models\VideoSource.h" />
     <None Include="App\Models\Volumes.h" />
-    <None Include="App\Models\WindowArea.h" />
-    <None Include="App\Models\WindowSource.h" />
     <None Include="App\Models\WindowVisibility.h" />
     <None Include="App\Multiple\Audio\AudioCapture.h" />
     <None Include="App\Multiple\Audio\AudioDevice.h" />
@@ -250,11 +257,7 @@
     <None Include="App\Multiple\BaseEventDispatcher.h" />
     <None Include="App\Multiple\Buffer.h" />
     <None Include="App\Multiple\CaptureLock.h" />
-    <None Include="App\Multiple\Captures\BitbltCapture.h" />
-    <None Include="App\Multiple\Captures\BitbltGetdibitsCapture.h" />
     <None Include="App\Multiple\Captures\Capture.h" />
-    <None Include="App\Multiple\Captures\CaptureSource.h" />
-    <None Include="App\Multiple\Captures\GdiCapture.h" />
     <None Include="App\Multiple\Captures\MouseOverlay.h" />
     <None Include="App\Multiple\ComPointer.h" />
     <None Include="App\Multiple\Encoder.h" />
@@ -298,7 +301,7 @@
     <None Include="App\Services\VideoResizerFactory.h" />
     <None Include="App\Services\VideoSettingsManager.h" />
     <None Include="App\Services\VideoSourceManager.h" />
-    <None Include="App\Services\WindowSourceManager.h" />
+    <None Include="App\Services\VideoCaptureFactory.h" />
     <None Include="App\Utils\BufferUtil.h" />
     <None Include="App\Utils\ControlUtil.h" />
     <None Include="App\Utils\Converter.h" />
@@ -379,6 +382,8 @@
     <None Include="App\Multiple\FrameEmitter.h" />
     <None Include="App\Multiple\FrameDelegate.h" />
     <None Include="App\Utils\FileUtil.h" />
+    <None Include="App\Multiple\Captures\BaseCapture.h" />
+    <None Include="App\Multiple\Captures\BitBltGetBitmapBitsCapture.h" />
     <ClInclude Include="Recorder.h" />
     <ClInclude Include="Resources\Resource.h" />
   </ItemGroup>
@@ -421,10 +426,7 @@
     <None Include="App\Multiple\BaseEventDispatcher.cpp" />
     <None Include="App\Multiple\Buffer.cpp" />
     <None Include="App\Multiple\CaptureLock.cpp" />
-    <None Include="App\Multiple\Captures\BitbltCapture.cpp" />
-    <None Include="App\Multiple\Captures\BitbltGetdibitsCapture.cpp" />
     <None Include="App\Multiple\Captures\Capture.cpp" />
-    <None Include="App\Multiple\Captures\GdiCapture.cpp" />
     <None Include="App\Multiple\Captures\MouseOverlay.cpp" />
     <None Include="App\Multiple\ComPointer.cpp" />
     <None Include="App\Multiple\Encoder.cpp" />
@@ -468,7 +470,7 @@
     <None Include="App\Services\VideoResizerFactory.cpp" />
     <None Include="App\Services\VideoSettingsManager.cpp" />
     <None Include="App\Services\VideoSourceManager.cpp" />
-    <None Include="App\Services\WindowSourceManager.cpp" />
+    <None Include="App\Services\VideoCaptureFactory.cpp" />
     <None Include="App\Utils\BufferUtil.cpp" />
     <None Include="App\Utils\ControlUtil.cpp" />
     <None Include="App\Utils\Converter.cpp" />
@@ -547,6 +549,8 @@
     <None Include="App\Multiple\FrameEmitter.cpp" />
     <None Include="App\Multiple\FrameDelegate.cpp" />
     <None Include="App\Utils\FileUtil.cpp" />
+    <None Include="App\Multiple\Captures\BaseCapture.cpp" />
+    <None Include="App\Multiple\Captures\BitBltGetBitmapBitsCapture.cpp" />
     <ClCompile Include="Recorder.cpp" />
   </ItemGroup>
   <ItemGroup>

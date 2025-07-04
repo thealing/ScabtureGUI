@@ -13,6 +13,11 @@ Buffer::~Buffer()
 	BufferUtil::freeBuffer(_pixels);
 }
 
+uint32_t* Buffer::getPixels()
+{
+	return _pixels;
+}
+
 uint32_t* Buffer::beginWriting()
 {
 	_lock.beginWriting();

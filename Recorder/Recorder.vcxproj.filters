@@ -239,10 +239,7 @@
     <None Include="App\Models\Settings\VideoSettings.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Models\Settings\WindowCaptureSettings.h">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="App\Models\Settings\WindowSourceSettings.h">
+    <None Include="App\Models\Settings\CaptureSettings.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Models\AudioBitrate.h">
@@ -290,12 +287,6 @@
     <None Include="App\Models\Volumes.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Models\WindowArea.h">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="App\Models\WindowSource.h">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="App\Models\WindowVisibility.h">
       <Filter>Header Files</Filter>
     </None>
@@ -329,31 +320,10 @@
     <None Include="App\Multiple\Audio\AudioVolumeMeter.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Multiple\Captures\BitbltCapture.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="App\Multiple\Captures\BitbltCapture.h">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="App\Multiple\Captures\BitbltGetdibitsCapture.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="App\Multiple\Captures\BitbltGetdibitsCapture.h">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="App\Multiple\Captures\Capture.cpp">
       <Filter>Source Files</Filter>
     </None>
     <None Include="App\Multiple\Captures\Capture.h">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="App\Multiple\Captures\CaptureSource.h">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="App\Multiple\Captures\GdiCapture.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="App\Multiple\Captures\GdiCapture.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Multiple\Captures\MouseOverlay.cpp">
@@ -632,10 +602,10 @@
     <None Include="App\Services\VideoSourceManager.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Services\WindowSourceManager.cpp">
+    <None Include="App\Services\VideoCaptureFactory.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="App\Services\WindowSourceManager.h">
+    <None Include="App\Services\VideoCaptureFactory.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Utils\BufferUtil.cpp">
@@ -1134,6 +1104,18 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="App\Utils\StringUtil.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\BaseCapture.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\BaseCapture.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\BitBltGetBitmapBitsCapture.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\BitBltGetBitmapBitsCapture.h">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

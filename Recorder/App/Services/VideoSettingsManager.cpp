@@ -8,7 +8,6 @@ VideoSettingsManager::VideoSettingsManager() : SettingsManager(L"Video Settings"
 VideoSettings VideoSettingsManager::getDefault() const
 {
 	VideoSettings settings = {};
-	settings.windowArea = WindowAreaVisible;
 	settings.captureMethod = CaptureMethodDefault;
 	settings.showCursor = true;
 	settings.frameRate = 60;
@@ -22,11 +21,6 @@ VideoSettings VideoSettingsManager::getDefault() const
 
 void VideoSettingsManager::validate(VideoSettings& settings) const
 {
-	if (settings.windowArea < 0 || settings.windowArea >= WindowAreaCount)
-	{
-		LogUtil::logWarning(L"VideoSettingsManager: Found invalid window area %i.", settings.windowArea);
-		settings.windowArea = WindowAreaDefault;
-	}
 	if (settings.captureMethod < 0 || settings.captureMethod >= CaptureMethodCount)
 	{
 		LogUtil::logWarning(L"VideoSettingsManager: Found invalid capture method %i.", settings.captureMethod);
@@ -52,16 +46,16 @@ void VideoSettingsManager::validate(VideoSettings& settings) const
 		LogUtil::logWarning(L"VideoSettingsManager: Found invalid bitrate %i.", settings.bitRate);
 		settings.bitRate = clamp(settings.bitRate, 100, 250000);
 	}
-	if (settings.width < 1 || settings.width > 5000 || settings.width % 2 != 0)
+	if (settings.width < 0 || settings.width > 5000 || settings.width % 2 != 0)
 	{
 		LogUtil::logWarning(L"VideoSettingsManager: Found invalid width %i.", settings.width);
-		settings.width = clamp(settings.width, 1, 5000);
+		settings.width = clamp(settings.width, 0, 5000);
 		settings.width += settings.width % 2;
 	}
-	if (settings.height < 1 || settings.height > 5000 || settings.height % 2 != 0)
+	if (settings.height < 0 || settings.height > 5000 || settings.height % 2 != 0)
 	{
 		LogUtil::logWarning(L"VideoSettingsManager: Found invalid height %i.", settings.height);
-		settings.height = clamp(settings.height, 1, 5000);
+		settings.height = clamp(settings.height, 0, 5000);
 		settings.height += settings.height % 2;
 	}
 }

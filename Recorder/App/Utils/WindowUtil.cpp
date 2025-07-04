@@ -1,10 +1,5 @@
 #include "WindowUtil.h"
 
-HWND WindowUtil::getDesktopWindow()
-{
-	return GetDesktopWindow();
-}
-
 POINT WindowUtil::getWindowPosition(HWND window)
 {
 	RECT rect = {};
@@ -13,96 +8,25 @@ POINT WindowUtil::getWindowPosition(HWND window)
 	return point;
 }
 
-HWND WindowUtil::findWindowUnderPoint(POINT point, HWND windowToSkip)
+RECT WindowUtil::getAbsoluteClientRect(HWND window)
 {
-	HWND result = NULL;
-	RECT rect = {};
-	HWND window = GetDesktopWindow();
-	while (window != NULL)
-	{
-		if (window == windowToSkip)
-		{
-			goto Next;
-		}
-		if (!IsWindowVisible(window))
-		{
-			goto Next;
-		}
-		GetWindowRect(window, &rect);
-		if (PtInRect(&rect, point))
-		{
-			result = window;
-			window = GetWindow(window, GW_CHILD);
-			continue;
-		}
-	Next:
-		window = GetWindow(window, GW_HWNDNEXT);
-	}
-	return result;
+	RECT clientRect = {};
+	GetClientRect(window, &clientRect);
+	POINT origin = {};
+	ClientToScreen(window, &origin);
+	OffsetRect(&clientRect, origin.x, origin.y);
+	return clientRect;
 }
 
-RECT WindowUtil::getAbsoluteRect(HWND window, WindowArea area)
+RECT WindowUtil::getRelativeClientRect(HWND window)
 {
-	RECT rect = {};
-	switch (area)
-	{
-		case WindowAreaDefault:
-		{
-			GetWindowRect(window, &rect);
-			break;
-		}
-		case WindowAreaVisible:
-		{
-			HRESULT result = DwmGetWindowAttribute(window, DWMWA_EXTENDED_FRAME_BOUNDS, &rect, sizeof(RECT));
-			if (FAILED(result))
-			{
-				GetWindowRect(window, &rect);
-			}
-			break;
-		}
-		case WindowAreaClient:
-		{
-			GetClientRect(window, &rect);
-			POINT origin = { 0, 0 };
-			ClientToScreen(window, &origin);
-			OffsetRect(&rect, origin.x, origin.y);
-			break;
-		}
-	}
-	return rect;
-}
-
-RECT WindowUtil::getRelativeRect(HWND window, WindowArea area)
-{
-	RECT rect = {};
-	switch (area)
-	{
-		case WindowAreaDefault:
-		{
-			GetWindowRect(window, &rect);
-			OffsetRect(&rect, -rect.left, -rect.top);
-			break;
-		}
-		case WindowAreaVisible:
-		{
-			HRESULT result = DwmGetWindowAttribute(window, DWMWA_EXTENDED_FRAME_BOUNDS, &rect, sizeof(RECT));
-			if (SUCCEEDED(result))
-			{
-				POINT position = getWindowPosition(window);
-				OffsetRect(&rect, -position.x, -position.y);
-			}
-			else
-			{
-				GetWindowRect(window, &rect);
-				OffsetRect(&rect, -rect.left, -rect.top);
-			}
-			break;
-		}
-		case WindowAreaClient:
-		{
-			GetClientRect(window, &rect);
-			break;
-		}
-	}
-	return rect;
+	RECT clientRect = {};
+	GetClientRect(window, &clientRect);
+	POINT origin = {};
+	ClientToScreen(window, &origin);
+	POINT position = getWindowPosition(window);
+	origin.x -= position.x;
+	origin.y -= position.y;
+	OffsetRect(&clientRect, origin.x, origin.y);
+	return clientRect;
 }

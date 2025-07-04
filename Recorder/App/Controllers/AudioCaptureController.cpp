@@ -79,11 +79,6 @@ void AudioCaptureController::updateCapture()
 			_audioCaptureManager->setCapture(resampler);
 			break;
 		}
-		default:
-		{
-			LogUtil::logError(L"AUDIO SOURCE NOT IMPLEMENTED");
-			break;
-		}
 	}
 	LogUtil::logInfo(L"AudioCaptureController: Updated capture.");
 }

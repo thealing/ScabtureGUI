@@ -2,12 +2,11 @@
 
 struct VideoSettings
 {
-	WindowArea windowArea;
 	CaptureMethod captureMethod;
 	bool showCursor;
 	int frameRate;
 	int bitRate;
-	bool doResize;
+	bool resize;
 	bool keepRatio;
 	int width;
 	int height;

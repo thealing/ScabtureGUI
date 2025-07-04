@@ -1,9 +1,9 @@
 #include "ResizeController.h"
 
-ResizeController::ResizeController(ResizePanel* resizePanel, WindowSourceManager* windowSourceManager, VideoCaptureManager* videoCaptureManager, VideoSettingsManager* videoSettingsManager)
+ResizeController::ResizeController(ResizePanel* resizePanel, VideoCaptureFactory* videoCaptureFactory, VideoCaptureManager* videoCaptureManager, VideoSettingsManager* videoSettingsManager)
 {
 	_resizePanel = resizePanel;
-	_windowSourceManager = windowSourceManager;
+	_videoCaptureFactory = videoCaptureFactory;
 	_videoCaptureManager = videoCaptureManager;
 	_videoSettingsManager = videoSettingsManager;
 	_eventDispatcher.addEntry(resizePanel->getWidthChangeEvent(), BIND(ResizeController, onWidthChanged, this));
@@ -30,12 +30,9 @@ void ResizeController::onWidthChanged()
 	{
 		LogUtil::logInfo(L"ResizeController: Width modified to %i by the user.", width);
 		settings.width = width;
-		if (settings.doResize && settings.keepRatio)
+		if (settings.resize && settings.keepRatio)
 		{
-			Vector size = _windowSourceManager->getWindowSize();
-			int height = width * size.y / max(1, size.x);
-			LogUtil::logInfo(L"ResizeController: Adjusted height to %i to keep the aspect ratio.", height);
-			settings.height = height;
+			settings.height = 0;
 		}
 		_videoSettingsManager->setSettings(settings);
 	}
@@ -49,12 +46,9 @@ void ResizeController::onHeightChanged()
 	{
 		LogUtil::logInfo(L"ResizeController: Height modified to %i by the user.", height);
 		settings.height = height;
-		if (settings.doResize && settings.keepRatio)
+		if (settings.resize && settings.keepRatio)
 		{
-			Vector size = _windowSourceManager->getWindowSize();
-			int width = height * size.x / max(1, size.y);
-			LogUtil::logInfo(L"ResizeController: Adjusted width to %i to keep the aspect ratio.", height);
-			settings.width = width;
+			settings.width = 0;
 		}
 		_videoSettingsManager->setSettings(settings);
 	}
@@ -64,10 +58,21 @@ void ResizeController::onResizeChanged()
 {
 	VideoSettings settings = _videoSettingsManager->getSettings();
 	bool resize = _resizePanel->getResize();
-	if (settings.doResize != resize)
+	if (settings.resize != resize)
 	{
 		LogUtil::logInfo(L"ResizeController: Resize flag modified to %i by the user.", resize);
-		settings.doResize = resize;
+		settings.resize = resize;
+		if (settings.resize)
+		{
+			VideoCapture* capture = _videoCaptureManager->lockCapture();
+			if (capture != NULL)
+			{
+				const Buffer* buffer = capture->getBuffer();
+				settings.width = buffer->getWidth();
+				settings.height = buffer->getHeight();
+			}
+			_videoCaptureManager->unlockCapture();
+		}
 		_videoSettingsManager->setSettings(settings);
 	}
 }
@@ -80,12 +85,16 @@ void ResizeController::onKeepRatioChanged()
 	{
 		LogUtil::logInfo(L"ResizeController: Keep ratio flag modified to %i by the user.", keepRatio);
 		settings.keepRatio = keepRatio;
-		if (settings.doResize && settings.keepRatio)
+		if (!settings.keepRatio)
 		{
-			Vector size = _windowSourceManager->getWindowSize();
-			settings.width = min(settings.width, settings.height * size.x / max(1, size.y));
-			settings.height = min(settings.height, settings.width * size.y / max(1, size.x));
-			LogUtil::logInfo(L"ResizeController: Adjusted capture size to %ix%i.", settings.width, settings.height);
+			VideoCapture* capture = _videoCaptureManager->lockCapture();
+			if (capture != NULL)
+			{
+				const Buffer* buffer = capture->getBuffer();
+				settings.width = buffer->getWidth();
+				settings.height = buffer->getHeight();
+			}
+			_videoCaptureManager->unlockCapture();
 		}
 		_videoSettingsManager->setSettings(settings);
 	}
@@ -93,39 +102,34 @@ void ResizeController::onKeepRatioChanged()
 
 void ResizeController::onVideoCaptureChanged()
 {
-	VideoSettings settings = _videoSettingsManager->getSettings();
 	VideoCapture* capture = _videoCaptureManager->lockCapture();
 	if (capture != NULL)
 	{
 		const Buffer* buffer = capture->getBuffer();
-		settings.width = buffer->getWidth();
-		settings.height = buffer->getHeight();
+		int width = buffer->getWidth();
+		if (_resizePanel->getWidth() != width)
+		{
+			LogUtil::logInfo(L"ResizeController: Width changed to %i.", width);
+			_resizePanel->setWidth(width);
+		}
+		int height = buffer->getHeight();
+		if (_resizePanel->getHeight() != height)
+		{
+			LogUtil::logInfo(L"ResizeController: Height setting changed to %i.", height);
+			_resizePanel->setHeight(height);
+		}
 	}
 	_videoCaptureManager->unlockCapture();
-	LogUtil::logInfo(L"ResizeController: Capture size changed to %ix%i.", settings.width, settings.height);
-	_videoSettingsManager->setSettings(settings);
 }
 
 void ResizeController::onVideoSettingsChanged()
 {
 	VideoSettings settings = _videoSettingsManager->getSettings();
-	int visibleWidth = _resizePanel->getWidth();
-	if (settings.width != visibleWidth)
-	{
-		LogUtil::logInfo(L"ResizeController: Width setting changed to %i.", settings.width);
-		_resizePanel->setWidth(settings.width);
-	}
-	int visibleHeight = _resizePanel->getHeight();
-	if (settings.height != visibleHeight)
-	{
-		LogUtil::logInfo(L"ResizeController: Height setting changed to %i.", settings.height);
-		_resizePanel->setHeight(settings.height);
-	}
 	bool resizeFlag = _resizePanel->getResize();
-	if (settings.doResize != resizeFlag)
+	if (settings.resize != resizeFlag)
 	{
-		LogUtil::logInfo(L"ResizeController: Resize setting changed to %i.", settings.doResize);
-		_resizePanel->setResize(settings.doResize);
+		LogUtil::logInfo(L"ResizeController: Resize setting changed to %i.", settings.resize);
+		_resizePanel->setResize(settings.resize);
 	}
 	bool keepRatio = _resizePanel->getKeepRatio();
 	if (settings.keepRatio != keepRatio)
@@ -133,5 +137,5 @@ void ResizeController::onVideoSettingsChanged()
 		LogUtil::logInfo(L"ResizeController: Keep ratio setting changed to %i.", settings.keepRatio);
 		_resizePanel->setKeepRatio(settings.keepRatio);
 	}
-	_resizePanel->setEnabled(settings.doResize);
+	_resizePanel->setEnabled(settings.resize);
 }
