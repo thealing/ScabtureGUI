@@ -1,9 +1,9 @@
 #include "VideoSettingsObserver.h"
 
-VideoSettingsObserver::VideoSettingsObserver(VideoSettingsManager* videoSettingsManager, WindowSourceManager* windowSourceManager, VideoResizerFactory* videoResizerFactory, VideoEncoderFactory* videoEncoderFactory)
+VideoSettingsObserver::VideoSettingsObserver(VideoSettingsManager* videoSettingsManager, VideoCaptureFactory* videoCaptureFactory, VideoResizerFactory* videoResizerFactory, VideoEncoderFactory* videoEncoderFactory)
 {
 	_videoSettingsManager = videoSettingsManager;
-	_windowSourceManager = windowSourceManager;
+	_videoCaptureFactory = videoCaptureFactory;
 	_videoResizerFactory = videoResizerFactory;
 	_videoEncoderFactory = videoEncoderFactory;
 	_eventDispatcher.addEntry(videoSettingsManager->getChangeEvent(), BIND(VideoSettingsObserver, onSettingsChanged, this));
@@ -21,28 +21,28 @@ void VideoSettingsObserver::onSettingsChanged()
 {
 	LogUtil::logInfo(L"VideoSettingsObserver: Updating settings.");
 	VideoSettings videoSettings = _videoSettingsManager->getSettings();
-	updateWindowSourceSettings(videoSettings);
+	updateVideoCaptureSettings(videoSettings);
 	updateVideoResizerSettings(videoSettings);
 	updateVideoEncoderSettings(videoSettings);
 }
 
-void VideoSettingsObserver::updateWindowSourceSettings(const VideoSettings& videoSettings)
+void VideoSettingsObserver::updateVideoCaptureSettings(const VideoSettings& videoSettings)
 {
-	WindowSourceSettings settings = {};
-	settings.area = videoSettings.windowArea;
-	settings.captureSettings.method = videoSettings.captureMethod;
-	settings.captureSettings.frameRate = videoSettings.frameRate;
-	settings.captureSettings.showCursor = videoSettings.showCursor;
-	if (_windowSourceManager->setSettings(settings))
+	CaptureSettings settings = {};
+	settings.method = videoSettings.captureMethod;
+	settings.frameRate = videoSettings.frameRate;
+	settings.showCursor = videoSettings.showCursor;
+	if (_videoCaptureFactory->setSettings(settings))
 	{
-		LogUtil::logInfo(L"VideoSettingsObserver: Window source settings changed.");
+		LogUtil::logInfo(L"VideoSettingsObserver: Video capture settings changed.");
 	}
 }
 
 void VideoSettingsObserver::updateVideoResizerSettings(const VideoSettings& videoSettings)
 {
 	VideoResizerSettings settings = {};
-	settings.doResize = videoSettings.doResize;
+	settings.resize = videoSettings.resize;
+	settings.keepRatio = videoSettings.keepRatio;
 	settings.width = videoSettings.width;
 	settings.height = videoSettings.height;
 	settings.mode = videoSettings.resizeMode;

@@ -2,7 +2,8 @@
 
 struct VideoResizerSettings
 {
-	bool doResize;
+	bool resize;
+	bool keepRatio;
 	int width;
 	int height;
 	ResizeMode mode;

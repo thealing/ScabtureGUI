@@ -2,7 +2,7 @@
 
 struct ResizeConfig
 {
-	bool doResize;
+	bool resize;
 	bool keepRatio;
 	int width;
 	int height;

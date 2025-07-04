@@ -1,6 +1,6 @@
 #pragma once
 
-struct WindowCaptureSettings
+struct CaptureSettings
 {
 	CaptureMethod method;
 	int frameRate;

@@ -4,11 +4,13 @@ class WindowSelector : public SelectionWindow
 {
 public:
 
-	WindowSelector(WindowArea area);
-
-	bool hasSelectedWindow() const;
+	WindowSelector();
 
 	HWND getSelectedWindow() const;
+
+private:
+
+	HWND getWindowUnderPoint(POINT point);
 
 private:
 
@@ -20,7 +22,6 @@ private:
 
 private:
 
-	WindowArea _area;
 	HWND _selectedWindow;
 };
 

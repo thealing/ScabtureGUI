@@ -44,12 +44,6 @@ void AudioPresenter::onSelection()
 			_volumeDisplay->setOutputActive(false);
 			break;
 		}
-		case AudioSourceSystemAndMicrophone:
-		{
-			_volumeDisplay->setInputActive(true);
-			_volumeDisplay->setOutputActive(true);
-			break;
-		}
 	}
 }
 

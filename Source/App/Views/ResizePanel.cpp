@@ -47,21 +47,33 @@ void ResizePanel::setEnabled(bool resize)
 
 int ResizePanel::getWidth() const
 {
+#ifdef FUZZ_TESTING
+	return rand() % 5000;
+#endif
 	return ControlUtil::getValue(_widthEdit);
 }
 
 int ResizePanel::getHeight() const
 {
+#ifdef FUZZ_TESTING
+	return rand() % 5000;
+#endif
 	return ControlUtil::getValue(_heightEdit);
 }
 
 bool ResizePanel::getResize() const
 {
+#ifdef FUZZ_TESTING
+	return rand() % 2;
+#endif
 	return _resizeCheckbox->getChecked();
 }
 
 bool ResizePanel::getKeepRatio() const
 {
+#ifdef FUZZ_TESTING
+	return rand() % 2;
+#endif
 	return _keepRatioCheckbox->getChecked();
 }
 

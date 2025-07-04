@@ -1,34 +1,22 @@
 #include "WindowCapture.h"
 
-WindowCapture::WindowCapture(const WindowCaptureSettings& settings, const WindowSource& source)
+WindowCapture::WindowCapture(HWND window, int frameRate, bool showCursor)
 {
-	_window = source.window;
-	int width = RectUtil::getRectWidth(source.rect);
-	int height = RectUtil::getRectHeight(source.rect);
-	_buffer = new Buffer(width, height);
-	CaptureSource captureSource = {};
-	captureSource.window = source.window;
-	captureSource.rect = source.rect;
-	captureSource.client = source.client;
-	captureSource.width = _buffer->getWidth();
-	captureSource.height = _buffer->getHeight();
-	captureSource.stride = _buffer->getStride();
-	_capture = createCapture(captureSource, settings.method);
-	if (settings.showCursor)
+	_window = window;
+	_capture = new BitBltGetBitmapBitsCapture(window);
+	if (showCursor)
 	{
-		Overlay* mouseOverlay = new MouseOverlay(captureSource);
+		RECT clientRect = WindowUtil::getRelativeClientRect(window);
+		POINT clientOffset = { clientRect.left, clientRect.top };
+		Overlay* mouseOverlay = new MouseOverlay(window, clientOffset);
 		_capture->addOverlay(mouseOverlay);
 	}
-	_timer = new Timer(0, 1.0 / settings.frameRate, BIND(WindowCapture, onTimer, this));
-}
-
-WindowCapture::~WindowCapture()
-{
+	_timer = new Timer(0, 1.0 / frameRate, BIND(WindowCapture, onTimer, this));
 }
 
 const Buffer* WindowCapture::getBuffer() const
 {
-	return _buffer;
+	return _capture->getBuffer();
 }
 
 void WindowCapture::onTimer()
@@ -37,32 +25,18 @@ void WindowCapture::onTimer()
 	{
 		return;
 	}
-	bool capturedFrame = _capture->getFrame(_buffer);
-	if (capturedFrame)
+	if (!IsWindow(_window))
+	{
+		_window = NULL;
+		signalError();
+		return;
+	}
+	if (IsIconic(_window))
+	{
+		return;
+	}
+	if (_capture->getFrame())
 	{
 		signalFrame();
-	}
-	else
-	{
-		if (!IsWindow(_window))
-		{
-			_window = NULL;
-			signalError();
-		}
-	}
-}
-
-Capture* WindowCapture::createCapture(const CaptureSource& source, CaptureMethod method)
-{
-	switch (method)
-	{
-		case CaptureMethodBitBltGetDIBits:
-		{
-			return new BitBltGetDIBitsCapture(source);
-		}
-		default:
-		{
-			return new BitBltGetDIBitsCapture(source);
-		}
 	}
 }

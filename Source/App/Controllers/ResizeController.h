@@ -4,7 +4,7 @@ class ResizeController : NonCopyable
 {
 public:
 
-	ResizeController(ResizePanel* resizePanel, WindowSourceManager* windowSourceManager, VideoCaptureManager* videoCaptureManager, VideoSettingsManager* videoSettingsManager);
+	ResizeController(ResizePanel* resizePanel, VideoCaptureFactory* videoCaptureFactory, VideoCaptureManager* videoCaptureManager, VideoSettingsManager* videoSettingsManager);
 
 	~ResizeController();
 
@@ -26,7 +26,7 @@ private:
 
 	WindowEventDispatcher _eventDispatcher;
 	WeakPointer<ResizePanel> _resizePanel;
-	WeakPointer<WindowSourceManager> _windowSourceManager;
+	WeakPointer<VideoCaptureFactory> _videoCaptureFactory;
 	WeakPointer<VideoCaptureManager> _videoCaptureManager;
 	WeakPointer<VideoSettingsManager> _videoSettingsManager;
 };

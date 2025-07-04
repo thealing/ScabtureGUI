@@ -27,11 +27,17 @@ void QualityPanel::setBitRate(int bitRate)
 
 int QualityPanel::getFrameRate() const
 {
+#ifdef FUZZ_TESTING
+	return rand();
+#endif
 	return ControlUtil::getValue(_frameRateEdit);
 }
 
 int QualityPanel::getBitRate() const
 {
+#ifdef FUZZ_TESTING
+	return rand();
+#endif
 	return ControlUtil::getValue(_bitRateEdit);
 }
 

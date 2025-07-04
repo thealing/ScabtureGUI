@@ -78,7 +78,7 @@ void PreviewDisplay::setUpscale(bool upscale)
 	{
 		_upscale = upscale;
 		_dirty = true;
-		invalidate();
+		postTask(BIND(PreviewDisplay, updateControl, this));
 	}
 }
 

@@ -4,7 +4,7 @@ class WindowSelectionController : NonCopyable
 {
 public:
 
-	WindowSelectionController(MainWindow* mainWindow, VideoSourceManager* videoSourceManager, WindowSourceManager* windowSourceManager);
+	WindowSelectionController(MainWindow* mainWindow, VideoSourceManager* videoSourceManager, VideoCaptureFactory* videoCaptureFactory);
 
 	~WindowSelectionController();
 
@@ -17,6 +17,6 @@ private:
 	WindowEventDispatcher _eventDispatcher;
 	WeakPointer<MainWindow> _mainWindow;
 	WeakPointer<VideoSourceManager> _videoSourceManager;
-	WeakPointer<WindowSourceManager> _windowSourceManager;
+	WeakPointer<VideoCaptureFactory> _videoCaptureFactory;
 };
 

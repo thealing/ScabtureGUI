@@ -4,9 +4,7 @@ class WindowCapture : public FrameEmitter<VideoCapture>
 {
 public:
 
-	WindowCapture(const WindowCaptureSettings& settings, const WindowSource& source);
-
-	virtual ~WindowCapture();
+	WindowCapture(HWND window, int frameRate, bool showCursor);
 
 	virtual const Buffer* getBuffer() const override;
 
@@ -17,12 +15,7 @@ private:
 private:
 
 	HWND _window;
-	UniquePointer<Buffer> _buffer;
 	UniquePointer<Capture> _capture;
 	UniquePointer<Timer> _timer;
-
-private:
-
-	static Capture* createCapture(const CaptureSource& source, CaptureMethod method);
 };
 

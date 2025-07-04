@@ -19,8 +19,8 @@ private:
 private:
 
 	EventDispatcher _eventDispatcher;
-	UniquePointer<Resizer> _resizer;
 	UniquePointer<Buffer> _buffer;
+	UniquePointer<Resizer> _resizer;
 	UniquePointer<VideoCapture> _source;
 };
 

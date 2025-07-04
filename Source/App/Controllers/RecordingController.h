@@ -26,7 +26,7 @@ private:
 
 	void startRecording();
 
-	void stopRecording(bool success);
+	void stopRecording(bool result); 
 	
 	void pauseRecording();
 	

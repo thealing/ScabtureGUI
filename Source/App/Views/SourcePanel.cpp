@@ -38,6 +38,9 @@ int SourcePanel::getVideoSource() const
 
 int SourcePanel::getAudioSource() const
 {
+#ifdef FUZZ_TESTING
+	return rand() % 4;
+#endif
 	return _audioSourceList->getSelection();
 }
 
@@ -69,6 +72,6 @@ void SourcePanel::initVideoSources()
 
 void SourcePanel::initAudioSources()
 {
-	const wchar_t* options[] = { L"None", L"System Output", L"Microphone", L"System + Microphone"};
+	const wchar_t* options[] = { L"None", L"System Output", L"Microphone" };
 	_audioSourceList->setOptions(options, ARRAYSIZE(options));
 }

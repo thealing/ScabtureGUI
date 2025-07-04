@@ -8,6 +8,8 @@ public:
 
 	~Buffer();
 
+	uint32_t* getPixels();
+
 	uint32_t* beginWriting();
 
 	void endWriting();

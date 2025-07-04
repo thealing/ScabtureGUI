@@ -1,5 +1,15 @@
 #include "Converter.h"
 
+void Converter::convertBgrToNv12(const uint32_t* bgr, uint8_t* y, uint8_t* uv, size_t width, size_t height)
+{
+	convert_bgr_to_nv12(bgr, y, uv, width, height);
+}
+
+void Converter::convertBgrToIyuv(const uint32_t* bgr, uint8_t* y, uint8_t* u, uint8_t* v, size_t width, size_t height)
+{
+	convert_bgr_to_iyuv(bgr, y, u, v, width, height);
+}
+
 void Converter::convert_bgr_to_nv12(const uint32_t* bgr, uint8_t* y, uint8_t* uv, size_t width, size_t height)
 {
 	__m128i my = _mm_set_epi16(0, 66, 129, 25, 0, 66, 129, 25);
