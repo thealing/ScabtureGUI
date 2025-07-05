@@ -23,5 +23,6 @@ private:
 
 	EventPool _frameEventPool;
 	EventPool _errorEventPool;
+	LatchEvent _errorEvent;
 };
 

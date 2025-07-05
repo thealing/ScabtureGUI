@@ -33,5 +33,8 @@ void FrameEmitter<Base>::signalFrame()
 template<class Base>
 void FrameEmitter<Base>::signalError()
 {
-	_errorEventPool.setEvents();
+	if (_errorEvent.set())
+	{
+		_errorEventPool.setEvents();
+	}
 }
