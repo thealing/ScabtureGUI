@@ -62,6 +62,8 @@
 #include "App\Multiple\Status.cpp"
 #include "App\Multiple\UniquePointer.cpp"
 #include "App\Multiple\UniqueStorage.cpp"
+#include "App\Multiple\Video\DisplayCapture.cpp"
+#include "App\Multiple\Video\ScreenCapture.cpp"
 #include "App\Multiple\Video\VideoCapture.cpp"
 #include "App\Multiple\Video\VideoEncoder.cpp"
 #include "App\Multiple\Video\VideoResizer.cpp"
