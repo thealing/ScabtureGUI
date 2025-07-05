@@ -1,6 +1,6 @@
 #include "KeyboardListener.h"
 
-// There is no way to pass user data to the hook procedure, so a global value have to be used.
+// There is no way to pass user data to the hook procedure, so a global value has to be used.
 static KeyboardListener* _globalKeyboardListener;
 
 KeyboardListener::KeyboardListener()
