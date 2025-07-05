@@ -115,7 +115,7 @@ void ResizeController::onVideoCaptureChanged()
 		int height = buffer->getHeight();
 		if (_resizePanel->getHeight() != height)
 		{
-			LogUtil::logInfo(L"ResizeController: Height setting changed to %i.", height);
+			LogUtil::logInfo(L"ResizeController: Height changed to %i.", height);
 			_resizePanel->setHeight(height);
 		}
 	}
