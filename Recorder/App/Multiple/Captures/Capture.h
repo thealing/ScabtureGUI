@@ -11,4 +11,6 @@ public:
 	virtual Buffer* getBuffer() = 0;
 
 	virtual void addOverlay(Overlay* overlay) = 0;
+
+	virtual Status getStatus() const = 0;
 };

@@ -10,17 +10,17 @@ public:
 
 	bool setSettings(const CaptureSettings& settings);
 
-	bool setFullscreenSource();
+	void setFullscreenSource();
 
-	bool setRectangleSource(RECT rect);
+	void setRectangleSource(RECT rect);
 
-	bool setWindowSource(HWND window);
+	void setWindowSource(HWND window);
 
 	VideoCapture* createCapture() const;
 
 private:
 
-	bool setSource(HWND window, RECT rect);
+	void setSource(HWND window, RECT rect);
 
 private:
 

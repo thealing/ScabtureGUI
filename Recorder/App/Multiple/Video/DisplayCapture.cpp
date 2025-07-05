@@ -1,9 +1,8 @@
-#include "WindowCapture.h"
+#include "DisplayCapture.h"
 
-WindowCapture::WindowCapture(HWND window, int frameRate, bool showCursor)
+DisplayCapture::DisplayCapture(RECT rect, int frameRate, bool showCursor)
 {
-	RECT rect = {};
-	GetClientRect(window, &rect);
+	HWND window = GetDesktopWindow();
 	Capture* capture = new BitBltGetBitmapBitsCapture(window, rect);
 	if (showCursor)
 	{

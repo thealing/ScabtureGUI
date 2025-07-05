@@ -27,10 +27,10 @@ void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
 	{
 		return;
 	}
-	RECT rect = {};
-	GetWindowRect(_window, &rect);
-	int iconX = cursorInfo.ptScreenPos.x - _offset.x - rect.left;
-	int iconY = cursorInfo.ptScreenPos.y - _offset.y - rect.top;
+	POINT offset = _offset;
+	ClientToScreen(_window, &offset);
+	int iconX = cursorInfo.ptScreenPos.x - offset.x;
+	int iconY = cursorInfo.ptScreenPos.y - offset.y;
 	BITMAP iconBitmap = {};
 	int iconWidth = 0;
 	int iconHeight = 0;
@@ -50,12 +50,11 @@ void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
 	bitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
 	bitmapInfo.bmiHeader.biWidth = iconBitmap.bmWidth;
 	bitmapInfo.bmiHeader.biHeight = -iconBitmap.bmHeight;
-	bitmapInfo.bmiHeader.biSizeImage = iconBitmap.bmWidth * iconBitmap.bmHeight * 4;
 	bitmapInfo.bmiHeader.biPlanes = 1;
 	bitmapInfo.bmiHeader.biBitCount = 32;
 	bitmapInfo.bmiHeader.biCompression = BI_RGB;
-	uint8_t* imageBits = new uint8_t[iconWidth * iconHeight * 4];
-	uint8_t* maskBits = new uint8_t[iconWidth * iconHeight * 4];
+	uint32_t* imageBits = new uint32_t[iconWidth * iconHeight];
+	uint32_t* maskBits = new uint32_t[iconWidth * iconHeight];
 	HDC context = CreateCompatibleDC(NULL);
 	if (iconInfo.hbmColor != NULL)
 	{
@@ -78,21 +77,24 @@ void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
 			{
 				continue;
 			}
-			uint8_t* pixel = imageBits + (i * iconWidth + j) * 4;
-			uint8_t* mask = maskBits + (i * iconWidth + j) * 4;
-			uint8_t* source = (uint8_t*)(pixels + y * stride + x);
 			if (iconInfo.hbmColor != NULL)
 			{
+				uint8_t* pixel = (uint8_t*)(imageBits + i * iconWidth + j);
+				uint8_t* mask = (uint8_t*)(maskBits + i * iconWidth + j);
+				uint8_t* source = (uint8_t*)(pixels + y * stride + x);
 				for (int k = 0; k < 4; k++)
 				{
 					source[k] = (source[k] * (255 - pixel[3]) + pixel[k] * pixel[3]) / 255;
 				}
 			}
-			else if ((*(uint32_t*)pixel ^ *(uint32_t*)mask) == 0)
+			else
 			{
-				for (int k = 0; k < 4; k++)
+				uint32_t pixel = *(imageBits + i * iconWidth + j);
+				uint32_t mask = *(maskBits + i * iconWidth + j);
+				uint32_t* source = pixels + y * stride + x;
+				if ((pixel ^ mask) == 0)
 				{
-					source[k] = (source[k] & pixel[k]) ^ mask[k];
+					*source = (*source & pixel) ^ mask;
 				}
 			}
 		}

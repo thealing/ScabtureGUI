@@ -4,7 +4,7 @@ class BitBltGetBitmapBitsCapture : public BaseCapture
 {
 public:
 
-	BitBltGetBitmapBitsCapture(HWND window);
+	BitBltGetBitmapBitsCapture(HWND window, RECT rect);
 
 	~BitBltGetBitmapBitsCapture();
 
@@ -13,8 +13,8 @@ public:
 private:
 
 	HWND _window;
-	int _width;
-	int _height;
+	Vector _position;
+	Vector _size;
 	HDC _sourceContext;
 	HDC _captureContext;
 	HBITMAP _captureBitmap;

@@ -193,6 +193,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="App\Multiple\Video\ScreenCapture.h" />
     <None Include="App\Utils\StringUtil.h" />
     <None Include="App\Global\SaveManager.h" />
     <None Include="App\Multiple\Audio\SilencePlayer.h" />
@@ -384,10 +385,12 @@
     <None Include="App\Utils\FileUtil.h" />
     <None Include="App\Multiple\Captures\BaseCapture.h" />
     <None Include="App\Multiple\Captures\BitBltGetBitmapBitsCapture.h" />
+    <None Include="App\Multiple\Video\DisplayCapture.h" />
     <ClInclude Include="Recorder.h" />
     <ClInclude Include="Resources\Resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App\Multiple\Video\ScreenCapture.cpp" />
     <None Include="App\Utils\StringUtil.cpp" />
     <None Include="App\Global\SaveManager.cpp" />
     <None Include="App\Multiple\Audio\SilencePlayer.cpp" />
@@ -551,6 +554,7 @@
     <None Include="App\Utils\FileUtil.cpp" />
     <None Include="App\Multiple\Captures\BaseCapture.cpp" />
     <None Include="App\Multiple\Captures\BitBltGetBitmapBitsCapture.cpp" />
+    <None Include="App\Multiple\Video\DisplayCapture.cpp" />
     <ClCompile Include="Recorder.cpp" />
   </ItemGroup>
   <ItemGroup>

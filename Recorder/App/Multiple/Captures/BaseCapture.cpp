@@ -10,6 +10,11 @@ void BaseCapture::addOverlay(Overlay* overlay)
 	_overlays.store(overlay);
 }
 
+Status BaseCapture::getStatus() const
+{
+    return _status;
+}
+
 void BaseCapture::createBuffer(int width, int height)
 {
 	_buffer = new Buffer(width, height);
@@ -34,4 +39,9 @@ void BaseCapture::endFrame(bool result)
 		}
 	}
 	_buffer->endWriting();
+}
+
+void BaseCapture::setStatus(Status status)
+{
+	_status = status;
 }
