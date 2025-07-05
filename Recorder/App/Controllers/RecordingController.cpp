@@ -237,8 +237,6 @@ void RecordingController::updatePanel(bool recording, bool paused)
 void RecordingController::updateControls(bool recording)
 {
 	_mainWindow->setCloseable(!recording);
-	SettingsPanel* settingsPanel = _mainWindow->getSettingsPanel();
-	settingsPanel->setEnabled(!recording);
 	SourcePanel* sourcePanel = _mainWindow->getSourcePanel();
 	ResizePanel* resizePanel = _mainWindow->getResizePanel();
 	QualityPanel* qualityPanel = _mainWindow->getQualityPanel();

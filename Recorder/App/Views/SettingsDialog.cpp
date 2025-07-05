@@ -14,16 +14,18 @@ void SettingsDialog<Settings>::show(Window* parent, const Settings& settings, co
 		return;
 	}
 	_callback = callback;
-	_settings = new Settings(settings);
+	_settings = settings;
+	_oldSettings = settings;
 	_window = createWindow(parent);
-	createControls(_window, _settings);
 	_window->setConfirmCallback(BIND(SettingsDialog, onConfirmed, this));
 	_window->setCancelCallback(BIND(SettingsDialog, onCancelled, this));
+	_window->setChangeCallback(BIND(SettingsDialog, onChanged, this));
+	createControls(_window, &_settings);
 	_window->finalize();
 }
 
 template<class Settings>
-const Settings* SettingsDialog<Settings>::getSavedSettings() const
+Settings SettingsDialog<Settings>::getSettings() const
 {
 	return _settings;
 }
@@ -37,18 +39,22 @@ template<class Settings>
 void SettingsDialog<Settings>::onConfirmed()
 {
 	assert(_window != NULL);
-	assert(_settings != NULL);
 	_window = NULL;
 	_callback.invoke();
-	_settings = NULL;
 }
 
 template<class Settings>
 void SettingsDialog<Settings>::onCancelled()
 {
 	assert(_window != NULL);
-	assert(_settings != NULL);
 	_window = NULL;
-	_settings = NULL;
+	_settings = _oldSettings;
+	_callback.invoke();
+}
+
+template<class Settings>
+void SettingsDialog<Settings>::onChanged()
+{
+	assert(_window != NULL);
 	_callback.invoke();
 }

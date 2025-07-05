@@ -1,6 +1,6 @@
 #include "SaveManager.h"
 
-#define REGISTRY_KEY_PATH L"SOFTWARE\\Scabture2"
+#define REGISTRY_KEY_PATH L"SOFTWARE\\Scabture41"
 
 SaveManager& SaveManager::getInstance()
 {

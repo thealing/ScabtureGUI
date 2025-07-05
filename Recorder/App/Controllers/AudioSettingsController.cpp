@@ -21,20 +21,15 @@ void AudioSettingsController::onButtonClicked()
 	LogUtil::logInfo(L"AudioSettingsController: Button clicked.");
 	Window* parent = _sourcePanel->getTopLevelParent();
 	AudioSettings settings = _audioSettingsManager->getSettings();
-	Callback callback = BIND(AudioSettingsController, onDialogClosed, this);
+	Callback callback = BIND(AudioSettingsController, onSettingsChanged, this);
 	_audioSettingsDialog->show(parent, settings, callback);
 }
 
-void AudioSettingsController::onDialogClosed()
+void AudioSettingsController::onSettingsChanged()
 {
-	const AudioSettings* settings = _audioSettingsDialog->getSavedSettings();
-	if (settings != NULL)
+	AudioSettings settings = _audioSettingsDialog->getSettings();
+	if (_audioSettingsManager->setSettings(settings))
 	{
-		LogUtil::logInfo(L"AudioSettingsController: Settings saved.");
-		_audioSettingsManager->setSettings(*settings);
-	}
-	else
-	{
-		LogUtil::logInfo(L"AudioSettingsController: Settings cancelled.");
+		LogUtil::logInfo(L"AudioSettingsController: Settings changed.");
 	}
 }

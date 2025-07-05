@@ -26,10 +26,16 @@ void DialogWindow::setCancelCallback(const Callback& callback)
 	_cancelCallback = callback;
 }
 
+void DialogWindow::setChangeCallback(const Callback& callback)
+{
+	_changeCallback = callback;
+}
+
 void DialogWindow::addCheckBox(const wchar_t* labelText, int controlWidth, bool* value)
 {
 	Control* label = DialogUtil::createLabel(this, labelText, _margin, _bottom + _spacing, _width - _margin - controlWidth, _height - _spacing);
 	Control* control = DialogUtil::createCheckBox(this, value, _width - _margin - controlWidth, _bottom + _spacing, controlWidth, _height - _spacing);
+	_eventDispatcher.addEntry(control->getChangeEvent(), _changeCallback);
 	_bottom += _height;
 	_controls.store(label);
 	_controls.store(control);
@@ -39,6 +45,7 @@ void DialogWindow::addComboBox(const wchar_t* labelText, int controlWidth, int* 
 {
 	Control* label = DialogUtil::createLabel(this, labelText, _margin, _bottom + _spacing, _width - _margin - controlWidth, _height - _spacing);
 	Control* control = DialogUtil::createComboBox(this, value, options, count, _width - _margin - controlWidth, _bottom + _spacing, controlWidth, _height - _spacing);
+	_eventDispatcher.addEntry(control->getChangeEvent(), _changeCallback);
 	_bottom += _height;
 	_controls.store(label);
 	_controls.store(control);
@@ -48,6 +55,7 @@ void DialogWindow::addHotkeyEdit(const wchar_t* labelText, int controlWidth, Hot
 {
 	Control* label = DialogUtil::createLabel(this, labelText, _margin, _bottom + _spacing, _width - _margin - controlWidth, _height - _spacing);
 	Control* control = DialogUtil::createHotkeyEdit(this, value, _width - _margin - controlWidth, _bottom + _spacing, controlWidth, _height - _spacing);
+	_eventDispatcher.addEntry(control->getChangeEvent(), _changeCallback);
 	_bottom += _height;
 	_controls.store(label);
 	_controls.store(control);
@@ -82,51 +90,15 @@ void DialogWindow::finalize()
 		Vector size(_width, _bottom);
 		setSize(size);
 	}
-	_eventDispatcher.addEntry(confirmButton->getChangeEvent(), BIND(DialogWindow, confirm, this));
-	_eventDispatcher.addEntry(cancelButton->getChangeEvent(), BIND(DialogWindow, cancel, this));
-	_eventDispatcher.start();
+	_eventDispatcher.addEntry(confirmButton->getChangeEvent(), _confirmCallback);
+	_eventDispatcher.addEntry(cancelButton->getChangeEvent(), _cancelCallback);
+	_eventDispatcher.start(this);
 	_controls.store(confirmButton);
 	_controls.store(cancelButton);
 }
 
-void DialogWindow::onConfirmed()
-{
-	UniquePointer<const wchar_t> title = DialogUtil::getTitle(this);
-	LogUtil::logInfo(L"Confirmed dialog \"%ls\".", title.get());
-	_confirmCallback.invoke();
-}
-
-void DialogWindow::onCancelled()
-{
-	UniquePointer<const wchar_t> title = DialogUtil::getTitle(this);
-	LogUtil::logInfo(L"Cancelled dialog \"%ls\".", title.get());
-	_cancelCallback.invoke();
-}
-
-void DialogWindow::confirm()
-{
-	postTask(BIND(DialogWindow, confirmOnWindowThread, this));
-}
-
-void DialogWindow::cancel()
-{
-	postTask(BIND(DialogWindow, cancelOnWindowThread, this));
-}
-
-void DialogWindow::confirmOnWindowThread()
-{
-	onConfirmed();
-	close();
-}
-
-void DialogWindow::cancelOnWindowThread()
-{
-	onCancelled();
-	close();
-}
-
 bool DialogWindow::canClose()
 {
-	onCancelled();
-	return false;
+	_confirmCallback.invoke();
+    return false;
 }

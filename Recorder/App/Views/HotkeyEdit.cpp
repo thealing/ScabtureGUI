@@ -41,6 +41,7 @@ void HotkeyEdit::update()
 	HWND handle = getHandle();
 	SetWindowText(handle, text);
 	SendMessage(handle, EM_SETSEL, length, -1);
+	onChange();
 }
 
 LRESULT HotkeyEdit::hotkeyProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam, UINT_PTR subclassId, DWORD_PTR)
@@ -62,6 +63,12 @@ LRESULT HotkeyEdit::hotkeyProc(HWND window, UINT message, WPARAM wParam, LPARAM 
 			if (key == VK_BACK || key == VK_DELETE)
 			{
 				instance->_value->key = 0;
+				instance->update();
+			}
+			if (key == VK_RETURN)
+			{
+				HWND parent = GetParent(window);
+				SetFocus(parent);
 				instance->update();
 			}
 		}

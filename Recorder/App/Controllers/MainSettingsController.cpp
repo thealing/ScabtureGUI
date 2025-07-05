@@ -22,21 +22,16 @@ void MainSettingsController::onButtonClicked()
 	_settingsPanel->setEnabled(false);
 	Window* parent = _settingsPanel->getTopLevelParent();
 	MainSettings settings = _mainSettingsManager->getSettings();
-	Callback callback = BIND(MainSettingsController, onDialogClosed, this);
+	Callback callback = BIND(MainSettingsController, onSettingsChanged, this);
 	_mainSettingsDialog->show(parent, settings, callback);
 }
 
-void MainSettingsController::onDialogClosed()
+void MainSettingsController::onSettingsChanged()
 {
-	const MainSettings* settings = _mainSettingsDialog->getSavedSettings();
-	if (settings != NULL)
+	MainSettings settings = _mainSettingsDialog->getSettings();
+	if (_mainSettingsManager->setSettings(settings))
 	{
-		LogUtil::logInfo(L"MainSettingsController: Settings saved.");
-		_mainSettingsManager->setSettings(*settings);
-	}
-	else
-	{
-		LogUtil::logInfo(L"MainSettingsController: Settings cancelled.");
+		LogUtil::logInfo(L"MainSettingsController: Settings changed.");
 	}
 	_settingsPanel->setEnabled(true);
 }

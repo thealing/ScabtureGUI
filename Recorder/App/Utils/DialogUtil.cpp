@@ -1,13 +1,5 @@
 #include "DialogUtil.h"
 
-const wchar_t* DialogUtil::getTitle(Window* window)
-{
-	int size = window->getTitleLength();
-	wchar_t* title = new wchar_t[size];
-	window->getTitle(title, size);
-	return title;
-}
-
 Control* DialogUtil::createLabel(Window* parent, const wchar_t* text, int x, int y, int width, int height)
 {
 	Control* control = new Label(parent, text);

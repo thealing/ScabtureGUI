@@ -12,6 +12,8 @@ public:
 
 	void setCancelCallback(const Callback& callback);
 
+	void setChangeCallback(const Callback& callback);
+
 	void addCheckBox(const wchar_t* labelText, int controlWidth, bool* value);
 
 	void addComboBox(const wchar_t* labelText, int controlWidth, int* value, const wchar_t** options, int count);
@@ -22,30 +24,17 @@ public:
 
 	void finalize();
 
-protected:
-
-	virtual void onConfirmed();
-
-	virtual void onCancelled();
-
 private:
-
-	void confirm();
-
-	void cancel();
-
-	void confirmOnWindowThread();
-
-	void cancelOnWindowThread();
 
 	virtual bool canClose() override;
 
 private:
 
-	EventDispatcher _eventDispatcher;
+	WindowEventDispatcher _eventDispatcher;
 	UniqueStorage<Control> _controls;
 	Callback _confirmCallback;
 	Callback _cancelCallback;
+	Callback _changeCallback;
 	int _width;
 	int _height;
 	int _margin;
