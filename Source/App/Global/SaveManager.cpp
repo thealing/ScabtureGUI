@@ -1,6 +1,6 @@
 #include "SaveManager.h"
 
-#define REGISTRY_KEY_PATH L"SOFTWARE\\CaptureBit2"
+#define REGISTRY_KEY_PATH L"SOFTWARE\\CaptureBit41"
 
 SaveManager& SaveManager::getInstance()
 {

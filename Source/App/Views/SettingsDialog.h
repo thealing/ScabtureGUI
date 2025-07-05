@@ -9,7 +9,7 @@ public:
 
 	void show(Window* parent, const Settings& settings, const Callback& callback);
 
-	const Settings* getSavedSettings() const;
+	Settings getSettings() const;
 
 	virtual ~SettingsDialog();
 
@@ -25,10 +25,13 @@ private:
 
 	void onCancelled();
 
+	void onChanged();
+
 private:
 
 	Callback _callback;
-	UniquePointer<Settings> _settings;
+	Settings _settings;
+	Settings _oldSettings;
 	UniquePointer<DialogWindow> _window;
 };
 

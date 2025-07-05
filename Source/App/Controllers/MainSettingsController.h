@@ -12,7 +12,7 @@ private:
 
 	void onButtonClicked();
 
-	void onDialogClosed();
+	void onSettingsChanged();
 
 private:
 

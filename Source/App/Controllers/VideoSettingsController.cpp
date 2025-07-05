@@ -21,20 +21,15 @@ void VideoSettingsController::onButtonClicked()
 	LogUtil::logInfo(L"VideoSettingsController: Button clicked.");
 	Window* parent = _sourcePanel->getTopLevelParent();
 	VideoSettings settings = _videoSettingsManager->getSettings();
-	Callback callback = BIND(VideoSettingsController, onDialogClosed, this);
+	Callback callback = BIND(VideoSettingsController, onSettingsChanged, this);
 	_videoSettingsDialog->show(parent, settings, callback);
 }
 
-void VideoSettingsController::onDialogClosed()
+void VideoSettingsController::onSettingsChanged()
 {
-	const VideoSettings* settings = _videoSettingsDialog->getSavedSettings();
-	if (settings != NULL)
+	VideoSettings settings = _videoSettingsDialog->getSettings();
+	if (_videoSettingsManager->setSettings(settings))
 	{
-		LogUtil::logInfo(L"VideoSettingsController: Settings saved.");
-		_videoSettingsManager->setSettings(*settings);
-	}
-	else
-	{
-		LogUtil::logInfo(L"VideoSettingsController: Settings cancelled.");
+		LogUtil::logInfo(L"VideoSettingsController: Settings changed.");
 	}
 }

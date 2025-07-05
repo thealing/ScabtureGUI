@@ -10,7 +10,7 @@ MainSettingsDialog::~MainSettingsDialog()
 
 DialogWindow* MainSettingsDialog::createWindow(Window* parent)
 {
-	return new DialogWindow(parent, L"Settings", 390, 26, 10, 5);
+	return new DialogWindow(parent, L"Settings", 390, 24, 10, 5);
 }
 
 void MainSettingsDialog::createControls(DialogWindow* window, MainSettings* settings)

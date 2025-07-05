@@ -4,8 +4,6 @@ class DialogUtil
 {
 public:
 
-	static const wchar_t* getTitle(Window* window);
-
 	static Control* createLabel(Window* parent, const wchar_t* text, int x, int y, int width, int height);
 
 	static Control* createButton(Window* parent, const wchar_t* text, int x, int y, int width, int height);
