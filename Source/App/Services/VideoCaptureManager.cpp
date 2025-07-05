@@ -21,6 +21,7 @@ void VideoCaptureManager::reset()
 		_dispatcher = NULL;
 	}
 	_capture = NULL;
+	_errorEventPool.resetEvents();
 	_lock.endWriting();
 }
 
