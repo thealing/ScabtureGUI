@@ -13,8 +13,8 @@ static void threadProc(void*)
 		double startTime = getTime();
 		double updateTime = startTime;
 		double enterTime = 0;
-		int durationCount = 0;
 		double durationSum = 0;
+		int durationCount = 0;
 		while (true)
 		{
 			double currentTime = getTime();
@@ -40,12 +40,12 @@ static void threadProc(void*)
 			}
 			else if (enterTime != 0)
 			{
-				durationCount++;
 				durationSum += currentTime - enterTime;
+				durationCount++;
 				enterTime = 0;
 			}
 		}
-		wprintf(L"Profiler: Usage: %i %% Duration: %f ms\n", activeCount * 100 / totalCount, durationSum * 1000 / max(1, durationCount));
+		wprintf(L"Profiler: Usage: %i %% Duration: %f ms\n", activeCount * 100 / totalCount, durationCount < 1 ? 0 : durationSum * 1000 / durationCount);
 	}
 }
 
