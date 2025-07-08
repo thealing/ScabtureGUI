@@ -9,7 +9,7 @@ AudioCaptureController::AudioCaptureController(AudioCaptureManager* audioCapture
 	_eventDispatcher.addEntry(audioResamplerFactory->getChangeEvent(), BIND(AudioCaptureController, onResamplerChanged, this));
 	_eventDispatcher.addEntry(audioDeviceProvider->getInputChangeEvent(), BIND(AudioCaptureController, onInputDeviceChanged, this));
 	_eventDispatcher.addEntry(audioDeviceProvider->getOutputChangeEvent(), BIND(AudioCaptureController, onOutputDeviceChanged, this));
-	_eventDispatcher.addEntry(audioSourceManager->getSelectionEvent(), BIND(AudioCaptureController, onSourceChanged, this));
+	_eventDispatcher.addEntry(audioSourceManager->getChangeEvent(), BIND(AudioCaptureController, onSourceChanged, this));
 	_eventDispatcher.addEntry(audioCaptureManager->getErrorEvent(), BIND(AudioCaptureController, onCaptureError, this));
 	_eventDispatcher.start();
 	LogUtil::logDebug(L"AudioCaptureController: Started on thread %i.", _eventDispatcher.getThreadId());

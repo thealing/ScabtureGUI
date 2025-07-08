@@ -2,25 +2,29 @@
 
 #define AUDIO_SOURCE_SETTING_NAME L"Audio Source"
 
-AudioSourceManager::AudioSourceManager() : SourceManager(AudioSourceNone)
+AudioSourceManager::AudioSourceManager()
 {
-	AudioSource source;
-	bool loaded = SaveUtil::loadSettings(AUDIO_SOURCE_SETTING_NAME, &source);
-	if (loaded)
+	AudioSource source = AudioSourceNone;
+	if (SaveUtil::loadSettings(AUDIO_SOURCE_SETTING_NAME, &source))
 	{
 		LogUtil::logInfo(L"AudioSourceManager: Loaded audio source %i.", source);
-		SourceManager::selectSource(source);
 	}
 	else
 	{
 		LogUtil::logWarning(L"AudioSourceManager: No saved audio source found.");
 	}
+	_source = source;
+	_changeEventPool.setEvents();
 }
 
-void AudioSourceManager::selectSource(AudioSource source)
+const Event* AudioSourceManager::getChangeEvent()
 {
-	bool saved = SaveUtil::saveSettings(AUDIO_SOURCE_SETTING_NAME, &source);
-	if (saved)
+    return _changeEventPool.getEvent();
+}
+
+void AudioSourceManager::setSource(AudioSource source)
+{
+	if (SaveUtil::saveSettings(AUDIO_SOURCE_SETTING_NAME, &source))
 	{
 		LogUtil::logInfo(L"AudioSourceManager: Saved audio source %i.", source);
 	}
@@ -28,5 +32,11 @@ void AudioSourceManager::selectSource(AudioSource source)
 	{
 		LogUtil::logWarning(L"AudioSourceManager: Failed to save audio source %i.", source);
 	}
-	SourceManager::selectSource(source);
+	_source = source;
+	_changeEventPool.setEvents();
+}
+
+AudioSource AudioSourceManager::getSource() const
+{
+    return _source;
 }
