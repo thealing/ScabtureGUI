@@ -84,14 +84,22 @@ void PreviewDisplay::setUpscale(bool upscale)
 
 void PreviewDisplay::setBuffer(const Buffer& buffer)
 {
-	ExclusiveLockHolder holder(&_lock);
 	int width = buffer.getWidth();
 	int height = buffer.getHeight();
 	int stride = buffer.getStride();
+	_lock.acquire();
 	if (_pixels != NULL && _width == width && _height == height && _stride == stride)
 	{
+		_lock.release();
+		Vector size = getSize();
+		if (size.x == 0 || size.y == 0)
+		{
+			return;
+		}
 		const uint32_t* source = buffer.beginReading();
+		_lock.acquire();
 		BufferUtil::copyBuffer(_pixels, source, _stride * _height);
+		_lock.release();
 		buffer.endReading();
 		return;
 	}
@@ -104,6 +112,7 @@ void PreviewDisplay::setBuffer(const Buffer& buffer)
 	_stride = stride;
 	_pixels = BufferUtil::allocateBuffer<uint32_t>(_stride * _height);
 	_dirty = true;
+	_lock.release();
 	updateControl();
 }
 
@@ -184,6 +193,11 @@ void PreviewDisplay::onResize()
 void PreviewDisplay::doPaint(Graphics& graphics)
 {
 	ExclusiveLockHolder holder(&_lock);
+	Vector size = getSize();
+	if (size.x == 0 || size.y == 0)
+	{
+		return;
+	}
 	if (!_active)
 	{
 		drawPreviewInactive(graphics);
