@@ -3,6 +3,7 @@
 Graphics::Graphics(HDC handle)
 {
 	_handle = handle;
+	SetBkMode(_handle, TRANSPARENT);
 }
 
 void Graphics::setTextColor(Color color)
