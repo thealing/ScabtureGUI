@@ -37,6 +37,7 @@ void RecordingManager::start(SinkWriter* sinkWriter, Encoder* videoEncoder, Enco
 	_videoErrorEventPool.resetEvents();
 	_audioErrorEventPool.resetEvents();
 	_eventDispatcher = new EventDispatcher();
+	_eventDispatcher->addEntry(_videoEncoder->getEncodeEvent(), BIND(FpsCounter, recordFrame, &_fpsCounter));
 	_eventDispatcher->addEntry(_videoEncoder->getEncodeEvent(), BIND(RecordingManager, onEncodedFrame, this));
 	_eventDispatcher->addEntry(_audioEncoder->getEncodeEvent(), BIND(RecordingManager, onEncodedFrame, this));
 	_eventDispatcher->addEntry(_videoEncoder->getErrorEvent(), BIND(RecordingManager, onVideoError, this));
@@ -140,7 +141,6 @@ const FpsCounter& RecordingManager::getFpsCounter() const
 
 void RecordingManager::onEncodedFrame()
 {
-	_fpsCounter.recordFrame();
 	_encodeEventPool.setEvents();
 }
 
