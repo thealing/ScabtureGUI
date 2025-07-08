@@ -100,5 +100,5 @@ void DialogWindow::finalize()
 bool DialogWindow::canClose()
 {
 	_confirmCallback.invoke();
-    return false;
+	return false;
 }

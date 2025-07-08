@@ -22,7 +22,6 @@ VideoCapture* ScreenCaptureFactory::createCapture(HWND desktop, RECT rect) const
 	WindowCapture* capture = NULL;
 	switch (settings.method)
 	{
-		default:
 		case ScreenCaptureMethodBitBltGetBitmapBits:
 		{
 			capture = new BitBltGetBitmapBitsCapture(desktop, position, size);

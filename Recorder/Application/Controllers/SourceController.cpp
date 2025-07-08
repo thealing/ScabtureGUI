@@ -68,8 +68,8 @@ void SourceController::onVideoSourceChanged()
 	else
 	{
 		LogUtil::logWarning(L"SourceController: Failed to select video source %i.", source);
-		VideoSource source = _videoSourceManager->getSource();
-		_sourcePanel->setVideoSource(source);
+		VideoSource oldSource = _videoSourceManager->getSource();
+		_sourcePanel->setVideoSource(oldSource);
 	}
 }
 

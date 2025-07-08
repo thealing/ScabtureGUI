@@ -17,7 +17,7 @@ AudioDeviceProvider::AudioDeviceProvider()
 	}
 	if (!_status)
 	{
-		LogUtil::logComWarning("AudioDeviceProvider", _status);
+		LogUtil::logComError("AudioDeviceProvider", _status);
 	}
 }
 
@@ -81,17 +81,17 @@ HRESULT AudioDeviceProvider::GetDeviceName(LPCWSTR deviceId, PROPVARIANT* device
 	return result;
 }
 
-ULONG __stdcall AudioDeviceProvider::AddRef()
+ULONG AudioDeviceProvider::AddRef()
 {
 	return 0;
 }
 
-ULONG __stdcall AudioDeviceProvider::Release()
+ULONG AudioDeviceProvider::Release()
 {
 	return 0;
 }
 
-HRESULT __stdcall AudioDeviceProvider::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT AudioDeviceProvider::QueryInterface(REFIID riid, void** ppvObject)
 {
 	if (riid == __uuidof(IUnknown))
 	{
@@ -107,7 +107,7 @@ HRESULT __stdcall AudioDeviceProvider::QueryInterface(REFIID riid, void** ppvObj
 	return E_NOINTERFACE;
 }
 
-HRESULT __stdcall AudioDeviceProvider::OnDeviceStateChanged(LPCWSTR pwstrDeviceId, DWORD dwNewState)
+HRESULT AudioDeviceProvider::OnDeviceStateChanged(LPCWSTR pwstrDeviceId, DWORD dwNewState)
 {
 	const wchar_t* pszState = NULL;
 	switch (dwNewState)
@@ -139,7 +139,7 @@ HRESULT __stdcall AudioDeviceProvider::OnDeviceStateChanged(LPCWSTR pwstrDeviceI
 	return S_OK;
 }
 
-HRESULT __stdcall AudioDeviceProvider::OnDeviceAdded(LPCWSTR pwstrDeviceId)
+HRESULT AudioDeviceProvider::OnDeviceAdded(LPCWSTR pwstrDeviceId)
 {
 	PropVariant deviceName;
 	GetDeviceName(pwstrDeviceId, &deviceName);
@@ -147,7 +147,7 @@ HRESULT __stdcall AudioDeviceProvider::OnDeviceAdded(LPCWSTR pwstrDeviceId)
 	return S_OK;
 }
 
-HRESULT __stdcall AudioDeviceProvider::OnDeviceRemoved(LPCWSTR pwstrDeviceId)
+HRESULT AudioDeviceProvider::OnDeviceRemoved(LPCWSTR pwstrDeviceId)
 {
 	PropVariant deviceName;
 	GetDeviceName(pwstrDeviceId, &deviceName);
@@ -155,7 +155,7 @@ HRESULT __stdcall AudioDeviceProvider::OnDeviceRemoved(LPCWSTR pwstrDeviceId)
 	return S_OK;
 }
 
-HRESULT __stdcall AudioDeviceProvider::OnDefaultDeviceChanged(EDataFlow flow, ERole role, LPCWSTR pwstrDefaultDeviceId)
+HRESULT AudioDeviceProvider::OnDefaultDeviceChanged(EDataFlow flow, ERole role, LPCWSTR pwstrDefaultDeviceId)
 {
 	PropVariant deviceName;
 	GetDeviceName(pwstrDefaultDeviceId, &deviceName);
@@ -173,7 +173,7 @@ HRESULT __stdcall AudioDeviceProvider::OnDefaultDeviceChanged(EDataFlow flow, ER
 	return S_OK;
 }
 
-HRESULT __stdcall AudioDeviceProvider::OnPropertyValueChanged(LPCWSTR, const PROPERTYKEY)
+HRESULT AudioDeviceProvider::OnPropertyValueChanged(LPCWSTR, const PROPERTYKEY)
 {
 	return S_OK;
 }

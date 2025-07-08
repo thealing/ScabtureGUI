@@ -92,16 +92,19 @@ Resizer* VideoResizerFactory::createResizer(Vector inputSize, Vector outputSize)
 	inputSize.y = BufferUtil::alignHeight(inputSize.y);
 	outputSize.x = BufferUtil::alignStride(outputSize.x);
 	outputSize.y = BufferUtil::alignHeight(outputSize.y);
+	Resizer* resizer = NULL;
 	switch (settings.quality)
 	{
-		default:
 		case ResizeQualityNearest:
 		{
-			return new NearestResizer(inputSize, outputSize, inputRect, outputRect);
+			resizer = new NearestResizer(inputSize, outputSize, inputRect, outputRect);
+			break;
 		}
 		case ResizeQualityBilinear:
 		{
-			return new BilinearResizer(inputSize, outputSize, inputRect, outputRect);
+			resizer = new BilinearResizer(inputSize, outputSize, inputRect, outputRect);
+			break;
 		}
 	}
+	return resizer;
 }

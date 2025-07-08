@@ -155,5 +155,5 @@ HRESULT SinkWriter::finalize()
 
 Status SinkWriter::getStatus() const
 {
-    return _status;
+	return _status;
 }

@@ -30,10 +30,7 @@ void PreviewPresenter::onFrame()
 	if (capture != NULL)
 	{
 		const Buffer* buffer = capture->getBuffer();
-		if (buffer != NULL)
-		{
-			_previewDisplay->setBuffer(*buffer);
-		}
+		_previewDisplay->setBuffer(*buffer);
 		_previewDisplay->setActive(true);
 	}
 	else

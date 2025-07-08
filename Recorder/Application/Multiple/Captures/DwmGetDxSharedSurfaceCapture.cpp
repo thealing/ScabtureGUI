@@ -2,10 +2,9 @@
 
 DwmGetDxSharedSurfaceCapture::DwmGetDxSharedSurfaceCapture(HWND window, POINT position, SIZE size) : WindowCapture(window)
 {
-	_position = position;
 	RECT clientRect = WindowUtil::getRelativeClientRect(window);
-	_position.x += clientRect.left;
-	_position.y += clientRect.top;
+	_position.x = position.x + clientRect.left;
+	_position.y = position.y + clientRect.top;
 	createBuffer(size.cx, size.cy);
 	const Buffer* buffer = getBuffer();
 	int height = buffer->getHeight();
@@ -42,12 +41,11 @@ DwmGetDxSharedSurfaceCapture::DwmGetDxSharedSurfaceCapture(HWND window, POINT po
 		_textureDesc.MiscFlags = 0;
 		_textureDesc.Width = stride;
 		_textureDesc.Height = height;
-		_textureDesc.MiscFlags = 0;
 		_status = _device->CreateTexture2D(&_textureDesc, NULL, &_captureTexture);
 	}
 	if (!_status)
 	{
-		LogUtil::logComWarning("DwmGetDxSharedSurfaceCapture", _status);
+		LogUtil::logComError("DwmGetDxSharedSurfaceCapture", _status);
 	}
 }
 

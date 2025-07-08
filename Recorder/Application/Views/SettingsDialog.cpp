@@ -3,6 +3,8 @@
 template<class Settings>
 SettingsDialog<Settings>::SettingsDialog()
 {
+	_settings = {};
+	_oldSettings = {};
 }
 
 template<class Settings>

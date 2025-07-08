@@ -53,7 +53,7 @@ AudioResampler::AudioResampler(const AudioResamplerSettings& settings, AudioCapt
 	}
 	if (!_status)
 	{
-		LogUtil::logComWarning("AudioResampler", _status);
+		LogUtil::logComError("AudioResampler", _status);
 	}
 }
 
@@ -108,16 +108,13 @@ HRESULT AudioResampler::getSample(IMFSample** sample)
 	}
 	if (result)
 	{
-		outputSize = inputSize * _outputSampleRate / max(_inputSampleRate, 1u);
-		outputSize -= outputSize % 4;
-		outputSize += 4;
-	}
-	if (result)
-	{
 		result = _resampler->ProcessInput(0, inputSample, 0);
 	}
 	if (result)
 	{
+		outputSize = inputSize * _outputSampleRate / max(_inputSampleRate, 1u);
+		outputSize -= outputSize % 4;
+		outputSize += 4;
 		result = MFCreateMemoryBuffer(outputSize, &outputBuffer);
 	}
 	if (result)

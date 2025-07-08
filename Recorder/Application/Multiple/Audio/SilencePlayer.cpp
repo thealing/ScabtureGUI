@@ -49,7 +49,7 @@ SilencePlayer::SilencePlayer(IMMDeviceEnumerator* enumerator, EDataFlow flow, ER
 	}
 	if (!_status)
 	{
-		LogUtil::logComWarning("SilencePlayer", _status);
+		LogUtil::logComError("SilencePlayer", _status);
 	}
 }
 
@@ -61,6 +61,6 @@ SilencePlayer::~SilencePlayer()
 	}
 	if (!_status)
 	{
-		LogUtil::logComWarning("SilencePlayer", _status);
+		LogUtil::logComError("SilencePlayer", _status);
 	}
 }
