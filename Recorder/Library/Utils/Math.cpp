@@ -17,9 +17,3 @@ T clamp(T x, T l, T h)
 {
 	return min(max(x, l), h);
 }
-
-template<typename T, typename U>
-T round(U x)
-{
-	return (T)lround(x);
-}
