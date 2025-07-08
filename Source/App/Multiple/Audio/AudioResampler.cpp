@@ -108,7 +108,9 @@ HRESULT AudioResampler::getSample(IMFSample** sample)
 	}
 	if (result)
 	{
-		outputSize = BufferUtil::alignValue(inputSize * _outputSampleRate / max(_inputSampleRate, 1u) + 1, 4);
+		outputSize = inputSize * _outputSampleRate / max(_inputSampleRate, 1u);
+		outputSize -= outputSize % 4;
+		outputSize += 4;
 	}
 	if (result)
 	{
