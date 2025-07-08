@@ -4,7 +4,7 @@ class VideoSettingsObserver : NonCopyable
 {
 public:
 
-	VideoSettingsObserver(VideoSettingsManager* videoSettingsManager, VideoCaptureFactory* videoCaptureFactory, VideoResizerFactory* videoResizerFactory, VideoEncoderFactory* videoEncoderFactory);
+	VideoSettingsObserver(VideoSettingsManager* videoSettingsManager, WindowCaptureFactory* windowCaptureFactory, ScreenCaptureFactory* screenCaptureFactory, VideoResizerFactory* videoResizerFactory, VideoEncoderFactory* videoEncoderFactory);
 
 	~VideoSettingsObserver();
 
@@ -12,7 +12,9 @@ private:
 
 	void onSettingsChanged();
 
-	void updateVideoCaptureSettings(const VideoSettings& videoSettings);
+	void updateWindowCaptureSettings(const VideoSettings& videoSettings);
+
+	void updateScreenCaptureSettings(const VideoSettings& videoSettings);
 
 	void updateVideoResizerSettings(const VideoSettings& videoSettings);
 
@@ -22,7 +24,8 @@ private:
 
 	EventDispatcher _eventDispatcher;
 	WeakPointer<VideoSettingsManager> _videoSettingsManager;
-	WeakPointer<VideoCaptureFactory> _videoCaptureFactory;
+	WeakPointer<WindowCaptureFactory> _windowCaptureFactory;
+	WeakPointer<ScreenCaptureFactory> _screenCaptureFactory;
 	WeakPointer<VideoResizerFactory> _videoResizerFactory;
 	WeakPointer<VideoEncoderFactory> _videoEncoderFactory;
 };

@@ -8,7 +8,8 @@ VideoSettingsManager::VideoSettingsManager() : SettingsManager(L"Video Settings"
 VideoSettings VideoSettingsManager::getDefault() const
 {
 	VideoSettings settings = {};
-	settings.captureMethod = CaptureMethodDefault;
+	settings.windowCaptureMethod = WindowCaptureMethodBitBltGetBitmapBits;
+	settings.screenCaptureMethod = ScreenCaptureMethodBitBltGetBitmapBits;
 	settings.showCursor = true;
 	settings.frameRate = 60;
 	settings.bitRate = 16000;
@@ -21,10 +22,15 @@ VideoSettings VideoSettingsManager::getDefault() const
 
 void VideoSettingsManager::validate(VideoSettings& settings) const
 {
-	if (settings.captureMethod < 0 || settings.captureMethod >= CaptureMethodCount)
+	if (settings.windowCaptureMethod < 0 || settings.windowCaptureMethod >= WindowCaptureMethodCount)
 	{
-		LogUtil::logWarning(L"VideoSettingsManager: Found invalid capture method %i.", settings.captureMethod);
-		settings.captureMethod = CaptureMethodDefault;
+		LogUtil::logWarning(L"VideoSettingsManager: Found invalid window capture method %i.", settings.windowCaptureMethod);
+		settings.windowCaptureMethod = WindowCaptureMethodBitBltGetBitmapBits;
+	}
+	if (settings.screenCaptureMethod < 0 || settings.screenCaptureMethod >= ScreenCaptureMethodCount)
+	{
+		LogUtil::logWarning(L"VideoSettingsManager: Found invalid screen capture method %i.", settings.screenCaptureMethod);
+		settings.screenCaptureMethod = ScreenCaptureMethodBitBltGetBitmapBits;
 	}
 	if (settings.encodeFormat < 0 || settings.encodeFormat >= EncodeFormatCount)
 	{
@@ -36,10 +42,10 @@ void VideoSettingsManager::validate(VideoSettings& settings) const
 		LogUtil::logWarning(L"VideoSettingsManager: Found invalid resize mode %i.", settings.resizeMode);
 		settings.resizeMode = ResizeModeStretch;
 	}
-	if (settings.frameRate < 1 || settings.frameRate > 150)
+	if (settings.frameRate < 1 || settings.frameRate > 9999)
 	{
 		LogUtil::logWarning(L"VideoSettingsManager: Found invalid framerate %i.", settings.frameRate);
-		settings.frameRate = clamp(settings.frameRate, 1, 150);
+		settings.frameRate = clamp(settings.frameRate, 1, 9999);
 	}
 	if (settings.bitRate < 100 || settings.bitRate > 250000)
 	{

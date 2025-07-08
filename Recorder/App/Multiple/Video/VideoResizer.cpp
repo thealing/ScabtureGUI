@@ -1,10 +1,10 @@
 #include "VideoResizer.h"
 
-VideoResizer::VideoResizer(VideoCapture* source, Resizer* resizer, Buffer* buffer)
+VideoResizer::VideoResizer(VideoCapture* source, Vector outputSize, Resizer* resizer)
 {
+	createBuffer(outputSize.x, outputSize.y);
 	_source = source;
 	_resizer = resizer;
-	_buffer = buffer;
 	_eventDispatcher.addEntry(source->getFrameEvent(), BIND(VideoResizer, onFrame, this));
 	_eventDispatcher.addEntry(source->getErrorEvent(), BIND(VideoResizer, onError, this));
 	_eventDispatcher.start();
@@ -15,20 +15,14 @@ VideoResizer::~VideoResizer()
 	_eventDispatcher.stop();
 }
 
-const Buffer* VideoResizer::getBuffer() const
-{
-	return _buffer;
-}
-
 void VideoResizer::onFrame()
 {
 	const Buffer* inputBuffer = _source->getBuffer();
 	const uint32_t* inputPixels = inputBuffer->beginReading();
-	uint32_t* outputPixels = _buffer->beginWriting();
+	uint32_t* outputPixels = beginFrame();
 	_resizer->resize(inputPixels, outputPixels);
-	_buffer->endWriting();
+	endFrame(true);
 	inputBuffer->endReading();
-	signalFrame();
 }
 
 void VideoResizer::onError()

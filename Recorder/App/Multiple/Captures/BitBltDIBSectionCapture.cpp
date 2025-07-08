@@ -1,6 +1,6 @@
-#include "BitBltGetBitmapBitsCapture.h"
+#include "BitBltDIBSectionCapture.h"
 
-BitBltGetBitmapBitsCapture::BitBltGetBitmapBitsCapture(HWND window, POINT position, SIZE size) : WindowCapture(window)
+BitBltDIBSectionCapture::BitBltDIBSectionCapture(HWND window, POINT position, SIZE size) : WindowCapture(window)
 {
 	_position = position;
 	createBuffer(size.cx, size.cy);
@@ -9,11 +9,18 @@ BitBltGetBitmapBitsCapture::BitBltGetBitmapBitsCapture(HWND window, POINT positi
 	int stride = buffer->getStride();
 	_sourceContext = GetDC(window); 
 	_captureContext = CreateCompatibleDC(_sourceContext);
-	_captureBitmap = CreateCompatibleBitmap(_sourceContext, stride, height);
+	BITMAPINFO bitmapInfo = {};
+	bitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	bitmapInfo.bmiHeader.biWidth = stride;
+	bitmapInfo.bmiHeader.biHeight = -height;
+	bitmapInfo.bmiHeader.biPlanes = 1;
+	bitmapInfo.bmiHeader.biBitCount = 32;
+	bitmapInfo.bmiHeader.biCompression = BI_RGB;
+	_captureBitmap = CreateDIBSection(_sourceContext, &bitmapInfo, DIB_RGB_COLORS, &_capturePixels, NULL, 0);
 	SelectObject(_captureContext, _captureBitmap);
 }
 
-BitBltGetBitmapBitsCapture::~BitBltGetBitmapBitsCapture()
+BitBltDIBSectionCapture::~BitBltDIBSectionCapture()
 {
 	stop();
 	HWND window = getWindow();
@@ -22,7 +29,7 @@ BitBltGetBitmapBitsCapture::~BitBltGetBitmapBitsCapture()
 	DeleteObject(_captureBitmap);
 }
 
-bool BitBltGetBitmapBitsCapture::captureFrame()
+bool BitBltDIBSectionCapture::captureFrame()
 {
 	const Buffer* buffer = getBuffer();
 	int width = buffer->getWidth();
@@ -36,7 +43,7 @@ bool BitBltGetBitmapBitsCapture::captureFrame()
 	if (result)
 	{
 		uint32_t* pixels = beginFrame();
-		result = GetBitmapBits(_captureBitmap, height * stride * sizeof(uint32_t), pixels);
+		memcpy(pixels, _capturePixels, height * stride * sizeof(uint32_t));
 		endFrame(result);
 	}
 	return result;

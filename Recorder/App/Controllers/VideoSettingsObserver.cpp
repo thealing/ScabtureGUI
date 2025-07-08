@@ -1,9 +1,10 @@
 #include "VideoSettingsObserver.h"
 
-VideoSettingsObserver::VideoSettingsObserver(VideoSettingsManager* videoSettingsManager, VideoCaptureFactory* videoCaptureFactory, VideoResizerFactory* videoResizerFactory, VideoEncoderFactory* videoEncoderFactory)
+VideoSettingsObserver::VideoSettingsObserver(VideoSettingsManager* videoSettingsManager, WindowCaptureFactory* windowCaptureFactory, ScreenCaptureFactory* screenCaptureFactory, VideoResizerFactory* videoResizerFactory, VideoEncoderFactory* videoEncoderFactory)
 {
 	_videoSettingsManager = videoSettingsManager;
-	_videoCaptureFactory = videoCaptureFactory;
+	_windowCaptureFactory = windowCaptureFactory;
+	_screenCaptureFactory = screenCaptureFactory;
 	_videoResizerFactory = videoResizerFactory;
 	_videoEncoderFactory = videoEncoderFactory;
 	_eventDispatcher.addEntry(videoSettingsManager->getChangeEvent(), BIND(VideoSettingsObserver, onSettingsChanged, this));
@@ -21,20 +22,33 @@ void VideoSettingsObserver::onSettingsChanged()
 {
 	LogUtil::logInfo(L"VideoSettingsObserver: Updating settings.");
 	VideoSettings videoSettings = _videoSettingsManager->getSettings();
-	updateVideoCaptureSettings(videoSettings);
+	updateWindowCaptureSettings(videoSettings);
+	updateScreenCaptureSettings(videoSettings);
 	updateVideoResizerSettings(videoSettings);
 	updateVideoEncoderSettings(videoSettings);
 }
 
-void VideoSettingsObserver::updateVideoCaptureSettings(const VideoSettings& videoSettings)
+void VideoSettingsObserver::updateWindowCaptureSettings(const VideoSettings& videoSettings)
 {
-	CaptureSettings settings = {};
-	settings.method = videoSettings.captureMethod;
+	WindowCaptureSettings settings = {};
+	settings.method = videoSettings.windowCaptureMethod;
 	settings.frameRate = videoSettings.frameRate;
 	settings.showCursor = videoSettings.showCursor;
-	if (_videoCaptureFactory->setSettings(settings))
+	if (_windowCaptureFactory->setSettings(settings))
 	{
-		LogUtil::logInfo(L"VideoSettingsObserver: Video capture settings changed.");
+		LogUtil::logInfo(L"VideoSettingsObserver: Window capture settings changed.");
+	}
+}
+
+void VideoSettingsObserver::updateScreenCaptureSettings(const VideoSettings& videoSettings)
+{
+	ScreenCaptureSettings settings = {};
+	settings.method = videoSettings.screenCaptureMethod;
+	settings.frameRate = videoSettings.frameRate;
+	settings.showCursor = videoSettings.showCursor;
+	if (_screenCaptureFactory->setSettings(settings))
+	{
+		LogUtil::logInfo(L"VideoSettingsObserver: Screen capture settings changed.");
 	}
 }
 

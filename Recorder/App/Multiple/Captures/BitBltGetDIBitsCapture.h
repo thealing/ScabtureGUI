@@ -1,15 +1,15 @@
 #pragma once
 
-class BitBltGetBitmapBitsCapture : public WindowCapture
+class BitBltGetDIBitsCapture : public WindowCapture
 {
 public:
 
-	BitBltGetBitmapBitsCapture(HWND window, POINT position, SIZE size);
+	BitBltGetDIBitsCapture(HWND window, POINT position, SIZE size);
 
-	~BitBltGetBitmapBitsCapture();
+	~BitBltGetDIBitsCapture();
 
 protected:
-	
+
 	virtual bool captureFrame() override;
 
 private:
