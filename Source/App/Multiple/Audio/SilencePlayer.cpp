@@ -30,6 +30,21 @@ SilencePlayer::SilencePlayer(IMMDeviceEnumerator* enumerator, EDataFlow flow, ER
 	}
 	if (_status)
 	{
+		UINT32 frameCount = 0;
+		BYTE* buffer = NULL;
+		_status = _audioClient->GetBufferSize(&frameCount);
+		if (_status)
+		{
+			_status = _renderClient->GetBuffer(frameCount, &buffer);
+		}
+		if (_status)
+		{
+			memset(buffer, 0, frameCount * waveFormat->nBlockAlign);
+			_status = _renderClient->ReleaseBuffer(frameCount, 0);
+		}
+	}
+	if (_status)
+	{
 		_status = _audioClient->Start();
 	}
 	if (!_status)
