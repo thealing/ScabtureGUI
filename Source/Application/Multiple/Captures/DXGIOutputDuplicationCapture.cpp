@@ -47,7 +47,7 @@ DXGIOutputDuplicationCapture::DXGIOutputDuplicationCapture(HWND window, POINT po
 	}
 	if (!_status)
 	{
-		LogUtil::logComWarning("DXGIOutputDuplicationCapture", _status);
+		LogUtil::logComError("DXGIOutputDuplicationCapture", _status);
 	}
 }
 

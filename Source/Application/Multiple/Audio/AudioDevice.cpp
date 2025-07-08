@@ -61,7 +61,7 @@ AudioDevice::AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole 
 	}
 	if (!_status)
 	{
-		LogUtil::logComWarning("AudioDevice", _status);
+		LogUtil::logComError("AudioDevice", _status);
 	}
 }
 
@@ -73,7 +73,7 @@ AudioDevice::~AudioDevice()
 	}
 	if (!_status)
 	{
-		LogUtil::logComWarning("AudioDevice", _status);
+		LogUtil::logComError("AudioDevice", _status);
 	}
 }
 

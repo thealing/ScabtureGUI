@@ -51,7 +51,7 @@ AudioVolumeMeter::AudioVolumeMeter(AudioCapture* source)
 	}
 	if (!_status)
 	{
-		LogUtil::logComWarning("AudioVolumeMeter", _status);
+		LogUtil::logComError("AudioVolumeMeter", _status);
 	}
 }
 

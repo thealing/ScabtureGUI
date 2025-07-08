@@ -103,5 +103,4 @@ void VideoCaptureController::updateCapture()
 	capture = _videoResizerFactory->createResizer(capture);
 	_videoCaptureManager->setCapture(capture);
 	LogUtil::logInfo(L"VideoCaptureController: Updated capture.");
-	//MessageBeep(MB_OK);
 }

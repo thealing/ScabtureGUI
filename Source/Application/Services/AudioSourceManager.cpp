@@ -19,7 +19,7 @@ AudioSourceManager::AudioSourceManager()
 
 const Event* AudioSourceManager::getChangeEvent()
 {
-    return _changeEventPool.getEvent();
+	return _changeEventPool.getEvent();
 }
 
 void AudioSourceManager::setSource(AudioSource source)
@@ -38,5 +38,5 @@ void AudioSourceManager::setSource(AudioSource source)
 
 AudioSource AudioSourceManager::getSource() const
 {
-    return _source;
+	return _source;
 }
