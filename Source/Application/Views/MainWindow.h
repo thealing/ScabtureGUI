@@ -14,6 +14,8 @@ public:
 
 	void setTopMost(bool topMost);
 
+	void excludeFromCapture(bool exclude);
+
 	SourcePanel* getSourcePanel() const;
 
 	ResizePanel* getResizePanel() const;

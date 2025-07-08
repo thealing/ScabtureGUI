@@ -4,6 +4,7 @@ struct VideoSettings
 {
 	WindowCaptureMethod windowCaptureMethod;
 	ScreenCaptureMethod screenCaptureMethod;
+	bool exclude;
 	bool showCursor;
 	int frameRate;
 	int bitRate;
