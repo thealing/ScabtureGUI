@@ -25,7 +25,7 @@ void MainSettingsDialog::createControls(DialogWindow* window, MainSettings* sett
 	window->addCheckBox(L"Ask to play the recording when finished", 16, &settings->askToPlayTheRecording);
 	window->addSeparator();
 	window->addCheckBox(L"High quality preview", 16, &settings->highQualityPreview);
-	window->addCheckBox(L"Disable preview while recording", 16, &settings->disablePreviewWhileRecording);
+	window->addCheckBox(L"Disable preview while recording", 16, &settings->disablePreviewDuringRecording);
 	window->addSeparator();
 	window->addCheckBox(L"Use hardware-accelerated encoders", 16, &settings->useHardwareEncoders);
 	window->addCheckBox(L"Low latency mode", 16, &settings->lowLatencyMode);
@@ -40,6 +40,6 @@ void MainSettingsDialog::createControls(DialogWindow* window, MainSettings* sett
 	const wchar_t* logModeNames[LogModeCount] = {};
 	logModeNames[LogModeNone] = L"None";
 	logModeNames[LogModeSingleFile] = L"Single file";
-	logModeNames[LogModeNewFiles] = L"Time-stamped files";
+	logModeNames[LogModeTimeStampedFiles] = L"Time-stamped files";
 	window->addComboBox(L"Logging output", 160, (int*)&settings->logMode, logModeNames, ARRAYSIZE(logModeNames));
 }

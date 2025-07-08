@@ -2,7 +2,8 @@
 
 struct VideoSettings
 {
-	CaptureMethod captureMethod;
+	WindowCaptureMethod windowCaptureMethod;
+	ScreenCaptureMethod screenCaptureMethod;
 	bool showCursor;
 	int frameRate;
 	int bitRate;
@@ -12,5 +13,5 @@ struct VideoSettings
 	int height;
 	EncodeFormat encodeFormat;
 	ResizeMode resizeMode;
-	bool resizeQuality;
+	ResizeQuality resizeQuality;
 };

@@ -7,5 +7,5 @@ struct VideoResizerSettings
 	int width;
 	int height;
 	ResizeMode mode;
-	bool quality;
+	ResizeQuality quality;
 };

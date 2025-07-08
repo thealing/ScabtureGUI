@@ -22,8 +22,6 @@ private:
 
 	Logger();
 
-	void setMode(LogMode mode);
-
 private:
 
 	ExclusiveLock _lock;
