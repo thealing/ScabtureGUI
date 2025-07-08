@@ -21,6 +21,12 @@
     <ClInclude Include="Resources\Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="App\Models\ScreenCaptureMethod.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="App\Models\Settings\ScreenCaptureSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Recorder.cpp">
@@ -170,12 +176,6 @@
     <None Include="App\Controllers\VideoSettingsObserver.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Controllers\WindowSelectionController.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="App\Controllers\WindowSelectionController.h">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="App\Core\Application.cpp">
       <Filter>Source Files</Filter>
     </None>
@@ -239,7 +239,7 @@
     <None Include="App\Models\Settings\VideoSettings.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Models\Settings\CaptureSettings.h">
+    <None Include="App\Models\Settings\WindowCaptureSettings.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Models\AudioBitrate.h">
@@ -260,7 +260,7 @@
     <None Include="App\Models\AudioSource.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Models\CaptureMethod.h">
+    <None Include="App\Models\WindowCaptureMethod.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Models\DeviceStatus.h">
@@ -275,7 +275,7 @@
     <None Include="App\Models\LogMode.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Models\ResizeConfig.h">
+    <None Include="App\Models\ResizeQuality.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Models\ResizeMode.h">
@@ -320,16 +320,10 @@
     <None Include="App\Multiple\Audio\AudioVolumeMeter.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Multiple\Captures\Capture.cpp">
+    <None Include="App\Multiple\MouseOverlay.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="App\Multiple\Captures\Capture.h">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="App\Multiple\Captures\MouseOverlay.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="App\Multiple\Captures\MouseOverlay.h">
+    <None Include="App\Multiple\MouseOverlay.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Multiple\Resizers\BaseResizer.cpp">
@@ -434,12 +428,6 @@
     <None Include="App\Multiple\FrameSource.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Multiple\MediaSource.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="App\Multiple\MediaSource.h">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="App\Multiple\PropVariant.cpp">
       <Filter>Source Files</Filter>
     </None>
@@ -512,12 +500,6 @@
     <None Include="App\Services\AudioSettingsManager.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Services\AudioSourceManager.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="App\Services\AudioSourceManager.h">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="App\Services\AudioVolumeListener.cpp">
       <Filter>Source Files</Filter>
     </None>
@@ -566,12 +548,6 @@
     <None Include="App\Services\SinkWriterFactory.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Services\SourceManager.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="App\Services\SourceManager.h">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="App\Services\VideoCaptureManager.cpp">
       <Filter>Source Files</Filter>
     </None>
@@ -596,16 +572,10 @@
     <None Include="App\Services\VideoSettingsManager.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Services\VideoSourceManager.cpp">
+    <None Include="App\Services\WindowCaptureFactory.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="App\Services\VideoSourceManager.h">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="App\Services\VideoCaptureFactory.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="App\Services\VideoCaptureFactory.h">
+    <None Include="App\Services\WindowCaptureFactory.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Utils\BufferUtil.cpp">
@@ -620,10 +590,10 @@
     <None Include="App\Utils\ControlUtil.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Utils\Converter.cpp">
+    <None Include="App\Utils\FormatConverter.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="App\Utils\Converter.h">
+    <None Include="App\Utils\FormatConverter.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Utils\DialogUtil.cpp">
@@ -1058,10 +1028,10 @@
     <None Include="App\Multiple\Status.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Multiple\Captures\Overlay.cpp">
+    <None Include="App\Multiple\Overlay.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="App\Multiple\Captures\Overlay.h">
+    <None Include="App\Multiple\Overlay.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="App\Multiple\Audio\SilencePlayer.cpp">
@@ -1106,28 +1076,70 @@
     <None Include="App\Utils\StringUtil.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Multiple\Captures\BaseCapture.h">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="App\Multiple\Captures\BaseCapture.cpp">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="App\Multiple\Captures\BitBltGetBitmapBitsCapture.cpp">
       <Filter>Source Files</Filter>
     </None>
     <None Include="App\Multiple\Captures\BitBltGetBitmapBitsCapture.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Multiple\Video\DisplayCapture.h">
+    <None Include="App\Multiple\Captures\BitBltDIBSectionCapture.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\BitBltDIBSectionCapture.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="App\Multiple\Video\DisplayCapture.cpp">
+    <None Include="App\Multiple\Captures\DwmGetDxSharedSurfaceCapture.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="App\Multiple\Video\ScreenCapture.cpp">
+    <None Include="App\Multiple\Captures\DwmGetDxSharedSurfaceCapture.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Services\ScreenCaptureFactory.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="App\Multiple\Video\ScreenCapture.h">
+    <None Include="App\Services\ScreenCaptureFactory.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Services\AudioSourceManager.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Services\AudioSourceManager.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Services\VideoSourceManager.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Services\VideoSourceManager.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\PrintWindowGetBitmapBitsCapture.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\PrintWindowGetBitmapBitsCapture.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\BitBltGetDIBitsCapture.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\BitBltGetDIBitsCapture.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\PrintWindowDIBSectionCapture.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\PrintWindowDIBSectionCapture.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\PrintWindowGetDIBitsCapture.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\PrintWindowGetDIBitsCapture.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\DXGIOutputDuplicationCapture.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="App\Multiple\Captures\DXGIOutputDuplicationCapture.h">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

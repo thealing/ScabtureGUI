@@ -112,7 +112,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;d3d11.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
       <AdditionalOptions>/PDBALTPATH:%_PDB% %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -139,7 +139,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;d3d11.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
       <AdditionalOptions>/PDBALTPATH:%_PDB% %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -161,7 +161,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;d3d11.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
       <AdditionalOptions>/PDBALTPATH:%_PDB% %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -188,12 +188,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;d3d11.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
       <AdditionalOptions>/PDBALTPATH:%_PDB% %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="App\Multiple\Video\ScreenCapture.h" />
+    <None Include="App\Services\ScreenCaptureFactory.h" />
     <None Include="App\Utils\StringUtil.h" />
     <None Include="App\Global\SaveManager.h" />
     <None Include="App\Multiple\Audio\SilencePlayer.h" />
@@ -216,7 +216,6 @@
     <None Include="App\Controllers\VideoCaptureController.h" />
     <None Include="App\Controllers\VideoSettingsController.h" />
     <None Include="App\Controllers\VideoSettingsObserver.h" />
-    <None Include="App\Controllers\WindowSelectionController.h" />
     <None Include="App\Core\Application.h" />
     <None Include="App\Core\MediaApplication.h" />
     <None Include="App\Core\ScreenRecorderApplication.h" />
@@ -230,12 +229,12 @@
     <None Include="App\Models\AudioResampleQuality.h" />
     <None Include="App\Models\AudioSampleRate.h" />
     <None Include="App\Models\AudioSource.h" />
-    <None Include="App\Models\CaptureMethod.h" />
+    <None Include="App\Models\WindowCaptureMethod.h" />
     <None Include="App\Models\DeviceStatus.h" />
     <None Include="App\Models\EncodeFormat.h" />
     <None Include="App\Models\Hotkey.h" />
     <None Include="App\Models\LogMode.h" />
-    <None Include="App\Models\ResizeConfig.h" />
+    <None Include="App\Models\ResizeQuality.h" />
     <None Include="App\Models\ResizeMode.h" />
     <None Include="App\Models\Settings\AudioEncoderSettings.h" />
     <None Include="App\Models\Settings\AudioResamplerSettings.h" />
@@ -246,7 +245,7 @@
     <None Include="App\Models\Settings\VideoEncoderSettings.h" />
     <None Include="App\Models\Settings\VideoResizerSettings.h" />
     <None Include="App\Models\Settings\VideoSettings.h" />
-    <None Include="App\Models\Settings\CaptureSettings.h" />
+    <None Include="App\Models\Settings\WindowCaptureSettings.h" />
     <None Include="App\Models\VideoSource.h" />
     <None Include="App\Models\Volumes.h" />
     <None Include="App\Models\WindowVisibility.h" />
@@ -258,15 +257,13 @@
     <None Include="App\Multiple\BaseEventDispatcher.h" />
     <None Include="App\Multiple\Buffer.h" />
     <None Include="App\Multiple\CaptureLock.h" />
-    <None Include="App\Multiple\Captures\Capture.h" />
-    <None Include="App\Multiple\Captures\MouseOverlay.h" />
+    <None Include="App\Multiple\MouseOverlay.h" />
     <None Include="App\Multiple\ComPointer.h" />
     <None Include="App\Multiple\Encoder.h" />
     <None Include="App\Multiple\EventDispatcher.h" />
     <None Include="App\Multiple\EventPool.h" />
     <None Include="App\Multiple\FpsCounter.h" />
     <None Include="App\Multiple\FrameSource.h" />
-    <None Include="App\Multiple\MediaSource.h" />
     <None Include="App\Multiple\PropVariant.h" />
     <None Include="App\Multiple\Resizers\BaseResizer.h" />
     <None Include="App\Multiple\Resizers\BilinearResizer.h" />
@@ -287,7 +284,6 @@
     <None Include="App\Services\AudioEncoderFactory.h" />
     <None Include="App\Services\AudioResamplerFactory.h" />
     <None Include="App\Services\AudioSettingsManager.h" />
-    <None Include="App\Services\AudioSourceManager.h" />
     <None Include="App\Services\AudioVolumeListener.h" />
     <None Include="App\Services\CpuMonitor.h" />
     <None Include="App\Services\KeyboardListener.h" />
@@ -296,16 +292,14 @@
     <None Include="App\Services\RecordingManager.h" />
     <None Include="App\Services\SettingsManager.h" />
     <None Include="App\Services\SinkWriterFactory.h" />
-    <None Include="App\Services\SourceManager.h" />
     <None Include="App\Services\VideoCaptureManager.h" />
     <None Include="App\Services\VideoEncoderFactory.h" />
     <None Include="App\Services\VideoResizerFactory.h" />
     <None Include="App\Services\VideoSettingsManager.h" />
-    <None Include="App\Services\VideoSourceManager.h" />
-    <None Include="App\Services\VideoCaptureFactory.h" />
+    <None Include="App\Services\WindowCaptureFactory.h" />
     <None Include="App\Utils\BufferUtil.h" />
     <None Include="App\Utils\ControlUtil.h" />
-    <None Include="App\Utils\Converter.h" />
+    <None Include="App\Utils\FormatConverter.h" />
     <None Include="App\Utils\DialogUtil.h" />
     <None Include="App\Utils\LogUtil.h" />
     <None Include="App\Utils\MemoryUtil.h" />
@@ -378,19 +372,28 @@
     <None Include="App\Multiple\AsyncSettingsManager.h" />
     <None Include="Library\System\LatchEvent.h" />
     <None Include="App\Multiple\Status.h" />
-    <None Include="App\Multiple\Captures\Overlay.h" />
+    <None Include="App\Multiple\Overlay.h" />
     <None Include="App\Multiple\FrameSink.h" />
     <None Include="App\Multiple\FrameEmitter.h" />
     <None Include="App\Multiple\FrameDelegate.h" />
     <None Include="App\Utils\FileUtil.h" />
-    <None Include="App\Multiple\Captures\BaseCapture.h" />
     <None Include="App\Multiple\Captures\BitBltGetBitmapBitsCapture.h" />
-    <None Include="App\Multiple\Video\DisplayCapture.h" />
+    <None Include="App\Multiple\Captures\BitBltDIBSectionCapture.h" />
+    <None Include="App\Multiple\Captures\DwmGetDxSharedSurfaceCapture.h" />
+    <ClInclude Include="App\Models\ScreenCaptureMethod.h" />
+    <ClInclude Include="App\Models\Settings\ScreenCaptureSettings.h" />
+    <None Include="App\Services\AudioSourceManager.h" />
+    <None Include="App\Services\VideoSourceManager.h" />
+    <None Include="App\Multiple\Captures\PrintWindowGetBitmapBitsCapture.h" />
+    <None Include="App\Multiple\Captures\BitBltGetDIBitsCapture.h" />
+    <None Include="App\Multiple\Captures\PrintWindowDIBSectionCapture.h" />
+    <None Include="App\Multiple\Captures\PrintWindowGetDIBitsCapture.h" />
+    <None Include="App\Multiple\Captures\DXGIOutputDuplicationCapture.h" />
     <ClInclude Include="Recorder.h" />
     <ClInclude Include="Resources\Resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App\Multiple\Video\ScreenCapture.cpp" />
+    <None Include="App\Services\ScreenCaptureFactory.cpp" />
     <None Include="App\Utils\StringUtil.cpp" />
     <None Include="App\Global\SaveManager.cpp" />
     <None Include="App\Multiple\Audio\SilencePlayer.cpp" />
@@ -413,7 +416,6 @@
     <None Include="App\Controllers\VideoCaptureController.cpp" />
     <None Include="App\Controllers\VideoSettingsController.cpp" />
     <None Include="App\Controllers\VideoSettingsObserver.cpp" />
-    <None Include="App\Controllers\WindowSelectionController.cpp" />
     <None Include="App\Core\Application.cpp" />
     <None Include="App\Core\MediaApplication.cpp" />
     <None Include="App\Core\ScreenRecorderApplication.cpp" />
@@ -429,15 +431,13 @@
     <None Include="App\Multiple\BaseEventDispatcher.cpp" />
     <None Include="App\Multiple\Buffer.cpp" />
     <None Include="App\Multiple\CaptureLock.cpp" />
-    <None Include="App\Multiple\Captures\Capture.cpp" />
-    <None Include="App\Multiple\Captures\MouseOverlay.cpp" />
+    <None Include="App\Multiple\MouseOverlay.cpp" />
     <None Include="App\Multiple\ComPointer.cpp" />
     <None Include="App\Multiple\Encoder.cpp" />
     <None Include="App\Multiple\EventDispatcher.cpp" />
     <None Include="App\Multiple\EventPool.cpp" />
     <None Include="App\Multiple\FpsCounter.cpp" />
     <None Include="App\Multiple\FrameSource.cpp" />
-    <None Include="App\Multiple\MediaSource.cpp" />
     <None Include="App\Multiple\PropVariant.cpp" />
     <None Include="App\Multiple\Resizers\BaseResizer.cpp" />
     <None Include="App\Multiple\Resizers\BilinearResizer.cpp" />
@@ -458,7 +458,6 @@
     <None Include="App\Services\AudioEncoderFactory.cpp" />
     <None Include="App\Services\AudioResamplerFactory.cpp" />
     <None Include="App\Services\AudioSettingsManager.cpp" />
-    <None Include="App\Services\AudioSourceManager.cpp" />
     <None Include="App\Services\AudioVolumeListener.cpp" />
     <None Include="App\Services\CpuMonitor.cpp" />
     <None Include="App\Services\KeyboardListener.cpp" />
@@ -467,16 +466,14 @@
     <None Include="App\Services\RecordingManager.cpp" />
     <None Include="App\Services\SettingsManager.cpp" />
     <None Include="App\Services\SinkWriterFactory.cpp" />
-    <None Include="App\Services\SourceManager.cpp" />
     <None Include="App\Services\VideoCaptureManager.cpp" />
     <None Include="App\Services\VideoEncoderFactory.cpp" />
     <None Include="App\Services\VideoResizerFactory.cpp" />
     <None Include="App\Services\VideoSettingsManager.cpp" />
-    <None Include="App\Services\VideoSourceManager.cpp" />
-    <None Include="App\Services\VideoCaptureFactory.cpp" />
+    <None Include="App\Services\WindowCaptureFactory.cpp" />
     <None Include="App\Utils\BufferUtil.cpp" />
     <None Include="App\Utils\ControlUtil.cpp" />
-    <None Include="App\Utils\Converter.cpp" />
+    <None Include="App\Utils\FormatConverter.cpp" />
     <None Include="App\Utils\DialogUtil.cpp" />
     <None Include="App\Utils\LogUtil.cpp" />
     <None Include="App\Utils\MemoryUtil.cpp" />
@@ -547,14 +544,21 @@
     <None Include="App\Multiple\AsyncSettingsManager.cpp" />
     <None Include="Library\System\LatchEvent.cpp" />
     <None Include="App\Multiple\Status.cpp" />
-    <None Include="App\Multiple\Captures\Overlay.cpp" />
+    <None Include="App\Multiple\Overlay.cpp" />
     <None Include="App\Multiple\FrameSink.cpp" />
     <None Include="App\Multiple\FrameEmitter.cpp" />
     <None Include="App\Multiple\FrameDelegate.cpp" />
     <None Include="App\Utils\FileUtil.cpp" />
-    <None Include="App\Multiple\Captures\BaseCapture.cpp" />
     <None Include="App\Multiple\Captures\BitBltGetBitmapBitsCapture.cpp" />
-    <None Include="App\Multiple\Video\DisplayCapture.cpp" />
+    <None Include="App\Multiple\Captures\BitBltDIBSectionCapture.cpp" />
+    <None Include="App\Multiple\Captures\DwmGetDxSharedSurfaceCapture.cpp" />
+    <None Include="App\Services\AudioSourceManager.cpp" />
+    <None Include="App\Services\VideoSourceManager.cpp" />
+    <None Include="App\Multiple\Captures\PrintWindowGetBitmapBitsCapture.cpp" />
+    <None Include="App\Multiple\Captures\BitBltGetDIBitsCapture.cpp" />
+    <None Include="App\Multiple\Captures\PrintWindowDIBSectionCapture.cpp" />
+    <None Include="App\Multiple\Captures\PrintWindowGetDIBitsCapture.cpp" />
+    <None Include="App\Multiple\Captures\DXGIOutputDuplicationCapture.cpp" />
     <ClCompile Include="Recorder.cpp" />
   </ItemGroup>
   <ItemGroup>
