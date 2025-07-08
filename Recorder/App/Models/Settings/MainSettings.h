@@ -5,7 +5,7 @@ struct MainSettings
 	bool stayOnTop;
 	WindowVisibility windowVisibility;
 	bool highQualityPreview;
-	bool disablePreviewWhileRecording;
+	bool disablePreviewDuringRecording;
 	bool askToPlayTheRecording;
 	bool useHardwareEncoders;
 	bool lowLatencyMode;

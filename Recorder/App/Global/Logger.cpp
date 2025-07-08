@@ -1,19 +1,38 @@
 #include "Logger.h"
 
 #define LOG_MODE_SETTING_NAME L"Log Mode"
-#define LOG_FILE_NAME L"Scabture Log"
+#define LOG_OUTPUT_FILE_NAME L"Scabture Log"
 
 void Logger::init(bool debug)
 {
+	ExclusiveLockHolder holder(&_lock);
 	if (debug)
 	{
-		setMode(LogModeConsole);
+		_file = stdout;
+		return;
 	}
-	else
+	LogMode mode = LogModeNone;
+	SaveUtil::loadSettings(LOG_MODE_SETTING_NAME, &mode);
+	switch (mode)
 	{
-		LogMode mode = LogModeNone;
-		SaveUtil::loadSettings(LOG_MODE_SETTING_NAME, &mode);
-		setMode(mode);
+		case LogModeNone:
+		{
+			_file = NULL;
+			break;
+		}
+		case LogModeSingleFile:
+		{
+			UniquePointer<const wchar_t> path = StringUtil::formatString(L"%ls.txt", LOG_OUTPUT_FILE_NAME);
+			_file = _wfopen(path, L"w");
+			break;
+		}
+		case LogModeTimeStampedFiles:
+		{
+			Date date = getDate();
+			UniquePointer<const wchar_t> path = StringUtil::formatString(L"%ls %04i.%02i.%02i. %02i.%02i.%02i.%03i.txt", LOG_OUTPUT_FILE_NAME, date.year, date.month, date.day, date.hour, date.minute, date.second, date.millisecond);
+			_file = _wfopen(path, L"w");
+			break;
+		}
 	}
 }
 
@@ -66,40 +85,4 @@ Logger& Logger::getInstance()
 Logger::Logger()
 {
 	_file = NULL;
-}
-
-void Logger::setMode(LogMode mode)
-{
-	ExclusiveLockHolder holder(&_lock);
-	if (_file != NULL && _file != stdout)
-	{
-		fclose(_file);
-		_file = NULL;
-	}
-	switch (mode)
-	{
-		case LogModeNone:
-		{
-			_file = NULL;
-			break;
-		}
-		case LogModeSingleFile:
-		{
-			UniquePointer<const wchar_t> path = StringUtil::formatString(L"%ls.txt", LOG_FILE_NAME);
-			_file = _wfopen(path, L"w");
-			break;
-		}
-		case LogModeNewFiles:
-		{
-			Date date = getDate();
-			UniquePointer<const wchar_t> path = StringUtil::formatString(L"%ls %04i.%02i.%02i. %02i.%02i.%02i.%03i.txt", LOG_FILE_NAME, date.year, date.month, date.day, date.hour, date.minute, date.second, date.millisecond);
-			_file = _wfopen(path, L"w");
-			break;
-		}
-		case LogModeConsole:
-		{
-			_file = stdout;
-			break;
-		}
-	}
 }
