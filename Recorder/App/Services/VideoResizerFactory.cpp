@@ -53,8 +53,7 @@ VideoCapture* VideoResizerFactory::createResizer(VideoCapture* source) const
 		Vector inputSize(inputWidth, inputHeight);
 		Vector outputSize(outputWidth, outputHeight);
 		Resizer* resizer = createResizer(inputSize, outputSize);
-		Buffer* buffer = new Buffer(outputWidth, outputHeight);
-		return new VideoResizer(source, resizer, buffer);
+		return new VideoResizer(source, outputSize, resizer);
 	}
 	else
 	{
@@ -93,12 +92,16 @@ Resizer* VideoResizerFactory::createResizer(Vector inputSize, Vector outputSize)
 	inputSize.y = BufferUtil::alignHeight(inputSize.y);
 	outputSize.x = BufferUtil::alignStride(outputSize.x);
 	outputSize.y = BufferUtil::alignHeight(outputSize.y);
-	if (settings.quality)
+	switch (settings.quality)
 	{
-		return new BilinearResizer(inputSize, outputSize, inputRect, outputRect);
-	}
-	else
-	{
-		return new NearestResizer(inputSize, outputSize, inputRect, outputRect);
+		default:
+		case ResizeQualityNearest:
+		{
+			return new NearestResizer(inputSize, outputSize, inputRect, outputRect);
+		}
+		case ResizeQualityBilinear:
+		{
+			return new BilinearResizer(inputSize, outputSize, inputRect, outputRect);
+		}
 	}
 }
