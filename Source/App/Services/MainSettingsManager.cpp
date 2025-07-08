@@ -10,7 +10,7 @@ MainSettings MainSettingsManager::getDefault() const
 	MainSettings settings = {};
 	settings.windowVisibility = WindowVisibilityMinimized;
 	settings.highQualityPreview = true;
-	settings.disablePreviewWhileRecording = true;
+	settings.disablePreviewDuringRecording = true;
 	settings.askToPlayTheRecording = true;
 	settings.useHardwareEncoders = true;
 	settings.lowLatencyMode = true;
