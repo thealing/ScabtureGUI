@@ -1,7 +1,7 @@
 #pragma once
 
 template<class Settings>
-class AsyncSettingsManager
+class AsyncSettingsManager : NonCopyable
 {
 public:
 

@@ -16,17 +16,16 @@ template<class Settings>
 bool AsyncSettingsManager<Settings>::setSettings(const Settings& settings)
 {
 	ExclusiveLockHolder holder(&_lock);
-	bool init = _initEvent.set();
-	bool unchanged = MemoryUtil::areEqual(_settings, settings);
-	_settings = settings;
-	if (init)
+	if (_initEvent.set())
 	{
+		_settings = settings;
 		return true;
 	}
-	if (unchanged)
+	if (MemoryUtil::areEqual(_settings, settings))
 	{
 		return false;
 	}
+	_settings = settings;
 	_updateEventPool.setEvents();
 	return true;
 }
