@@ -15,7 +15,8 @@ private:
 	KeyboardListener _keyboardListener;
 	CpuMonitor _cpuMonitor;
 	MemoryMonitor _memoryMonitor;
-	VideoCaptureFactory _videoCaptureFactory;
+	WindowCaptureFactory _windowCaptureFactory;
+	ScreenCaptureFactory _screenCaptureFactory;
 	AudioDeviceProvider _audioDeviceProvider;
 	AudioVolumeListener _audioVolumeListener;
 	VideoCaptureManager _videoCaptureManager;

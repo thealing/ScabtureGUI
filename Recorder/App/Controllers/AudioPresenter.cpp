@@ -6,7 +6,7 @@ AudioPresenter::AudioPresenter(VolumeDisplay* volumeDisplay, AudioVolumeListener
 	_audioVolumeListener = audioVolumeListener;
 	_audioSourceManager = audioSourceManager;
 	_eventDispatcher.addEntry(audioVolumeListener->getUpdateEvent(), BIND(AudioPresenter, onUpdate, this));
-	_eventDispatcher.addEntry(audioSourceManager->getSelectionEvent(), BIND(AudioPresenter, onSelection, this));
+	_eventDispatcher.addEntry(audioSourceManager->getChangeEvent(), BIND(AudioPresenter, onSelection, this));
 	_eventDispatcher.start(volumeDisplay);
 }
 

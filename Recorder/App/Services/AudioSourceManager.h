@@ -1,11 +1,20 @@
 #pragma once
 
-class AudioSourceManager : public SourceManager<AudioSource>
+class AudioSourceManager : NonCopyable
 {
 public:
 
 	AudioSourceManager();
 
-	void selectSource(AudioSource source);
+	const Event* getChangeEvent();
+
+	void setSource(AudioSource source);
+
+	AudioSource getSource() const;
+
+private:
+
+	AudioSource _source;
+	EventPool _changeEventPool;
 };
 

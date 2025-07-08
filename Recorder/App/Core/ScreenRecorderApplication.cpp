@@ -17,11 +17,10 @@ void ScreenRecorderApplication::run()
 	VolumeDisplay* volumeDisplay = _mainWindow.getVolumeDisplay();
 	SourceController sourceController(sourcePanel, &_videoSourceManager, &_audioSourceManager);
 	QualityController qualityController(qualityPanel, &_videoSettingsManager);
-	ResizeController resizeController(resizePanel, &_videoCaptureFactory, &_videoCaptureManager, &_videoSettingsManager);
+	ResizeController resizeController(resizePanel, &_videoCaptureManager, &_videoSettingsManager);
 	AudioDeviceObserver audioDeviceObserver(&_audioDeviceProvider, &_audioVolumeListener, &_audioResamplerFactory);
-	VideoCaptureController videoCaptureController(&_videoCaptureManager, &_videoCaptureFactory, &_videoResizerFactory, &_videoSourceManager, &_videoSettingsManager, &_keyboardListener);
+	VideoCaptureController videoCaptureController(&_videoCaptureManager, &_windowCaptureFactory, &_screenCaptureFactory, &_videoResizerFactory, &_videoSourceManager, &_videoSettingsManager, &_keyboardListener);
 	AudioCaptureController audioCaptureController(&_audioCaptureManager, &_audioResamplerFactory, &_audioDeviceProvider, &_audioSourceManager);
-	WindowSelectionController windowSelectionController(&_mainWindow, &_videoSourceManager, &_videoCaptureFactory);
 	MainSettingsController mainSettingsController(settingsPanel, &_mainSettingsDialog, &_mainSettingsManager);
 	VideoSettingsController videoSettingsController(sourcePanel, &_videoSettingsDialog, &_videoSettingsManager);
 	AudioSettingsController audioSettingsController(sourcePanel, &_audioSettingsDialog, &_audioSettingsManager);
@@ -31,7 +30,7 @@ void ScreenRecorderApplication::run()
 	AudioPresenter audioPresenter(volumeDisplay, &_audioVolumeListener, &_audioSourceManager);
 	UsagePresenter usagePresenter(settingsPanel, &_cpuMonitor, &_memoryMonitor);
 	MainSettingsObserver mainSettingsObserver(&_mainWindow, &_mainSettingsManager, &_keyboardListener, &_sinkWriterFactory);
-	VideoSettingsObserver videoSettingsObserver(&_videoSettingsManager, &_videoCaptureFactory, &_videoResizerFactory, &_videoEncoderFactory);
+	VideoSettingsObserver videoSettingsObserver(&_videoSettingsManager, &_windowCaptureFactory, &_screenCaptureFactory, &_videoResizerFactory, &_videoEncoderFactory);
 	AudioSettingsObserver audioSettingsObserver(&_audioSettingsManager, &_audioResamplerFactory, &_audioEncoderFactory);
 	RecordingController recordingController(&_mainWindow, &_recordingManager, &_videoCaptureManager, &_videoEncoderFactory, &_audioCaptureManager, &_audioEncoderFactory, &_sinkWriterFactory, &_mainSettingsManager, &_keyboardListener);
 	SnapshotController snapshotController(&_videoCaptureManager, &_keyboardListener);
