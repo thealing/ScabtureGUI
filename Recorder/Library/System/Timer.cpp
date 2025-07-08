@@ -1,20 +1,19 @@
 #include "Timer.h"
 
-typedef NTSTATUS (NTAPI* NtQueryTimerResolution)(PULONG, PULONG, PULONG);
-typedef NTSTATUS (NTAPI* NtSetTimerResolution)(ULONG, BOOLEAN, PULONG);
 typedef NTSTATUS (NTAPI* NtCreateTimer)(PHANDLE, ACCESS_MASK, void*, DWORD);
 typedef NTSTATUS (NTAPI* NtSetTimer)(HANDLE, PLARGE_INTEGER, PVOID, PVOID, BOOLEAN, LONG, PBOOLEAN);
 typedef NTSTATUS (NTAPI* NtClose)(HANDLE);
 typedef NTSTATUS (NTAPI* NtQuerySystemTime)(PLARGE_INTEGER);
+typedef NTSTATUS (NTAPI* NtQueryTimerResolution)(PULONG, PULONG, PULONG);
+typedef NTSTATUS (NTAPI* NtSetTimerResolution)(ULONG, BOOLEAN, PULONG);
 
-// TODO: Find a better place for these
 static DynamicLibrary _ntDll("ntdll.dll");
-static NtQueryTimerResolution _ntQueryTimerResolution = (NtQueryTimerResolution)_ntDll.getFunction("NtQueryTimerResolution");
-static NtSetTimerResolution _ntSetTimerResolution = (NtSetTimerResolution)_ntDll.getFunction("NtSetTimerResolution");
 static NtCreateTimer _ntCreateTimer = (NtCreateTimer)_ntDll.getFunction("NtCreateTimer");
 static NtSetTimer _ntSetTimer = (NtSetTimer)_ntDll.getFunction("NtSetTimer");
 static NtClose _ntClose = (NtClose)_ntDll.getFunction("NtClose");
 static NtQuerySystemTime _ntQuerySystemTime = (NtQuerySystemTime)_ntDll.getFunction("NtQuerySystemTime");
+static NtQueryTimerResolution _ntQueryTimerResolution = (NtQueryTimerResolution)_ntDll.getFunction("NtQueryTimerResolution");
+static NtSetTimerResolution _ntSetTimerResolution = (NtSetTimerResolution)_ntDll.getFunction("NtSetTimerResolution");
 
 Timer::Timer(double delay, double interval, const Callback& callback)
 {
