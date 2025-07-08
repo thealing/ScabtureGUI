@@ -4,6 +4,12 @@ MouseOverlay::MouseOverlay(HWND window, POINT offset)
 {
 	_window = window;
 	_offset = offset;
+	_screenContext = CreateCompatibleDC(NULL);
+}
+
+MouseOverlay::~MouseOverlay()
+{
+	DeleteDC(_screenContext);
 }
 
 void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
@@ -53,54 +59,53 @@ void MouseOverlay::draw(uint32_t* pixels, int width, int height, int stride)
 	bitmapInfo.bmiHeader.biPlanes = 1;
 	bitmapInfo.bmiHeader.biBitCount = 32;
 	bitmapInfo.bmiHeader.biCompression = BI_RGB;
-	uint32_t* imageBits = new uint32_t[iconWidth * iconHeight];
-	uint32_t* maskBits = new uint32_t[iconWidth * iconHeight];
-	HDC context = CreateCompatibleDC(NULL);
+	uint32_t* imageBits = BufferUtil::allocateBuffer<uint32_t>(iconWidth * iconHeight);
+	uint32_t* maskBits = BufferUtil::allocateBuffer<uint32_t>(iconWidth * iconHeight);
 	if (iconInfo.hbmColor != NULL)
 	{
-		GetDIBits(context, iconInfo.hbmColor, 0, iconHeight, imageBits, &bitmapInfo, DIB_RGB_COLORS);
-		GetDIBits(context, iconInfo.hbmMask, 0, iconHeight, maskBits, &bitmapInfo, DIB_RGB_COLORS);
+		GetDIBits(_screenContext, iconInfo.hbmColor, 0, iconHeight, imageBits, &bitmapInfo, DIB_RGB_COLORS);
+		GetDIBits(_screenContext, iconInfo.hbmMask, 0, iconHeight, maskBits, &bitmapInfo, DIB_RGB_COLORS);
 	}
 	else
 	{
-		GetDIBits(context, iconInfo.hbmMask, 0, iconHeight, imageBits, &bitmapInfo, DIB_RGB_COLORS);
-		GetDIBits(context, iconInfo.hbmMask, iconHeight, iconHeight, maskBits, &bitmapInfo, DIB_RGB_COLORS);
+		GetDIBits(_screenContext, iconInfo.hbmMask, 0, iconHeight, imageBits, &bitmapInfo, DIB_RGB_COLORS);
+		GetDIBits(_screenContext, iconInfo.hbmMask, iconHeight, iconHeight, maskBits, &bitmapInfo, DIB_RGB_COLORS);
 	}
-	DeleteDC(context);
-	for (int i = 0; i < iconHeight; i++)
+	for (int y = 0; y < iconHeight; y++)
 	{
-		for (int j = 0; j < iconWidth; j++)
+		for (int x = 0; x < iconWidth; x++)
 		{
-			int x = iconX - iconInfo.xHotspot + j;
-			int y = iconY - iconInfo.yHotspot + i;
-			if (x < 0 || x >= width || y < 0 || y >= height)
+			int destX = iconX - iconInfo.xHotspot + x;
+			int destY = iconY - iconInfo.yHotspot + y;
+			if (destX < 0 || destX >= width || destY < 0 || destY >= height)
 			{
 				continue;
 			}
 			if (iconInfo.hbmColor != NULL)
 			{
-				uint8_t* pixel = (uint8_t*)(imageBits + i * iconWidth + j);
-				uint8_t* mask = (uint8_t*)(maskBits + i * iconWidth + j);
-				uint8_t* source = (uint8_t*)(pixels + y * stride + x);
-				for (int k = 0; k < 4; k++)
+				uint8_t* pixel = (uint8_t*)(imageBits + y * iconWidth + x);
+				uint8_t* mask = (uint8_t*)(maskBits + y * iconWidth + x);
+				uint8_t* dest = (uint8_t*)(pixels + destY * stride + destX);
+				int alpha = pixel[3];
+				for (int i = 0; i < 3; i++)
 				{
-					source[k] = (source[k] * (255 - pixel[3]) + pixel[k] * pixel[3]) / 255;
+					dest[i] = (dest[i] * (255 - alpha) + pixel[i] * alpha) / 255;
 				}
 			}
 			else
 			{
-				uint32_t pixel = *(imageBits + i * iconWidth + j);
-				uint32_t mask = *(maskBits + i * iconWidth + j);
-				uint32_t* source = pixels + y * stride + x;
+				uint32_t pixel = *(imageBits + y * iconWidth + x);
+				uint32_t mask = *(maskBits + y * iconWidth + x);
+				uint32_t* dest = pixels + destY * stride + destX;
 				if ((pixel ^ mask) == 0)
 				{
-					*source = (*source & pixel) ^ mask;
+					*dest = (*dest & pixel) ^ mask;
 				}
 			}
 		}
 	}
 	DeleteObject(iconInfo.hbmColor);
 	DeleteObject(iconInfo.hbmMask);
-	delete[] imageBits;
-	delete[] maskBits;
+	BufferUtil::freeBuffer(imageBits);
+	BufferUtil::freeBuffer(maskBits);
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-class Converter
+class FormatConverter
 {
 public:
 

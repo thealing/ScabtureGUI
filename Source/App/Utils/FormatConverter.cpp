@@ -1,16 +1,16 @@
-#include "Converter.h"
+#include "FormatConverter.h"
 
-void Converter::convertBgrToNv12(const uint32_t* bgr, uint8_t* y, uint8_t* uv, size_t width, size_t height)
+void FormatConverter::convertBgrToNv12(const uint32_t* bgr, uint8_t* y, uint8_t* uv, size_t width, size_t height)
 {
 	convert_bgr_to_nv12(bgr, y, uv, width, height);
 }
 
-void Converter::convertBgrToIyuv(const uint32_t* bgr, uint8_t* y, uint8_t* u, uint8_t* v, size_t width, size_t height)
+void FormatConverter::convertBgrToIyuv(const uint32_t* bgr, uint8_t* y, uint8_t* u, uint8_t* v, size_t width, size_t height)
 {
 	convert_bgr_to_iyuv(bgr, y, u, v, width, height);
 }
 
-void Converter::convert_bgr_to_nv12(const uint32_t* bgr, uint8_t* y, uint8_t* uv, size_t width, size_t height)
+void FormatConverter::convert_bgr_to_nv12(const uint32_t* bgr, uint8_t* y, uint8_t* uv, size_t width, size_t height)
 {
 	__m128i my = _mm_set_epi16(0, 66, 129, 25, 0, 66, 129, 25);
 	__m128i muv = _mm_set_epi16(0, 112, -94, -18, 0, -38, -74, 112);
@@ -18,7 +18,7 @@ void Converter::convert_bgr_to_nv12(const uint32_t* bgr, uint8_t* y, uint8_t* uv
 	convert_bgr_to_uv(bgr, uv, muv, width, height);
 }
 
-void Converter::convert_bgr_to_iyuv(const uint32_t* bgr, uint8_t* y, uint8_t* u, uint8_t* v, size_t width, size_t height)
+void FormatConverter::convert_bgr_to_iyuv(const uint32_t* bgr, uint8_t* y, uint8_t* u, uint8_t* v, size_t width, size_t height)
 {
 	__m128i my = _mm_set_epi16(0, 66, 129, 25, 0, 66, 129, 25);
 	__m128i mu = _mm_set_epi16(0, -38, -74, 112, 0, -38, -74, 112);
@@ -27,7 +27,7 @@ void Converter::convert_bgr_to_iyuv(const uint32_t* bgr, uint8_t* y, uint8_t* u,
 	convert_bgr_to_uv(bgr, u, v, mu, mv, width, height);
 }
 
-void Converter::convert_bgr_to_y(const uint32_t* bgr, uint8_t* y, __m128i m, size_t width, size_t height)
+void FormatConverter::convert_bgr_to_y(const uint32_t* bgr, uint8_t* y, __m128i m, size_t width, size_t height)
 {
 	__m128i w[16];
 	for (size_t i = 0; i < width * height; i += 32)
@@ -63,7 +63,7 @@ void Converter::convert_bgr_to_y(const uint32_t* bgr, uint8_t* y, __m128i m, siz
 	}
 }
 
-void Converter::convert_bgr_to_uv(const uint32_t* bgr, uint8_t* uv, __m128i m, size_t width, size_t height)
+void FormatConverter::convert_bgr_to_uv(const uint32_t* bgr, uint8_t* uv, __m128i m, size_t width, size_t height)
 {
 	for (size_t i = 0, r = 0; r < height; r += 2)
 	{
@@ -107,7 +107,7 @@ void Converter::convert_bgr_to_uv(const uint32_t* bgr, uint8_t* uv, __m128i m, s
 	}
 }
 
-void Converter::convert_bgr_to_uv(const uint32_t* bgr, uint8_t* u, uint8_t* v, __m128i mu, __m128i mv, size_t width, size_t height)
+void FormatConverter::convert_bgr_to_uv(const uint32_t* bgr, uint8_t* u, uint8_t* v, __m128i mu, __m128i mv, size_t width, size_t height)
 {
 	for (size_t i = 0, r = 0; r < height; r += 2)
 	{
