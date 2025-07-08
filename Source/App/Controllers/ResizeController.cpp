@@ -1,9 +1,8 @@
 #include "ResizeController.h"
 
-ResizeController::ResizeController(ResizePanel* resizePanel, VideoCaptureFactory* videoCaptureFactory, VideoCaptureManager* videoCaptureManager, VideoSettingsManager* videoSettingsManager)
+ResizeController::ResizeController(ResizePanel* resizePanel, VideoCaptureManager* videoCaptureManager, VideoSettingsManager* videoSettingsManager)
 {
 	_resizePanel = resizePanel;
-	_videoCaptureFactory = videoCaptureFactory;
 	_videoCaptureManager = videoCaptureManager;
 	_videoSettingsManager = videoSettingsManager;
 	_eventDispatcher.addEntry(resizePanel->getWidthChangeEvent(), BIND(ResizeController, onWidthChanged, this));
@@ -28,7 +27,7 @@ void ResizeController::onWidthChanged()
 	int width = _resizePanel->getWidth();
 	if (settings.width != width)
 	{
-		LogUtil::logInfo(L"ResizeController: Width modified to %i by the user.", width);
+		LogUtil::logInfo(L"ResizeController: Width modified to %i.", width);
 		settings.width = width;
 		if (settings.resize && settings.keepRatio)
 		{
@@ -44,7 +43,7 @@ void ResizeController::onHeightChanged()
 	int height = _resizePanel->getHeight();
 	if (settings.height != height)
 	{
-		LogUtil::logInfo(L"ResizeController: Height modified to %i by the user.", height);
+		LogUtil::logInfo(L"ResizeController: Height modified to %i.", height);
 		settings.height = height;
 		if (settings.resize && settings.keepRatio)
 		{
@@ -60,7 +59,7 @@ void ResizeController::onResizeChanged()
 	bool resize = _resizePanel->getResize();
 	if (settings.resize != resize)
 	{
-		LogUtil::logInfo(L"ResizeController: Resize flag modified to %i by the user.", resize);
+		LogUtil::logInfo(L"ResizeController: Resize flag modified to %i.", resize);
 		settings.resize = resize;
 		if (settings.resize)
 		{
@@ -83,7 +82,7 @@ void ResizeController::onKeepRatioChanged()
 	bool keepRatio = _resizePanel->getKeepRatio();
 	if (settings.keepRatio != keepRatio)
 	{
-		LogUtil::logInfo(L"ResizeController: Keep ratio flag modified to %i by the user.", keepRatio);
+		LogUtil::logInfo(L"ResizeController: Keep ratio flag modified to %i.", keepRatio);
 		settings.keepRatio = keepRatio;
 		if (!settings.keepRatio)
 		{
