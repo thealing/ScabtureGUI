@@ -28,7 +28,6 @@ void Window::showState(int state)
 
 void Window::activate()
 {
-	// Could use SetForegroundWindow?
 	BringWindowToTop(_handle);
 }
 
