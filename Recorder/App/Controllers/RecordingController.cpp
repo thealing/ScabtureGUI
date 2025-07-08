@@ -27,14 +27,12 @@ RecordingController::RecordingController(MainWindow* mainWindow, RecordingManage
 
 RecordingController::~RecordingController()
 {
-	_eventDispatcher.stop();
-	LogUtil::logDebug(L"RecordingController: Stopped.");
-	// In case the main window closes abruptly, we could get here while the recording is still running.
-	// This would cause a deadlock in the capture controllers, so the recording must be stopped here to prevent that from happening.
 	if (_recordingManager->isRunning())
 	{
-		stopRecording(true); 
+		stopRecording(); 
 	}
+	_eventDispatcher.stop();
+	LogUtil::logDebug(L"RecordingController: Stopped.");
 }
 
 void RecordingController::onStartButtonClicked()
@@ -46,7 +44,7 @@ void RecordingController::onStartButtonClicked()
 void RecordingController::onStopButtonClicked()
 {
 	LogUtil::logInfo(L"RecordingController: Stop button clicked.");
-	stopRecording(true); 
+	stopRecording(); 
 }
 
 void RecordingController::onPauseButtonClicked()
@@ -72,7 +70,7 @@ void RecordingController::onStartHotkeyPressed()
 void RecordingController::onStopHotkeyPressed()
 {
 	LogUtil::logInfo(L"RecordingController: Stop hotkey pressed.");
-	stopRecording(true); 
+	stopRecording(); 
 }
 
 void RecordingController::onPauseHotkeyPressed()
@@ -90,17 +88,13 @@ void RecordingController::onResumeHotkeyPressed()
 void RecordingController::onVideoError()
 {
 	LogUtil::logError(L"RecordingController: Video recording failed.");
-	// A video error just means that the target window was closed.
-	// This might have been intentional, so we call this a success.
-	stopRecording(true);
+	stopRecording();
 }
 
 void RecordingController::onAudioError()
 {
 	LogUtil::logError(L"RecordingController: Audio recording failed.");
-	// An audio error means that either the device was unplugged or some settings were changed.
-	// This was probably unintentional, so we call this a failure.
-	stopRecording(false); 
+	stopRecording(); 
 }
 
 void RecordingController::startRecording()
@@ -138,7 +132,7 @@ void RecordingController::startRecording()
 	}
 }
 
-void RecordingController::stopRecording(bool result)
+void RecordingController::stopRecording()
 {
 	if (!_recordingManager->isRunning())
 	{
@@ -149,7 +143,7 @@ void RecordingController::stopRecording(bool result)
 	_recordingManager->stop();
 	_videoCaptureManager->unlockCapture();
 	_audioCaptureManager->unlockCapture();
-	MessageBeep(result ? MB_OK : MB_ICONERROR);
+	MessageBeep(MB_OK);
 	doActionsAfterRecording();
 	LogUtil::logInfo(L"RecordingController: Stopped recording.");
 }
