@@ -1,12 +1,13 @@
 #include "VideoSettingsObserver.h"
 
-VideoSettingsObserver::VideoSettingsObserver(VideoSettingsManager* videoSettingsManager, WindowCaptureFactory* windowCaptureFactory, ScreenCaptureFactory* screenCaptureFactory, VideoResizerFactory* videoResizerFactory, VideoEncoderFactory* videoEncoderFactory)
+VideoSettingsObserver::VideoSettingsObserver(VideoSettingsManager* videoSettingsManager, WindowCaptureFactory* windowCaptureFactory, ScreenCaptureFactory* screenCaptureFactory, VideoResizerFactory* videoResizerFactory, VideoEncoderFactory* videoEncoderFactory, MainWindow* mainWindow)
 {
 	_videoSettingsManager = videoSettingsManager;
 	_windowCaptureFactory = windowCaptureFactory;
 	_screenCaptureFactory = screenCaptureFactory;
 	_videoResizerFactory = videoResizerFactory;
 	_videoEncoderFactory = videoEncoderFactory;
+	_mainWindow = mainWindow;
 	_eventDispatcher.addEntry(videoSettingsManager->getChangeEvent(), BIND(VideoSettingsObserver, onSettingsChanged, this));
 	_eventDispatcher.start();
 	LogUtil::logDebug(L"VideoSettingsObserver: Started on thread %i.", _eventDispatcher.getThreadId());
@@ -26,6 +27,7 @@ void VideoSettingsObserver::onSettingsChanged()
 	updateScreenCaptureSettings(videoSettings);
 	updateVideoResizerSettings(videoSettings);
 	updateVideoEncoderSettings(videoSettings);
+	updateMainWindowSettings(videoSettings);
 }
 
 void VideoSettingsObserver::updateWindowCaptureSettings(const VideoSettings& videoSettings)
@@ -77,4 +79,9 @@ void VideoSettingsObserver::updateVideoEncoderSettings(const VideoSettings& vide
 	{
 		LogUtil::logInfo(L"VideoSettingsObserver: Video encoder settings changed.");
 	}
+}
+
+void VideoSettingsObserver::updateMainWindowSettings(const VideoSettings& videoSettings)
+{
+	_mainWindow->excludeFromCapture(videoSettings.exclude);
 }

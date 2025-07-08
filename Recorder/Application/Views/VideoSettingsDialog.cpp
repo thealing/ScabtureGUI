@@ -10,7 +10,7 @@ VideoSettingsDialog::~VideoSettingsDialog()
 
 DialogWindow* VideoSettingsDialog::createWindow(Window* parent)
 {
-	return new DialogWindow(parent, L"Video Options", 370, 28, 10, 5);
+	return new DialogWindow(parent, L"Video Options", 400, 28, 10, 5);
 }
 
 void VideoSettingsDialog::createControls(DialogWindow* window, VideoSettings* settings)
@@ -30,6 +30,7 @@ void VideoSettingsDialog::createControls(DialogWindow* window, VideoSettings* se
 	screenCaptureMethodNames[ScreenCaptureMethodBitBltDIBSection] = L"BitBltDIBSection";
 	screenCaptureMethodNames[ScreenCaptureMethodDXGIOutputDuplication] = L"DXGIOutputDuplication";
 	window->addComboBox(L"Screen capture method", 190, (int*)&settings->screenCaptureMethod, screenCaptureMethodNames, ARRAYSIZE(screenCaptureMethodNames));
+	window->addCheckBox(L"Exclude application window", 16, &settings->exclude);
 	window->addSeparator();
 	window->addCheckBox(L"Show mouse cursor", 16, &settings->showCursor);
 	window->addSeparator();

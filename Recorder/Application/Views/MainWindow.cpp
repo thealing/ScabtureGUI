@@ -48,6 +48,12 @@ void MainWindow::setTopMost(bool topMost)
 	SetWindowPos(handle, topMost ? HWND_TOPMOST : HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 }
 
+void MainWindow::excludeFromCapture(bool exclude)
+{
+	HWND handle = getHandle();
+	SetWindowDisplayAffinity(handle, exclude ? WDA_EXCLUDEFROMCAPTURE : WDA_NONE);
+}
+
 SourcePanel* MainWindow::getSourcePanel() const
 {
 	return _sourcePanel;

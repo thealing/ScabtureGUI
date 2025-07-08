@@ -30,7 +30,7 @@ void ScreenRecorderApplication::run()
 	AudioPresenter audioPresenter(volumeDisplay, &_audioVolumeListener, &_audioSourceManager);
 	UsagePresenter usagePresenter(settingsPanel, &_cpuMonitor, &_memoryMonitor);
 	MainSettingsObserver mainSettingsObserver(&_mainWindow, &_mainSettingsManager, &_keyboardListener, &_sinkWriterFactory);
-	VideoSettingsObserver videoSettingsObserver(&_videoSettingsManager, &_windowCaptureFactory, &_screenCaptureFactory, &_videoResizerFactory, &_videoEncoderFactory);
+	VideoSettingsObserver videoSettingsObserver(&_videoSettingsManager, &_windowCaptureFactory, &_screenCaptureFactory, &_videoResizerFactory, &_videoEncoderFactory, &_mainWindow);
 	AudioSettingsObserver audioSettingsObserver(&_audioSettingsManager, &_audioResamplerFactory, &_audioEncoderFactory);
 	RecordingController recordingController(&_mainWindow, &_recordingManager, &_videoCaptureManager, &_videoEncoderFactory, &_audioCaptureManager, &_audioEncoderFactory, &_sinkWriterFactory, &_mainSettingsManager, &_keyboardListener);
 	SnapshotController snapshotController(&_videoCaptureManager, &_keyboardListener);
