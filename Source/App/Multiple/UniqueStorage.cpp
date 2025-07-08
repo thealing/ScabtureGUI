@@ -38,11 +38,12 @@ void UniqueStorage<Type>::dispose(const Type* value)
 		if (_values[i] == value)
 		{
 			delete _values[i];
-			for (i++; i < _count; i++)
+			for (int j = i; j + 1 < _count; j++)
 			{
-				_values[i - 1] = _values[i];
+				_values[j] = _values[j + 1];
 			}
 			_count--;
+			break;
 		}
 	}
 }
