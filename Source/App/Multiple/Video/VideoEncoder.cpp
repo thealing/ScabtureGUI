@@ -112,12 +112,12 @@ HRESULT VideoEncoder::getSample(IMFSample** sample)
 		{
 			case EncodeFormatIYUV:
 			{
-				Converter::convertBgrToIyuv(inputPixels, data, data + pixelCount, data + pixelCount * 5 / 4, stride, height);
+				FormatConverter::convertBgrToIyuv(inputPixels, data, data + pixelCount, data + pixelCount * 5 / 4, stride, height);
 				break;
 			}
 			case EncodeFormatNV12:
 			{
-				Converter::convertBgrToNv12(inputPixels, data, data + pixelCount, stride, height);
+				FormatConverter::convertBgrToNv12(inputPixels, data, data + pixelCount, stride, height);
 				break;
 			}
 		}
@@ -134,13 +134,13 @@ HRESULT VideoEncoder::getSample(IMFSample** sample)
 	}
 	if (result)
 	{
-		// TODO: Should this be the time when the WindowCapture::onTimer method got called?
+		// Should this be the time when the WindowCapture::update method got called?
 		LONGLONG time = MFGetSystemTime();
 		result = (*sample)->SetSampleTime(time);
 	}
 	if (result)
 	{
-		// TODO: Should this be the time until the next frame instead of a fixed value?
+		// Should this be the time until the next frame instead of a fixed value?
 		LONGLONG duration = llround(10000000.0 / _settings.frameRate); 
 		result = (*sample)->SetSampleDuration(duration);
 	}
