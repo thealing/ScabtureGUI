@@ -1,16 +1,36 @@
 #include "WindowCapture.h"
 
-WindowCapture::WindowCapture(HWND window, int frameRate, bool showCursor)
+WindowCapture::WindowCapture(HWND window)
 {
-	RECT rect = {};
-	GetClientRect(window, &rect);
-	Capture* capture = new BitBltGetBitmapBitsCapture(window, rect);
-	if (showCursor)
+	_window = window;
+}
+
+void WindowCapture::start(int frameRate)
+{
+	_timer = new Timer(0, 1.0 / frameRate, BIND(WindowCapture, update, this));
+}
+
+void WindowCapture::stop()
+{
+	_timer = NULL;
+}
+
+HWND WindowCapture::getWindow() const
+{
+	return _window;
+}
+
+void WindowCapture::update()
+{
+	if (_window == NULL)
 	{
-		POINT offset = { rect.left, rect.top };
-		Overlay* mouseOverlay = new MouseOverlay(window, offset);
-		capture->addOverlay(mouseOverlay);
+		return;
 	}
-	setCapture(capture);
-	start(frameRate);
+	if (!IsWindow(_window))
+	{
+		_window = NULL;
+		signalError();
+		return;
+	}
+	captureFrame();
 }
