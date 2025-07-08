@@ -7,6 +7,7 @@ PreviewPresenter::PreviewPresenter(PreviewDisplay* previewDisplay, VideoCaptureM
 	_mainSettingsManager = mainSettingsManager;
 	_videoSettingsManager = videoSettingsManager;
 	_recordingManager = recordingManager;
+	_eventDispatcher.addEntry(videoCaptureManager->getChangeEvent(), BIND(PreviewPresenter, onFrame, this));
 	_eventDispatcher.addEntry(videoCaptureManager->getFrameEvent(), BIND(PreviewPresenter, onFrame, this));
 	_eventDispatcher.addEntry(videoCaptureManager->getErrorEvent(), BIND(PreviewPresenter, onError, this));
 	_eventDispatcher.start();
@@ -22,7 +23,7 @@ void PreviewPresenter::onFrame()
 	MainSettings mainSettings = _mainSettingsManager->getSettings();
 	VideoSettings videoSettings = _videoSettingsManager->getSettings();
 	bool recording = _recordingManager->isRunning();
-	_previewDisplay->setDisabled(mainSettings.disablePreviewWhileRecording && recording);
+	_previewDisplay->setDisabled(mainSettings.disablePreviewDuringRecording && recording);
 	_previewDisplay->setHighQuality(mainSettings.highQualityPreview);
 	_previewDisplay->setUpscale(!videoSettings.resize);
 	VideoCapture* capture = _videoCaptureManager->lockCapture();
