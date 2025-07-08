@@ -7,6 +7,7 @@ typedef NTSTATUS (NTAPI* NtSetTimer)(HANDLE, PLARGE_INTEGER, PVOID, PVOID, BOOLE
 typedef NTSTATUS (NTAPI* NtClose)(HANDLE);
 typedef NTSTATUS (NTAPI* NtQuerySystemTime)(PLARGE_INTEGER);
 
+// TODO: Find a better place for these
 static DynamicLibrary _ntDll("ntdll.dll");
 static NtQueryTimerResolution _ntQueryTimerResolution = (NtQueryTimerResolution)_ntDll.getFunction("NtQueryTimerResolution");
 static NtSetTimerResolution _ntSetTimerResolution = (NtSetTimerResolution)_ntDll.getFunction("NtSetTimerResolution");
