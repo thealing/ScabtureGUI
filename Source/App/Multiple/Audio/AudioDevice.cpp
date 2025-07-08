@@ -198,12 +198,9 @@ void AudioDevice::onFrame()
 			signalFrame();
 		}
 	}
-	else
+	else if (_status)
 	{
-		if (_status)
-		{
-			_status = result;
-			signalError();
-		}
+		_status = result;
+		signalError();
 	}
 }
