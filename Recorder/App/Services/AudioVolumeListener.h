@@ -26,8 +26,6 @@ private:
 
 private:
 
-	static const int UpdateFps = 50;
-
 	mutable ExclusiveLock _inputLock;
 	mutable ExclusiveLock _outputLock;
 

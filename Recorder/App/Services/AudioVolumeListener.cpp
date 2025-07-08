@@ -2,7 +2,7 @@
 
 AudioVolumeListener::AudioVolumeListener()
 {
-	_timer = new Timer(0, 1.0 / UpdateFps, BIND(AudioVolumeListener, update, this));
+	_timer = new Timer(0, 0.02, BIND(AudioVolumeListener, update, this));
 }
 
 const Event* AudioVolumeListener::getUpdateEvent()
