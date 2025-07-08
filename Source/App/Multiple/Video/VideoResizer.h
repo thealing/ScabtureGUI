@@ -1,14 +1,12 @@
 #pragma once
 
-class VideoResizer : public FrameEmitter<VideoCapture>
+class VideoResizer : public VideoCapture
 {
 public:
 
-	VideoResizer(VideoCapture* source, Resizer* resizer, Buffer* buffer);
+	VideoResizer(VideoCapture* source, Vector outputSize, Resizer* resizer);
 
-	virtual ~VideoResizer();
-
-	virtual const Buffer* getBuffer() const override;
+	~VideoResizer();
 
 private:
 
@@ -19,7 +17,6 @@ private:
 private:
 
 	EventDispatcher _eventDispatcher;
-	UniquePointer<Buffer> _buffer;
 	UniquePointer<Resizer> _resizer;
 	UniquePointer<VideoCapture> _source;
 };
