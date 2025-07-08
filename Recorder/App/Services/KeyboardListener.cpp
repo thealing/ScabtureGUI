@@ -1,27 +1,22 @@
 #include "KeyboardListener.h"
 
 // There is no way to pass user data to the hook procedure, so a global value has to be used.
-static KeyboardListener* _globalKeyboardListener;
+static KeyboardListener* _keyboardListenerInstance;
 
 KeyboardListener::KeyboardListener()
 {
-	assert(_globalKeyboardListener == NULL);
-	_globalKeyboardListener = this;
+	assert(_keyboardListenerInstance == NULL);
+	_keyboardListenerInstance = this;
 	HMODULE module = GetModuleHandle(NULL);
 	_settings = {};
 	_hook = SetWindowsHookEx(WH_KEYBOARD_LL, hookProc, module, 0);
-	if (_hook == NULL)
-	{
-		DWORD error = GetLastError();
-		LogUtil::logError(L"KeyboardListener: SetWindowsHookEx failed with error %d.", error);
-	}
 }
 
 KeyboardListener::~KeyboardListener()
 {
-	assert(_globalKeyboardListener == this);
+	assert(_keyboardListenerInstance == this);
 	UnhookWindowsHookEx(_hook);
-	_globalKeyboardListener = NULL;
+	_keyboardListenerInstance = NULL;
 }
 
 bool KeyboardListener::setSettings(const KeyboardSettings& settings)
@@ -105,7 +100,7 @@ LRESULT KeyboardListener::hookProc(int code, WPARAM wParam, LPARAM lParam)
 			hotkey.shift = GetKeyState(VK_SHIFT) & 0x8000;
 			hotkey.control = GetKeyState(VK_CONTROL) & 0x8000;
 			hotkey.alt = GetKeyState(VK_MENU) & 0x8000;
-			_globalKeyboardListener->handleInput(hotkey);
+			_keyboardListenerInstance->handleInput(hotkey);
 		}
 	}
 	return CallNextHookEx(NULL, code, wParam, lParam);
