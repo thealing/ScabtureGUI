@@ -15,13 +15,12 @@ ComboBox::ComboBox(Window* parent)
 
 void ComboBox::setOptions(const wchar_t** options, int count)
 {
-	_selection = -1;
 	sendMessage(CB_RESETCONTENT, 0, 0);
 	for (int i = 0; i < count; i++)
 	{
-		_selection = 0; //debug
 		sendMessage(CB_ADDSTRING, 0, (LPARAM)options[i]);
 	}
+	_selection = 0;
 }
 
 void ComboBox::setSelection(int selection)
