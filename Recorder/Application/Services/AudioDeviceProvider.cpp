@@ -2,6 +2,9 @@
 
 AudioDeviceProvider::AudioDeviceProvider()
 {
+	_foregroundWindow = NULL;
+	_inputStatus = false;
+	_outputStatus = false;
 	if (_status)
 	{
 		_status = CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL, CLSCTX_ALL, IID_PPV_ARGS(&_enumerator));
@@ -12,8 +15,7 @@ AudioDeviceProvider::AudioDeviceProvider()
 	}
 	if (_status)
 	{
-		_inputChangeEventPool.setEvents();
-		_outputChangeEventPool.setEvents();
+		_checkTimer = new Timer(0.0, 0.1, BIND(AudioDeviceProvider, checkDevices, this));
 	}
 	if (!_status)
 	{
@@ -39,17 +41,72 @@ const Event* AudioDeviceProvider::getOutputChangeEvent()
 	return _outputChangeEventPool.getEvent();
 }
 
-AudioDevice* AudioDeviceProvider::getInputDevice() const
+AudioDevice* AudioDeviceProvider::getInputDevice()
 {
-	return new AudioDevice(_enumerator, eCapture, eConsole);
+	AudioDevice* device = new AudioDevice(_enumerator, eCapture, eConsole);
+	_inputStatus = device->getStatus();
+	return device;
 }
 
-AudioDevice* AudioDeviceProvider::getOutputDevice() const
+AudioDevice* AudioDeviceProvider::getOutputDevice()
 {
-	return new AudioDevice(_enumerator, eRender, eConsole);
+	AudioDevice* device = new AudioDevice(_enumerator, eRender, eConsole);
+	_outputStatus = device->getStatus();
+	return device;
 }
 
-HRESULT AudioDeviceProvider::GetDeviceName(LPCWSTR deviceId, PROPVARIANT* deviceName) const
+void AudioDeviceProvider::checkDevices()
+{
+	HWND foregroundWindow = GetForegroundWindow();
+	if (foregroundWindow != _foregroundWindow)
+	{
+		_foregroundWindow = foregroundWindow;
+		bool inputStatus = getDeviceStatus(eCapture);
+		bool outputStatus = getDeviceStatus(eRender);
+		if (inputStatus != _inputStatus)
+		{
+			_inputStatus = inputStatus;
+			_inputChangeEventPool.setEvents();
+		}
+		if (outputStatus != _outputStatus)
+		{
+			_outputStatus = outputStatus;
+			_outputChangeEventPool.setEvents();
+		}
+	}
+}
+
+bool AudioDeviceProvider::getDeviceStatus(EDataFlow flow) const
+{
+	Status result;
+	WaveFormat waveFormat;
+	ComPointer<IMMDevice> device;
+	ComPointer<IAudioClient> audioClient;
+	if (result)
+	{
+		result = _enumerator->GetDefaultAudioEndpoint(flow, eConsole, &device);
+	}
+	if (result)
+	{
+		result = device->Activate(__uuidof(IAudioClient), CLSCTX_ALL, NULL, (void**)&audioClient);
+	}
+	if (result)
+	{
+		result = audioClient->GetMixFormat(&waveFormat);
+	}
+	if (result)
+	{
+		DWORD flags = 0;
+		if (flow == eRender)
+		{
+			flags = AUDCLNT_STREAMFLAGS_LOOPBACK;
+		}
+		result = audioClient->Initialize(AUDCLNT_SHAREMODE_SHARED, flags, 0, 0, waveFormat, NULL);
+	}
+	return result;
+}
+
+HRESULT AudioDeviceProvider::getDeviceName(LPCWSTR deviceId, PROPVARIANT* deviceName) const
 {
 	Status result;
 	ComPointer<IMMDevice> device;
@@ -134,7 +191,7 @@ HRESULT AudioDeviceProvider::OnDeviceStateChanged(LPCWSTR pwstrDeviceId, DWORD d
 		}
 	}
 	PropVariant deviceName;
-	GetDeviceName(pwstrDeviceId, &deviceName);
+	getDeviceName(pwstrDeviceId, &deviceName);
 	LogUtil::logDebug(L"AudioDeviceProvider: State of device \"%ls\" changed to %ls.", deviceName->pwszVal, pszState);
 	return S_OK;
 }
@@ -142,7 +199,7 @@ HRESULT AudioDeviceProvider::OnDeviceStateChanged(LPCWSTR pwstrDeviceId, DWORD d
 HRESULT AudioDeviceProvider::OnDeviceAdded(LPCWSTR pwstrDeviceId)
 {
 	PropVariant deviceName;
-	GetDeviceName(pwstrDeviceId, &deviceName);
+	getDeviceName(pwstrDeviceId, &deviceName);
 	LogUtil::logDebug(L"AudioDeviceProvider: Added device \"%ls\".", deviceName->pwszVal);
 	return S_OK;
 }
@@ -150,7 +207,7 @@ HRESULT AudioDeviceProvider::OnDeviceAdded(LPCWSTR pwstrDeviceId)
 HRESULT AudioDeviceProvider::OnDeviceRemoved(LPCWSTR pwstrDeviceId)
 {
 	PropVariant deviceName;
-	GetDeviceName(pwstrDeviceId, &deviceName);
+	getDeviceName(pwstrDeviceId, &deviceName);
 	LogUtil::logDebug(L"AudioDeviceProvider: Removed device \"%ls\".", deviceName->pwszVal);
 	return S_OK;
 }
@@ -158,7 +215,7 @@ HRESULT AudioDeviceProvider::OnDeviceRemoved(LPCWSTR pwstrDeviceId)
 HRESULT AudioDeviceProvider::OnDefaultDeviceChanged(EDataFlow flow, ERole role, LPCWSTR pwstrDefaultDeviceId)
 {
 	PropVariant deviceName;
-	GetDeviceName(pwstrDefaultDeviceId, &deviceName);
+	getDeviceName(pwstrDefaultDeviceId, &deviceName);
 	LogUtil::logDebug(L"AudioDeviceProvider: Default device of flow %i role %i changed to \"%ls\".", flow, role, deviceName->pwszVal);
 	if (flow == eRender && role == eConsole)
 	{
@@ -173,7 +230,7 @@ HRESULT AudioDeviceProvider::OnDefaultDeviceChanged(EDataFlow flow, ERole role, 
 	return S_OK;
 }
 
-HRESULT AudioDeviceProvider::OnPropertyValueChanged(LPCWSTR, const PROPERTYKEY)
+HRESULT AudioDeviceProvider::OnPropertyValueChanged(LPCWSTR deviceId, const PROPERTYKEY)
 {
 	return S_OK;
 }
