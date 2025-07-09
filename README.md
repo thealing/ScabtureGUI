@@ -2,22 +2,24 @@
 This is a Windows GUI program that records the screen content and the system or microphone audio, and saves the resulting video as an .mp4 file.
 ## Features
 - Selectable video sources
-  - Entire screen
-  - A rectanglar area
-  - A window or an embedded window
+  - Fullscreen
+  - Rectangle area on the screen
+  - Window or child window
 - Selectable audio sources
-  - System audio
+  - System output
   - Microphone
 - Resize to any resolution
-  - Best quality for up-to 2x downscaling (bilinear-interpolation)
-- Custom frame rate
+  - Nearest-neighbor interpolation: Low quality
+  - Bilinear interpolation: High quality for up-to 2x downscaling
+- Many screen capture methods
+- Custom video frame rate
+- Custom audio sampling rate
 - Custom bitrate
-- Record mouse cursor
+- Record mouse cursor (supports custom icons)
 - Exclusive fullscreen capture
-- Capture hook for apps/games that use
-  - Direct3D 9, 10, 11
-  - OpenGL
-- Preview within the recorder
+- Live video preview
+- Live audio volume levels
+- CPU and memory usage display 
 - Convenience features
 ## Screenshots
-![sCapture](https://github.com/user-attachments/assets/b7823743-8ea5-434d-8e29-1d321666877b)
+
