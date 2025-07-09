@@ -12,13 +12,17 @@ public:
 
 	const Event* getOutputChangeEvent();
 
-	AudioDevice* getInputDevice() const;
+	AudioDevice* getInputDevice();
 
-	AudioDevice* getOutputDevice() const;
+	AudioDevice* getOutputDevice();
 
 private:
 
-	HRESULT GetDeviceName(LPCWSTR deviceId, PROPVARIANT* deviceName) const;
+	void checkDevices();
+
+	bool getDeviceStatus(EDataFlow flow) const;
+
+	HRESULT getDeviceName(LPCWSTR deviceId, PROPVARIANT* deviceName) const;
 
 	virtual ULONG STDMETHODCALLTYPE AddRef() override;
 
@@ -40,7 +44,10 @@ private:
 
 	Status _status;
 	ComPointer<IMMDeviceEnumerator> _enumerator;
+	UniquePointer<Timer> _checkTimer;
+	HWND _foregroundWindow;
+	bool _inputStatus;
+	bool _outputStatus;
 	EventPool _inputChangeEventPool;
 	EventPool _outputChangeEventPool;
 };
-
