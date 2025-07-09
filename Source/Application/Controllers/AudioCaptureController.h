@@ -4,7 +4,7 @@ class AudioCaptureController : NonCopyable
 {
 public:
 
-	AudioCaptureController(AudioCaptureManager* audioCaptureManager, AudioResamplerFactory* audioResamplerFactory, AudioDeviceProvider* audioDeviceProvider, AudioSourceManager* audioSourceManager);
+	AudioCaptureController(AudioCaptureManager* audioCaptureManager, AudioResamplerFactory* audioResamplerFactory, AudioDeviceProvider* audioDeviceProvider, AudioSourceManager* audioSourceManager, MainWindow* mainWindow);
 
 	~AudioCaptureController();
 
@@ -29,5 +29,6 @@ private:
 	WeakPointer<AudioResamplerFactory> _audioResamplerFactory;
 	WeakPointer<AudioDeviceProvider> _audioDeviceProvider;
 	WeakPointer<AudioSourceManager> _audioSourceManager;
+	WeakPointer<MainWindow> _mainWindow;
 };
 

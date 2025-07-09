@@ -11,6 +11,10 @@ AudioResampler::AudioResampler(const AudioResamplerSettings& settings, AudioCapt
 	}
 	if (_status)
 	{
+		_status = source->getStatus();
+	}
+	if (_status)
+	{
 		_status = source->getFormat(&_inputType);
 	}
 	if (_status)

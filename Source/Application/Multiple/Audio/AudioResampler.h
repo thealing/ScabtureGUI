@@ -12,7 +12,6 @@ public:
 
 private:
 
-	Status _status;
 	ComPointer<IMFMediaType> _inputType;
 	ComPointer<IMFMediaType> _outputType;
 	ComPointer<IMFTransform> _resampler;

@@ -14,11 +14,10 @@ public:
 
 private:
 
-	void onFrame();
+	void onTimer();
 
 private:
 
-	Status _status;
 	ComPointer<IMMDevice> _device;
 	ComPointer<IAudioClient> _audioClient;
 	ComPointer<IAudioCaptureClient> _captureClient;
