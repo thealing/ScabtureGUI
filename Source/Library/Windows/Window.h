@@ -46,6 +46,8 @@ public:
 
 	void setChildrenFont(const Font* font);
 
+	void setExcludedFromCapture(bool excluded);
+
 	void runMessageLoop();
 
 	LRESULT sendMessage(UINT message, WPARAM wParam, LPARAM lParam);
@@ -69,6 +71,8 @@ public:
 	Vector getPosition() const;
 
 	Vector getSize() const;
+
+	bool getExcludedFromCapture() const;
 
 	virtual ~Window();
 
@@ -118,4 +122,10 @@ private:
 	static LRESULT CALLBACK windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam, UINT_PTR subclassId, DWORD_PTR data);
 
 	static void excludeChildren(HWND parent, HDC context);
+
+	static BOOL CALLBACK excludeFromCaptureProc(HWND window, LPARAM lParam);
+
+	static BOOL getExcludedFromCapture(HWND window);
+
+	static void setExcludedFromCapture(HWND window, BOOL excluded);
 };
