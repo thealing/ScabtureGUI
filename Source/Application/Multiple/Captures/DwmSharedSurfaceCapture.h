@@ -1,12 +1,12 @@
 #pragma once
 
-class DwmGetDxSharedSurfaceCapture : public WindowCapture
+class DwmSharedSurfaceCapture : public WindowCapture
 {
 public:
 
-	DwmGetDxSharedSurfaceCapture(HWND window, POINT position, SIZE size);
+	DwmSharedSurfaceCapture(HWND window, POINT position, SIZE size);
 
-	~DwmGetDxSharedSurfaceCapture();
+	~DwmSharedSurfaceCapture();
 
 protected:
 
@@ -20,7 +20,7 @@ private:
 	Status _status;
 	D3D11_TEXTURE2D_DESC _textureDesc;
 	ComPointer<ID3D11Device> _device;
-	ComPointer<ID3D11DeviceContext> _deviceContext;
+	ComPointer<ID3D11DeviceContext> _context;
 	ComPointer<ID3D11Texture2D> _sharedTexture;
 	ComPointer<ID3D11Texture2D> _captureTexture;
 };

@@ -1,6 +1,6 @@
-#include "PrintWindowDIBSectionCapture.h"
+#include "DwmPrintWindowCapture.h"
 
-PrintWindowDIBSectionCapture::PrintWindowDIBSectionCapture(HWND window) : WindowCapture(window)
+DwmPrintWindowCapture::DwmPrintWindowCapture(HWND window) : WindowCapture(window)
 {
 	SIZE size = WindowUtil::getClientSize(window);
 	createBuffer(size.cx, size.cy);
@@ -21,14 +21,14 @@ PrintWindowDIBSectionCapture::PrintWindowDIBSectionCapture(HWND window) : Window
 	ReleaseDC(window, sourceContext);
 }
 
-PrintWindowDIBSectionCapture::~PrintWindowDIBSectionCapture()
+DwmPrintWindowCapture::~DwmPrintWindowCapture()
 {
 	stop();
 	DeleteDC(_captureContext);
 	DeleteObject(_captureBitmap);
 }
 
-bool PrintWindowDIBSectionCapture::captureFrame()
+bool DwmPrintWindowCapture::captureFrame()
 {
 	const Buffer* buffer = getBuffer();
 	int width = buffer->getWidth();

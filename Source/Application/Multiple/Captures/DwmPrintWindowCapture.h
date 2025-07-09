@@ -1,12 +1,12 @@
 #pragma once
 
-class PrintWindowDIBSectionCapture : public WindowCapture
+class DwmPrintWindowCapture : public WindowCapture
 {
 public:
 
-	PrintWindowDIBSectionCapture(HWND window);
+	DwmPrintWindowCapture(HWND window);
 
-	~PrintWindowDIBSectionCapture();
+	~DwmPrintWindowCapture();
 
 protected:
 

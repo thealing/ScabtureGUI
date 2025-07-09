@@ -11,11 +11,11 @@ DXGIOutputDuplicationCapture::DXGIOutputDuplicationCapture(HWND window, POINT po
 	ComPointer<IDXGIOutput1> output1;
 	if (_status)
 	{
-		_status = D3D11CreateDevice(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, 0, NULL, 0, D3D11_SDK_VERSION, &_device, NULL, &_context);
+		_status = D3D11CreateDevice(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, D3D11_CREATE_DEVICE_BGRA_SUPPORT, NULL, 0, D3D11_SDK_VERSION, &_device, NULL, &_context);
 	}
 	if (_status)
 	{
-		_status = _device->QueryInterface(__uuidof(IDXGIDevice), (void**)&dxgi);
+		_status = _device->QueryInterface(IID_PPV_ARGS(&dxgi));
 	}
 	if (_status)
 	{
@@ -39,7 +39,7 @@ DXGIOutputDuplicationCapture::DXGIOutputDuplicationCapture(HWND window, POINT po
 	}
 	if (_status)
 	{
-		_status = output->QueryInterface(__uuidof(IDXGIOutput1), (void**)&output1);
+		_status = output->QueryInterface(IID_PPV_ARGS(&output1));
 	}
 	if (_status)
 	{
@@ -76,7 +76,7 @@ bool DXGIOutputDuplicationCapture::captureFrame()
 	result = _duplication->AcquireNextFrame(INFINITE, &frameInfo, &desktopResource);
 	if (result)
 	{
-		result = desktopResource->QueryInterface(__uuidof(ID3D11Texture2D), (void**)&desktopTexture);
+		result = desktopResource->QueryInterface(IID_PPV_ARGS(&desktopTexture));
 	}
 	if (result)
 	{
@@ -96,6 +96,7 @@ bool DXGIOutputDuplicationCapture::captureFrame()
 		box.top = _position.y;
 		box.right = _position.x + width;
 		box.bottom = _position.y + height;
+		box.back = 1;
 		_context->CopySubresourceRegion(captureTexture, 0, 0, 0, 0, desktopTexture, 0, &box);
 		result = _context->Map(captureTexture, 0, D3D11_MAP_READ, 0, &map);
 	}

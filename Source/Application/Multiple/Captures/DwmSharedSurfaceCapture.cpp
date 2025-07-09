@@ -1,6 +1,6 @@
-#include "DwmGetDxSharedSurfaceCapture.h"
+#include "DwmSharedSurfaceCapture.h"
 
-DwmGetDxSharedSurfaceCapture::DwmGetDxSharedSurfaceCapture(HWND window, POINT position, SIZE size) : WindowCapture(window)
+DwmSharedSurfaceCapture::DwmSharedSurfaceCapture(HWND window, POINT position, SIZE size) : WindowCapture(window)
 {
 	RECT clientRect = WindowUtil::getRelativeClientRect(window);
 	_position.x = position.x + clientRect.left;
@@ -13,7 +13,7 @@ DwmGetDxSharedSurfaceCapture::DwmGetDxSharedSurfaceCapture(HWND window, POINT po
 	HANDLE surface = NULL;
 	if (_status)
 	{
-		_status = D3D11CreateDevice(0, D3D_DRIVER_TYPE_HARDWARE, NULL, D3D11_CREATE_DEVICE_BGRA_SUPPORT, NULL, 0, D3D11_SDK_VERSION, &_device, 0, &_deviceContext);
+		_status = D3D11CreateDevice(0, D3D_DRIVER_TYPE_HARDWARE, NULL, D3D11_CREATE_DEVICE_BGRA_SUPPORT, NULL, 0, D3D11_SDK_VERSION, &_device, 0, &_context);
 	}
 	if (_status)
 	{
@@ -45,16 +45,16 @@ DwmGetDxSharedSurfaceCapture::DwmGetDxSharedSurfaceCapture(HWND window, POINT po
 	}
 	if (!_status)
 	{
-		LogUtil::logComError("DwmGetDxSharedSurfaceCapture", _status);
+		LogUtil::logComError("DwmSharedSurfaceCapture", _status);
 	}
 }
 
-DwmGetDxSharedSurfaceCapture::~DwmGetDxSharedSurfaceCapture()
+DwmSharedSurfaceCapture::~DwmSharedSurfaceCapture()
 {
 	stop();
 }
 
-bool DwmGetDxSharedSurfaceCapture::captureFrame()
+bool DwmSharedSurfaceCapture::captureFrame()
 {
 	if (!_status)
 	{
@@ -73,15 +73,16 @@ bool DwmGetDxSharedSurfaceCapture::captureFrame()
 		box.top = _position.y;
 		box.right = _position.x + width;
 		box.bottom = _position.y + height;
-		_deviceContext->CopySubresourceRegion(_captureTexture, 0, 0, 0, 0, _sharedTexture, 0, &box);
-		result = _deviceContext->Map(_captureTexture, 0, D3D11_MAP_READ, 0, &map);
+		box.back = 1;
+		_context->CopySubresourceRegion(_captureTexture, 0, 0, 0, 0, _sharedTexture, 0, &box);
+		result = _context->Map(_captureTexture, 0, D3D11_MAP_READ, 0, &map);
 	}
 	if (result)
 	{
 		uint32_t* pixels = beginFrame();
 		memcpy(pixels, map.pData, height * stride * sizeof(uint32_t));
 		endFrame(result);
-		_deviceContext->Unmap(_captureTexture, 0);
+		_context->Unmap(_captureTexture, 0);
 	}
 	return result;
 }
