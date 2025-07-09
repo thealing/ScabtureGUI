@@ -39,5 +39,5 @@ int BufferUtil::alignHeight(int value)
 
 int BufferUtil::alignStride(int value)
 {
-	return alignValue(value, 32);
+	return alignValue(value, 64);
 }
