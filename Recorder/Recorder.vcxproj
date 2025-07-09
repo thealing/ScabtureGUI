@@ -5,13 +5,13 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -21,18 +21,25 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{317eed6e-38d0-4e34-869b-36c805ccd2c4}</ProjectGuid>
-    <RootNamespace>ScreenRecorder</RootNamespace>
+    <ProjectGuid>{afb348cd-f34b-4698-bb2f-f5312455e30c}</ProjectGuid>
+    <RootNamespace>Recorder</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
@@ -45,213 +52,522 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)tmp\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)tmp\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)tmp\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <GenerateManifest>false</GenerateManifest>
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Temp\$(Platform)\$(Configuration)\</IntDir>
+    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)tmp\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <GenerateManifest>false</GenerateManifest>
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)Build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Temp\$(Platform)\$(Configuration)\</IntDir>
+    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
-      <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>Default</LanguageStandard>
-      <StringPooling>true</StringPooling>
-      <CallingConvention>Cdecl</CallingConvention>
-      <FloatingPointModel>Fast</FloatingPointModel>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>src;res;</AdditionalIncludeDirectories>
-      <UseFullPaths>true</UseFullPaths>
-      <AdditionalOptions>/d1trimfile:"$(SolutionDir)\" %(AdditionalOptions)</AdditionalOptions>
-      <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <SupportJustMyCode>false</SupportJustMyCode>
-      <ExceptionHandling>false</ExceptionHandling>
-      <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <OptimizeReferences>false</OptimizeReferences>
-      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
-      <DataExecutionPrevention>false</DataExecutionPrevention>
-      <EnableUAC>false</EnableUAC>
-    </Link>
-  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Temp\$(Platform)\$(Configuration)\</IntDir>
+    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)Build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Temp\$(Platform)\$(Configuration)\</IntDir>
+    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
-      <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NOMINMAX;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>Default</LanguageStandard>
-      <StringPooling>true</StringPooling>
-      <CallingConvention>Cdecl</CallingConvention>
-      <FloatingPointModel>Fast</FloatingPointModel>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>src;res;</AdditionalIncludeDirectories>
-      <UseFullPaths>true</UseFullPaths>
-      <AdditionalOptions>/d1trimfile:"$(SolutionDir)\" %(AdditionalOptions)</AdditionalOptions>
-      <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <SupportJustMyCode>false</SupportJustMyCode>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <ExceptionHandling>false</ExceptionHandling>
+      <StringPooling>true</StringPooling>
+      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <OptimizeReferences>false</OptimizeReferences>
-      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
-      <DataExecutionPrevention>false</DataExecutionPrevention>
-      <EnableUAC>false</EnableUAC>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>Default</LanguageStandard>
-      <StringPooling>true</StringPooling>
-      <CallingConvention>FastCall</CallingConvention>
-      <FloatingPointModel>Fast</FloatingPointModel>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <ExceptionHandling>false</ExceptionHandling>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
-      <FloatingPointExceptions>false</FloatingPointExceptions>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
-      <UseFullPaths>true</UseFullPaths>
-      <AdditionalOptions>/d1trimfile:"$(SolutionDir)\" %(AdditionalOptions)</AdditionalOptions>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>src;res;</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <DataExecutionPrevention>false</DataExecutionPrevention>
-      <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;d3d11.lib;dxgi.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
+      <AdditionalOptions>/PDBALTPATH:%_PDB% %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NOMINMAX;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>Default</LanguageStandard>
-      <StringPooling>true</StringPooling>
-      <CallingConvention>FastCall</CallingConvention>
-      <FloatingPointModel>Fast</FloatingPointModel>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <ExceptionHandling>false</ExceptionHandling>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
-      <FloatingPointExceptions>false</FloatingPointExceptions>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
-      <UseFullPaths>true</UseFullPaths>
-      <AdditionalOptions>/d1trimfile:"$(SolutionDir)\" %(AdditionalOptions)</AdditionalOptions>
+      <StringPooling>true</StringPooling>
+      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>src;res;</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;d3d11.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
+      <AdditionalOptions>/PDBALTPATH:%_PDB% %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NOMINMAX;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <ExceptionHandling>false</ExceptionHandling>
+      <StringPooling>true</StringPooling>
+      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <DataExecutionPrevention>false</DataExecutionPrevention>
-      <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;d3d11.lib;dxgi.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
+      <AdditionalOptions>/PDBALTPATH:%_PDB% %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NOMINMAX;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <ExceptionHandling>false</ExceptionHandling>
+      <StringPooling>true</StringPooling>
+      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;d3d11.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
+      <AdditionalOptions>/PDBALTPATH:%_PDB% %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp" />
+    <None Include="Library\Windows\WindowComposition.h" />
+    <None Include="Application\Services\ScreenCaptureFactory.h" />
+    <None Include="Application\Utils\StringUtil.h" />
+    <None Include="Application\Global\SaveManager.h" />
+    <None Include="Application\Multiple\Audio\SilencePlayer.h" />
+    <None Include="Application\Controllers\AudioCaptureController.h" />
+    <None Include="Application\Controllers\AudioDeviceObserver.h" />
+    <None Include="Application\Controllers\AudioPresenter.h" />
+    <None Include="Application\Controllers\AudioSettingsController.h" />
+    <None Include="Application\Controllers\AudioSettingsObserver.h" />
+    <None Include="Application\Controllers\FpsPresenter.h" />
+    <None Include="Application\Controllers\MainSettingsController.h" />
+    <None Include="Application\Controllers\MainSettingsObserver.h" />
+    <None Include="Application\Controllers\PreviewPresenter.h" />
+    <None Include="Application\Controllers\QualityController.h" />
+    <None Include="Application\Controllers\RecordingController.h" />
+    <None Include="Application\Controllers\RecordingPresenter.h" />
+    <None Include="Application\Controllers\ResizeController.h" />
+    <None Include="Application\Controllers\SnapshotController.h" />
+    <None Include="Application\Controllers\SourceController.h" />
+    <None Include="Application\Controllers\UsagePresenter.h" />
+    <None Include="Application\Controllers\VideoCaptureController.h" />
+    <None Include="Application\Controllers\VideoSettingsController.h" />
+    <None Include="Application\Controllers\VideoSettingsObserver.h" />
+    <None Include="Application\Core\Application.h" />
+    <None Include="Application\Core\MediaApplication.h" />
+    <None Include="Application\Core\ScreenRecorderApplication.h" />
+    <None Include="Application\Global\FontStore.h" />
+    <None Include="Application\Global\ImageStore.h" />
+    <None Include="Application\Global\Logger.h" />
+    <None Include="Application\Main.h" />
+    <None Include="Application\Models\AudioBitrate.h" />
+    <None Include="Application\Models\AudioChannelLayout.h" />
+    <None Include="Application\Models\AudioFormat.h" />
+    <None Include="Application\Models\AudioResampleQuality.h" />
+    <None Include="Application\Models\AudioSampleRate.h" />
+    <None Include="Application\Models\AudioSource.h" />
+    <None Include="Application\Models\WindowCaptureMethod.h" />
+    <None Include="Application\Models\DeviceStatus.h" />
+    <None Include="Application\Models\EncodeFormat.h" />
+    <None Include="Application\Models\Hotkey.h" />
+    <None Include="Application\Models\LogMode.h" />
+    <None Include="Application\Models\ResizeQuality.h" />
+    <None Include="Application\Models\ResizeMode.h" />
+    <None Include="Application\Models\Settings\AudioEncoderSettings.h" />
+    <None Include="Application\Models\Settings\AudioResamplerSettings.h" />
+    <None Include="Application\Models\Settings\AudioSettings.h" />
+    <None Include="Application\Models\Settings\KeyboardSettings.h" />
+    <None Include="Application\Models\Settings\MainSettings.h" />
+    <None Include="Application\Models\Settings\SinkWriterSettings.h" />
+    <None Include="Application\Models\Settings\VideoEncoderSettings.h" />
+    <None Include="Application\Models\Settings\VideoResizerSettings.h" />
+    <None Include="Application\Models\Settings\VideoSettings.h" />
+    <None Include="Application\Models\Settings\WindowCaptureSettings.h" />
+    <None Include="Application\Models\VideoSource.h" />
+    <None Include="Application\Models\Volumes.h" />
+    <None Include="Application\Models\WindowVisibility.h" />
+    <None Include="Application\Multiple\Audio\AudioCapture.h" />
+    <None Include="Application\Multiple\Audio\AudioDevice.h" />
+    <None Include="Application\Multiple\Audio\AudioEncoder.h" />
+    <None Include="Application\Multiple\Audio\AudioResampler.h" />
+    <None Include="Application\Multiple\Audio\AudioVolumeMeter.h" />
+    <None Include="Application\Multiple\BaseEventDispatcher.h" />
+    <None Include="Application\Multiple\Buffer.h" />
+    <None Include="Application\Multiple\CaptureLock.h" />
+    <None Include="Application\Multiple\MouseOverlay.h" />
+    <None Include="Application\Multiple\ComPointer.h" />
+    <None Include="Application\Multiple\Encoder.h" />
+    <None Include="Application\Multiple\EventDispatcher.h" />
+    <None Include="Application\Multiple\EventPool.h" />
+    <None Include="Application\Multiple\FpsCounter.h" />
+    <None Include="Application\Multiple\FrameSource.h" />
+    <None Include="Application\Multiple\PropVariant.h" />
+    <None Include="Application\Multiple\Resizers\BaseResizer.h" />
+    <None Include="Application\Multiple\Resizers\BilinearResizer.h" />
+    <None Include="Application\Multiple\Resizers\NearestResizer.h" />
+    <None Include="Application\Multiple\Resizers\Resizer.h" />
+    <None Include="Application\Multiple\SinkWriter.h" />
+    <None Include="Application\Multiple\UniquePointer.h" />
+    <None Include="Application\Multiple\UniqueStorage.h" />
+    <None Include="Application\Multiple\Video\VideoCapture.h" />
+    <None Include="Application\Multiple\Video\VideoEncoder.h" />
+    <None Include="Application\Multiple\Video\VideoResizer.h" />
+    <None Include="Application\Multiple\Video\WindowCapture.h" />
+    <None Include="Application\Multiple\WaveFormat.h" />
+    <None Include="Application\Multiple\WeakPointer.h" />
+    <None Include="Application\Multiple\WindowEventDispatcher.h" />
+    <None Include="Application\Services\AudioCaptureManager.h" />
+    <None Include="Application\Services\AudioDeviceProvider.h" />
+    <None Include="Application\Services\AudioEncoderFactory.h" />
+    <None Include="Application\Services\AudioResamplerFactory.h" />
+    <None Include="Application\Services\AudioSettingsManager.h" />
+    <None Include="Application\Services\AudioVolumeListener.h" />
+    <None Include="Application\Services\CpuMonitor.h" />
+    <None Include="Application\Services\KeyboardListener.h" />
+    <None Include="Application\Services\MainSettingsManager.h" />
+    <None Include="Application\Services\MemoryMonitor.h" />
+    <None Include="Application\Services\RecordingManager.h" />
+    <None Include="Application\Services\SettingsManager.h" />
+    <None Include="Application\Services\SinkWriterFactory.h" />
+    <None Include="Application\Services\VideoCaptureManager.h" />
+    <None Include="Application\Services\VideoEncoderFactory.h" />
+    <None Include="Application\Services\VideoResizerFactory.h" />
+    <None Include="Application\Services\VideoSettingsManager.h" />
+    <None Include="Application\Services\WindowCaptureFactory.h" />
+    <None Include="Application\Utils\BufferUtil.h" />
+    <None Include="Application\Utils\ControlUtil.h" />
+    <None Include="Application\Utils\FormatConverter.h" />
+    <None Include="Application\Utils\DialogUtil.h" />
+    <None Include="Application\Utils\LogUtil.h" />
+    <None Include="Application\Utils\MemoryUtil.h" />
+    <None Include="Application\Utils\RectUtil.h" />
+    <None Include="Application\Utils\SaveUtil.h" />
+    <None Include="Application\Utils\WindowUtil.h" />
+    <None Include="Application\Views\AudioSettingsDialog.h" />
+    <None Include="Application\Views\DataCheckbox.h" />
+    <None Include="Application\Views\DataCombobox.h" />
+    <None Include="Application\Views\DeviceIndicator.h" />
+    <None Include="Application\Views\DeviceIndicatorAdapter.h" />
+    <None Include="Application\Views\DialogWindow.h" />
+    <None Include="Application\Views\FpsDisplay.h" />
+    <None Include="Application\Views\Frame.h" />
+    <None Include="Application\Views\HotkeyEdit.h" />
+    <None Include="Application\Views\MainSettingsDialog.h" />
+    <None Include="Application\Views\MainWindow.h" />
+    <None Include="Application\Views\OverlayWindow.h" />
+    <None Include="Application\Views\Panel.h" />
+    <None Include="Application\Views\PreviewDisplay.h" />
+    <None Include="Application\Views\QualityPanel.h" />
+    <None Include="Application\Views\RecordingDisplay.h" />
+    <None Include="Application\Views\RecordingPanel.h" />
+    <None Include="Application\Views\RectangleSelector.h" />
+    <None Include="Application\Views\ResizePanel.h" />
+    <None Include="Application\Views\SelectionWindow.h" />
+    <None Include="Application\Views\Separator.h" />
+    <None Include="Application\Views\SettingsDialog.h" />
+    <None Include="Application\Views\SettingsPanel.h" />
+    <None Include="Application\Views\SourcePanel.h" />
+    <None Include="Application\Views\VideoSettingsDialog.h" />
+    <None Include="Application\Views\VolumeDisplay.h" />
+    <None Include="Application\Views\VolumeMeter.h" />
+    <None Include="Application\Views\WindowSelector.h" />
+    <None Include="Library\System\Brush.h" />
+    <None Include="Library\System\DynamicLibrary.h" />
+    <None Include="Library\System\Event.h" />
+    <None Include="Library\System\ExclusiveLock.h" />
+    <None Include="Library\System\Font.h" />
+    <None Include="Library\System\Image.h" />
+    <None Include="Library\System\Pen.h" />
+    <None Include="Library\System\Profiler.h" />
+    <None Include="Library\System\ReadWriteLock.h" />
+    <None Include="Library\System\Thread.h" />
+    <None Include="Library\System\Timer.h" />
+    <None Include="Library\Utils\BindHelper.h" />
+    <None Include="Library\Utils\Callback.h" />
+    <None Include="Library\Utils\Color.h" />
+    <None Include="Library\Utils\Date.h" />
+    <None Include="Library\Utils\Line.h" />
+    <None Include="Library\Utils\Math.h" />
+    <None Include="Library\Utils\NonCopyable.h" />
+    <None Include="Library\Utils\Rect.h" />
+    <None Include="Library\Utils\Time.h" />
+    <None Include="Library\Utils\Vector.h" />
+    <None Include="Library\Windows\Alignment.h" />
+    <None Include="Library\Windows\Anchor.h" />
+    <None Include="Library\Windows\Button.h" />
+    <None Include="Library\Windows\Checkbox.h" />
+    <None Include="Library\Windows\Combobox.h" />
+    <None Include="Library\Windows\Control.h" />
+    <None Include="Library\Windows\CustomButton.h" />
+    <None Include="Library\Windows\CustomControl.h" />
+    <None Include="Library\Windows\Editbox.h" />
+    <None Include="Library\Windows\Graphics.h" />
+    <None Include="Library\Windows\Label.h" />
+    <None Include="Library\Windows\Picture.h" />
+    <None Include="Library\Windows\Window.h" />
+    <None Include="Library\Windows\CustomWindow.h" />
+    <None Include="Application\Multiple\AsyncSettingsManager.h" />
+    <None Include="Library\System\LatchEvent.h" />
+    <None Include="Application\Multiple\Status.h" />
+    <None Include="Application\Multiple\Overlay.h" />
+    <None Include="Application\Multiple\FrameSink.h" />
+    <None Include="Application\Multiple\FrameEmitter.h" />
+    <None Include="Application\Multiple\FrameDelegate.h" />
+    <None Include="Application\Utils\FileUtil.h" />
+    <None Include="Application\Multiple\Captures\BitBltCapture.h" />
+    <None Include="Application\Multiple\Captures\DwmSharedSurfaceCapture.h" />
+    <ClInclude Include="Application\Models\ScreenCaptureMethod.h" />
+    <ClInclude Include="Application\Models\Settings\ScreenCaptureSettings.h" />
+    <None Include="Application\Services\AudioSourceManager.h" />
+    <None Include="Application\Services\VideoSourceManager.h" />
+    <None Include="Application\Multiple\Captures\DwmPrintWindowCapture.h" />
+    <None Include="Application\Multiple\Captures\DXGIOutputDuplicationCapture.h" />
+    <None Include="Application\Multiple\MediaSource.h" />
+    <ClInclude Include="Recorder.h" />
+    <ClInclude Include="Resources\Resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\hook.h" />
-    <ClInclude Include="src\capture.h" />
-    <ClInclude Include="res\resource.h" />
-    <ClInclude Include="src\convert.h" />
-    <ClInclude Include="src\log.h" />
-    <ClInclude Include="src\main.h" />
-    <ClInclude Include="src\platform.h" />
-    <ClInclude Include="src\util.h" />
+    <None Include="Library\Windows\WindowComposition.cpp" />
+    <None Include="Application\Services\ScreenCaptureFactory.cpp" />
+    <None Include="Application\Utils\StringUtil.cpp" />
+    <None Include="Application\Global\SaveManager.cpp" />
+    <None Include="Application\Multiple\Audio\SilencePlayer.cpp" />
+    <None Include="Application\Controllers\AudioCaptureController.cpp" />
+    <None Include="Application\Controllers\AudioDeviceObserver.cpp" />
+    <None Include="Application\Controllers\AudioPresenter.cpp" />
+    <None Include="Application\Controllers\AudioSettingsController.cpp" />
+    <None Include="Application\Controllers\AudioSettingsObserver.cpp" />
+    <None Include="Application\Controllers\FpsPresenter.cpp" />
+    <None Include="Application\Controllers\MainSettingsController.cpp" />
+    <None Include="Application\Controllers\MainSettingsObserver.cpp" />
+    <None Include="Application\Controllers\PreviewPresenter.cpp" />
+    <None Include="Application\Controllers\QualityController.cpp" />
+    <None Include="Application\Controllers\RecordingController.cpp" />
+    <None Include="Application\Controllers\RecordingPresenter.cpp" />
+    <None Include="Application\Controllers\ResizeController.cpp" />
+    <None Include="Application\Controllers\SnapshotController.cpp" />
+    <None Include="Application\Controllers\SourceController.cpp" />
+    <None Include="Application\Controllers\UsagePresenter.cpp" />
+    <None Include="Application\Controllers\VideoCaptureController.cpp" />
+    <None Include="Application\Controllers\VideoSettingsController.cpp" />
+    <None Include="Application\Controllers\VideoSettingsObserver.cpp" />
+    <None Include="Application\Core\Application.cpp" />
+    <None Include="Application\Core\MediaApplication.cpp" />
+    <None Include="Application\Core\ScreenRecorderApplication.cpp" />
+    <None Include="Application\Global\FontStore.cpp" />
+    <None Include="Application\Global\ImageStore.cpp" />
+    <None Include="Application\Global\Logger.cpp" />
+    <None Include="Application\Main.cpp" />
+    <None Include="Application\Multiple\Audio\AudioCapture.cpp" />
+    <None Include="Application\Multiple\Audio\AudioDevice.cpp" />
+    <None Include="Application\Multiple\Audio\AudioEncoder.cpp" />
+    <None Include="Application\Multiple\Audio\AudioResampler.cpp" />
+    <None Include="Application\Multiple\Audio\AudioVolumeMeter.cpp" />
+    <None Include="Application\Multiple\BaseEventDispatcher.cpp" />
+    <None Include="Application\Multiple\Buffer.cpp" />
+    <None Include="Application\Multiple\CaptureLock.cpp" />
+    <None Include="Application\Multiple\MouseOverlay.cpp" />
+    <None Include="Application\Multiple\ComPointer.cpp" />
+    <None Include="Application\Multiple\Encoder.cpp" />
+    <None Include="Application\Multiple\EventDispatcher.cpp" />
+    <None Include="Application\Multiple\EventPool.cpp" />
+    <None Include="Application\Multiple\FpsCounter.cpp" />
+    <None Include="Application\Multiple\FrameSource.cpp" />
+    <None Include="Application\Multiple\PropVariant.cpp" />
+    <None Include="Application\Multiple\Resizers\BaseResizer.cpp" />
+    <None Include="Application\Multiple\Resizers\BilinearResizer.cpp" />
+    <None Include="Application\Multiple\Resizers\NearestResizer.cpp" />
+    <None Include="Application\Multiple\Resizers\Resizer.cpp" />
+    <None Include="Application\Multiple\SinkWriter.cpp" />
+    <None Include="Application\Multiple\UniquePointer.cpp" />
+    <None Include="Application\Multiple\UniqueStorage.cpp" />
+    <None Include="Application\Multiple\Video\VideoCapture.cpp" />
+    <None Include="Application\Multiple\Video\VideoEncoder.cpp" />
+    <None Include="Application\Multiple\Video\VideoResizer.cpp" />
+    <None Include="Application\Multiple\Video\WindowCapture.cpp" />
+    <None Include="Application\Multiple\WaveFormat.cpp" />
+    <None Include="Application\Multiple\WeakPointer.cpp" />
+    <None Include="Application\Multiple\WindowEventDispatcher.cpp" />
+    <None Include="Application\Services\AudioCaptureManager.cpp" />
+    <None Include="Application\Services\AudioDeviceProvider.cpp" />
+    <None Include="Application\Services\AudioEncoderFactory.cpp" />
+    <None Include="Application\Services\AudioResamplerFactory.cpp" />
+    <None Include="Application\Services\AudioSettingsManager.cpp" />
+    <None Include="Application\Services\AudioVolumeListener.cpp" />
+    <None Include="Application\Services\CpuMonitor.cpp" />
+    <None Include="Application\Services\KeyboardListener.cpp" />
+    <None Include="Application\Services\MainSettingsManager.cpp" />
+    <None Include="Application\Services\MemoryMonitor.cpp" />
+    <None Include="Application\Services\RecordingManager.cpp" />
+    <None Include="Application\Services\SettingsManager.cpp" />
+    <None Include="Application\Services\SinkWriterFactory.cpp" />
+    <None Include="Application\Services\VideoCaptureManager.cpp" />
+    <None Include="Application\Services\VideoEncoderFactory.cpp" />
+    <None Include="Application\Services\VideoResizerFactory.cpp" />
+    <None Include="Application\Services\VideoSettingsManager.cpp" />
+    <None Include="Application\Services\WindowCaptureFactory.cpp" />
+    <None Include="Application\Utils\BufferUtil.cpp" />
+    <None Include="Application\Utils\ControlUtil.cpp" />
+    <None Include="Application\Utils\FormatConverter.cpp" />
+    <None Include="Application\Utils\DialogUtil.cpp" />
+    <None Include="Application\Utils\LogUtil.cpp" />
+    <None Include="Application\Utils\MemoryUtil.cpp" />
+    <None Include="Application\Utils\RectUtil.cpp" />
+    <None Include="Application\Utils\SaveUtil.cpp" />
+    <None Include="Application\Utils\WindowUtil.cpp" />
+    <None Include="Application\Views\AudioSettingsDialog.cpp" />
+    <None Include="Application\Views\DataCheckbox.cpp" />
+    <None Include="Application\Views\DataCombobox.cpp" />
+    <None Include="Application\Views\DeviceIndicator.cpp" />
+    <None Include="Application\Views\DeviceIndicatorAdapter.cpp" />
+    <None Include="Application\Views\DialogWindow.cpp" />
+    <None Include="Application\Views\FpsDisplay.cpp" />
+    <None Include="Application\Views\Frame.cpp" />
+    <None Include="Application\Views\HotkeyEdit.cpp" />
+    <None Include="Application\Views\MainSettingsDialog.cpp" />
+    <None Include="Application\Views\MainWindow.cpp" />
+    <None Include="Application\Views\OverlayWindow.cpp" />
+    <None Include="Application\Views\Panel.cpp" />
+    <None Include="Application\Views\PreviewDisplay.cpp" />
+    <None Include="Application\Views\QualityPanel.cpp" />
+    <None Include="Application\Views\RecordingDisplay.cpp" />
+    <None Include="Application\Views\RecordingPanel.cpp" />
+    <None Include="Application\Views\RectangleSelector.cpp" />
+    <None Include="Application\Views\ResizePanel.cpp" />
+    <None Include="Application\Views\SelectionWindow.cpp" />
+    <None Include="Application\Views\Separator.cpp" />
+    <None Include="Application\Views\SettingsDialog.cpp" />
+    <None Include="Application\Views\SettingsPanel.cpp" />
+    <None Include="Application\Views\SourcePanel.cpp" />
+    <None Include="Application\Views\VideoSettingsDialog.cpp" />
+    <None Include="Application\Views\VolumeDisplay.cpp" />
+    <None Include="Application\Views\VolumeMeter.cpp" />
+    <None Include="Application\Views\WindowSelector.cpp" />
+    <None Include="Library\System\Brush.cpp" />
+    <None Include="Library\System\DynamicLibrary.cpp" />
+    <None Include="Library\System\Event.cpp" />
+    <None Include="Library\System\ExclusiveLock.cpp" />
+    <None Include="Library\System\Font.cpp" />
+    <None Include="Library\System\Image.cpp" />
+    <None Include="Library\System\Pen.cpp" />
+    <None Include="Library\System\Profiler.cpp" />
+    <None Include="Library\System\ReadWriteLock.cpp" />
+    <None Include="Library\System\Thread.cpp" />
+    <None Include="Library\System\Timer.cpp" />
+    <None Include="Library\Utils\BindHelper.cpp" />
+    <None Include="Library\Utils\Callback.cpp" />
+    <None Include="Library\Utils\Color.cpp" />
+    <None Include="Library\Utils\Date.cpp" />
+    <None Include="Library\Utils\Line.cpp" />
+    <None Include="Library\Utils\Math.cpp" />
+    <None Include="Library\Utils\NonCopyable.cpp" />
+    <None Include="Library\Utils\Rect.cpp" />
+    <None Include="Library\Utils\Time.cpp" />
+    <None Include="Library\Utils\Vector.cpp" />
+    <None Include="Library\Windows\Button.cpp" />
+    <None Include="Library\Windows\Checkbox.cpp" />
+    <None Include="Library\Windows\Combobox.cpp" />
+    <None Include="Library\Windows\Control.cpp" />
+    <None Include="Library\Windows\CustomButton.cpp" />
+    <None Include="Library\Windows\CustomControl.cpp" />
+    <None Include="Library\Windows\Editbox.cpp" />
+    <None Include="Library\Windows\Graphics.cpp" />
+    <None Include="Library\Windows\Label.cpp" />
+    <None Include="Library\Windows\Picture.cpp" />
+    <None Include="Library\Windows\Window.cpp" />
+    <None Include="Library\Windows\CustomWindow.cpp" />
+    <None Include="Application\Multiple\AsyncSettingsManager.cpp" />
+    <None Include="Library\System\LatchEvent.cpp" />
+    <None Include="Application\Multiple\Status.cpp" />
+    <None Include="Application\Multiple\Overlay.cpp" />
+    <None Include="Application\Multiple\FrameSink.cpp" />
+    <None Include="Application\Multiple\FrameEmitter.cpp" />
+    <None Include="Application\Multiple\FrameDelegate.cpp" />
+    <None Include="Application\Utils\FileUtil.cpp" />
+    <None Include="Application\Multiple\Captures\BitBltCapture.cpp" />
+    <None Include="Application\Multiple\Captures\DwmSharedSurfaceCapture.cpp" />
+    <None Include="Application\Services\AudioSourceManager.cpp" />
+    <None Include="Application\Services\VideoSourceManager.cpp" />
+    <None Include="Application\Multiple\Captures\DwmPrintWindowCapture.cpp" />
+    <None Include="Application\Multiple\Captures\DXGIOutputDuplicationCapture.cpp" />
+    <None Include="Application\Multiple\MediaSource.cpp" />
+    <ClCompile Include="Recorder.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="res\resource.rc" />
+    <ResourceCompile Include="Resources\Resource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\pause.bmp" />
-    <Image Include="res\resume.bmp" />
-    <Image Include="res\settings.bmp" />
-    <Image Include="res\start.bmp" />
-    <Image Include="res\stop.bmp" />
+    <Image Include="Resources\Microphone.bmp" />
+    <Image Include="Resources\Pause.bmp" />
+    <Image Include="Resources\Resume.bmp" />
+    <Image Include="Resources\Settings.bmp" />
+    <Image Include="Resources\Speaker.bmp" />
+    <Image Include="Resources\Start.bmp" />
+    <Image Include="Resources\Stop.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
