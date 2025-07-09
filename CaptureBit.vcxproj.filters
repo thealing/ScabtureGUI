@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -1076,22 +1076,16 @@
     <None Include="Application\Utils\StringUtil.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="Application\Multiple\Captures\BitBltGetBitmapBitsCapture.cpp">
+    <None Include="Application\Multiple\Captures\BitBltCapture.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Application\Multiple\Captures\BitBltGetBitmapBitsCapture.h">
+    <None Include="Application\Multiple\Captures\BitBltCapture.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="Application\Multiple\Captures\BitBltDIBSectionCapture.cpp">
+    <None Include="Application\Multiple\Captures\DwmSharedSurfaceCapture.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Application\Multiple\Captures\BitBltDIBSectionCapture.h">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Application\Multiple\Captures\DwmGetDxSharedSurfaceCapture.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="Application\Multiple\Captures\DwmGetDxSharedSurfaceCapture.h">
+    <None Include="Application\Multiple\Captures\DwmSharedSurfaceCapture.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="Application\Services\ScreenCaptureFactory.cpp">
@@ -1112,28 +1106,10 @@
     <None Include="Application\Services\VideoSourceManager.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Application\Multiple\Captures\PrintWindowGetBitmapBitsCapture.cpp">
+    <None Include="Application\Multiple\Captures\DwmPrintWindowCapture.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Application\Multiple\Captures\PrintWindowGetBitmapBitsCapture.h">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Application\Multiple\Captures\BitBltGetDIBitsCapture.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="Application\Multiple\Captures\BitBltGetDIBitsCapture.h">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Application\Multiple\Captures\PrintWindowDIBSectionCapture.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="Application\Multiple\Captures\PrintWindowDIBSectionCapture.h">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Application\Multiple\Captures\PrintWindowGetDIBitsCapture.cpp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="Application\Multiple\Captures\PrintWindowGetDIBitsCapture.h">
+    <None Include="Application\Multiple\Captures\DwmPrintWindowCapture.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="Application\Multiple\Captures\DXGIOutputDuplicationCapture.cpp">
@@ -1141,6 +1117,18 @@
     </None>
     <None Include="Application\Multiple\Captures\DXGIOutputDuplicationCapture.h">
       <Filter>Header Files</Filter>
+    </None>
+    <None Include="Library\Windows\WindowComposition.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Library\Windows\WindowComposition.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Application\Multiple\MediaSource.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Application\Multiple\MediaSource.cpp">
+      <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
 </Project>
