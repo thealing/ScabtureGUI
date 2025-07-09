@@ -112,7 +112,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;d3d11.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;d3d11.lib;dxgi.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
       <AdditionalOptions>/PDBALTPATH:%_PDB% %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -135,7 +135,7 @@
       <FloatingPointExceptions>false</FloatingPointExceptions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -161,7 +161,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;d3d11.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;msimg32.lib;ole32.lib;mfplat.lib;mfuuid.lib;mfreadwrite.lib;wmcodecdspuuid.lib;dwmapi.lib;d3d11.lib;dxgi.lib;winmm.lib;Advapi32.lib;Shell32.lib;</AdditionalDependencies>
       <AdditionalOptions>/PDBALTPATH:%_PDB% %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -184,7 +184,7 @@
       <FloatingPointExceptions>false</FloatingPointExceptions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -193,6 +193,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="Library\Windows\WindowComposition.h" />
     <None Include="Application\Services\ScreenCaptureFactory.h" />
     <None Include="Application\Utils\StringUtil.h" />
     <None Include="Application\Global\SaveManager.h" />
@@ -377,22 +378,20 @@
     <None Include="Application\Multiple\FrameEmitter.h" />
     <None Include="Application\Multiple\FrameDelegate.h" />
     <None Include="Application\Utils\FileUtil.h" />
-    <None Include="Application\Multiple\Captures\BitBltGetBitmapBitsCapture.h" />
-    <None Include="Application\Multiple\Captures\BitBltDIBSectionCapture.h" />
-    <None Include="Application\Multiple\Captures\DwmGetDxSharedSurfaceCapture.h" />
+    <None Include="Application\Multiple\Captures\BitBltCapture.h" />
+    <None Include="Application\Multiple\Captures\DwmSharedSurfaceCapture.h" />
     <ClInclude Include="Application\Models\ScreenCaptureMethod.h" />
     <ClInclude Include="Application\Models\Settings\ScreenCaptureSettings.h" />
     <None Include="Application\Services\AudioSourceManager.h" />
     <None Include="Application\Services\VideoSourceManager.h" />
-    <None Include="Application\Multiple\Captures\PrintWindowGetBitmapBitsCapture.h" />
-    <None Include="Application\Multiple\Captures\BitBltGetDIBitsCapture.h" />
-    <None Include="Application\Multiple\Captures\PrintWindowDIBSectionCapture.h" />
-    <None Include="Application\Multiple\Captures\PrintWindowGetDIBitsCapture.h" />
+    <None Include="Application\Multiple\Captures\DwmPrintWindowCapture.h" />
     <None Include="Application\Multiple\Captures\DXGIOutputDuplicationCapture.h" />
+    <None Include="Application\Multiple\MediaSource.h" />
     <ClInclude Include="Recorder.h" />
     <ClInclude Include="Resources\Resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Library\Windows\WindowComposition.cpp" />
     <None Include="Application\Services\ScreenCaptureFactory.cpp" />
     <None Include="Application\Utils\StringUtil.cpp" />
     <None Include="Application\Global\SaveManager.cpp" />
@@ -549,16 +548,13 @@
     <None Include="Application\Multiple\FrameEmitter.cpp" />
     <None Include="Application\Multiple\FrameDelegate.cpp" />
     <None Include="Application\Utils\FileUtil.cpp" />
-    <None Include="Application\Multiple\Captures\BitBltGetBitmapBitsCapture.cpp" />
-    <None Include="Application\Multiple\Captures\BitBltDIBSectionCapture.cpp" />
-    <None Include="Application\Multiple\Captures\DwmGetDxSharedSurfaceCapture.cpp" />
+    <None Include="Application\Multiple\Captures\BitBltCapture.cpp" />
+    <None Include="Application\Multiple\Captures\DwmSharedSurfaceCapture.cpp" />
     <None Include="Application\Services\AudioSourceManager.cpp" />
     <None Include="Application\Services\VideoSourceManager.cpp" />
-    <None Include="Application\Multiple\Captures\PrintWindowGetBitmapBitsCapture.cpp" />
-    <None Include="Application\Multiple\Captures\BitBltGetDIBitsCapture.cpp" />
-    <None Include="Application\Multiple\Captures\PrintWindowDIBSectionCapture.cpp" />
-    <None Include="Application\Multiple\Captures\PrintWindowGetDIBitsCapture.cpp" />
+    <None Include="Application\Multiple\Captures\DwmPrintWindowCapture.cpp" />
     <None Include="Application\Multiple\Captures\DXGIOutputDuplicationCapture.cpp" />
+    <None Include="Application\Multiple\MediaSource.cpp" />
     <ClCompile Include="Recorder.cpp" />
   </ItemGroup>
   <ItemGroup>
