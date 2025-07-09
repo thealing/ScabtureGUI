@@ -80,6 +80,8 @@ void DialogWindow::finalize()
 	Window* parent = getParent();
 	if (parent != NULL)
 	{
+		bool parentExcluded = parent->getExcludedFromCapture();
+		setExcludedFromCapture(parentExcluded);
 		Vector parentCenter = parent->getPosition() + parent->getSize() / 2;
 		Vector halfSize(_width / 2, _bottom / 2);
 		Rect rect(parentCenter - halfSize, parentCenter + halfSize);

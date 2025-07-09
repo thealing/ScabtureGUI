@@ -129,6 +129,13 @@ void Window::setChildrenFont(const Font* font)
 	broadcastMessage(Control::MessageSetFont, (WPARAM)font, 0);
 }
 
+void Window::setExcludedFromCapture(bool excluded)
+{
+	setExcludedFromCapture(_handle, excluded);
+	DWORD windowThreadId = GetWindowThreadProcessId(_handle, NULL);
+	EnumThreadWindows(windowThreadId, excludeFromCaptureProc, excluded);
+}
+
 void Window::runMessageLoop()
 {
 	MSG msg = {};
@@ -206,6 +213,11 @@ Vector Window::getSize() const
 	RECT rect = {};
 	GetClientRect(_handle, &rect);
 	return Vector(rect.right - rect.left, rect.bottom - rect.top);
+}
+
+bool Window::getExcludedFromCapture() const
+{
+	return getExcludedFromCapture(_handle);
 }
 
 Window::~Window()
@@ -324,6 +336,10 @@ LRESULT Window::windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lPar
 	Window* instance = (Window*)subclassId;
 	switch (message)
 	{
+		case WM_WININICHANGE:
+		{
+			break;
+		}
 		case WM_SIZE:
 		{
 			instance->setRedraw(false);
@@ -466,4 +482,33 @@ void Window::excludeChildren(HWND parent, HDC context)
 		ExcludeClipRect(context, rect.left, rect.top, rect.right, rect.bottom);
 		child = GetNextWindow(child, GW_HWNDNEXT);
 	}
+}
+
+BOOL Window::excludeFromCaptureProc(HWND window, LPARAM lParam)
+{
+	setExcludedFromCapture(window, (BOOL)lParam);
+	return TRUE;
+}
+
+void Window::setExcludedFromCapture(HWND window, BOOL excluded)
+{
+	// Using SetWindowDisplayAffinity would create artifacts on the screen!
+	// This however only excludes the window from Desktop Duplication.
+	WINDOWCOMPOSITIONATTRIBDATA data = {};
+	data.Attrib = WCA_EXCLUDED_FROM_DDA;
+	data.pvData = &excluded;
+	data.cbData = sizeof(excluded);
+	setWindowCompositionAttribute(window, &data);
+	RedrawWindow(window, NULL, NULL, RDW_INVALIDATE | RDW_ERASE | RDW_ERASENOW | RDW_UPDATENOW | RDW_ALLCHILDREN | RDW_FRAME);
+}
+
+BOOL Window::getExcludedFromCapture(HWND window)
+{
+	BOOL excluded = FALSE;
+	WINDOWCOMPOSITIONATTRIBDATA data = {};
+	data.Attrib = WCA_EXCLUDED_FROM_DDA;
+	data.pvData = &excluded;
+	data.cbData = sizeof(excluded);
+	getWindowCompositionAttribute(window, &data);
+	return excluded;
 }

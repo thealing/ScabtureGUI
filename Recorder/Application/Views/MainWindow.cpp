@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 
 #define CLASS_NAME L"Scabture Window Class"
-#define WINDOW_NAME L"Scabture v4.0"
+#define WINDOW_NAME L"Scabture 4.1"
 
 MainWindow::MainWindow() : CustomWindow(CLASS_NAME)
 {
@@ -50,8 +50,7 @@ void MainWindow::setTopMost(bool topMost)
 
 void MainWindow::excludeFromCapture(bool exclude)
 {
-	HWND handle = getHandle();
-	SetWindowDisplayAffinity(handle, exclude ? WDA_EXCLUDEFROMCAPTURE : WDA_NONE);
+	setExcludedFromCapture(exclude ? WDA_EXCLUDEFROMCAPTURE : WDA_NONE);
 }
 
 SourcePanel* MainWindow::getSourcePanel() const
