@@ -1,11 +1,12 @@
 #include "AudioCaptureController.h"
 
-AudioCaptureController::AudioCaptureController(AudioCaptureManager* audioCaptureManager, AudioResamplerFactory* audioResamplerFactory, AudioDeviceProvider* audioDeviceProvider, AudioSourceManager* audioSourceManager)
+AudioCaptureController::AudioCaptureController(AudioCaptureManager* audioCaptureManager, AudioResamplerFactory* audioResamplerFactory, AudioDeviceProvider* audioDeviceProvider, AudioSourceManager* audioSourceManager, MainWindow* mainWindow)
 {
 	_audioCaptureManager = audioCaptureManager;
 	_audioResamplerFactory = audioResamplerFactory;
 	_audioDeviceProvider = audioDeviceProvider;
 	_audioSourceManager = audioSourceManager;
+	_mainWindow = mainWindow;
 	_eventDispatcher.addEntry(audioResamplerFactory->getChangeEvent(), BIND(AudioCaptureController, onResamplerChanged, this));
 	_eventDispatcher.addEntry(audioDeviceProvider->getInputChangeEvent(), BIND(AudioCaptureController, onInputDeviceChanged, this));
 	_eventDispatcher.addEntry(audioDeviceProvider->getOutputChangeEvent(), BIND(AudioCaptureController, onOutputDeviceChanged, this));
@@ -24,19 +25,31 @@ AudioCaptureController::~AudioCaptureController()
 void AudioCaptureController::onInputDeviceChanged()
 {
 	LogUtil::logInfo(L"AudioCaptureController: Input device changed.");
-	updateCapture();
+	AudioSource source = _audioSourceManager->getSource();
+	if (source == AudioSourceMicrophone)
+	{
+		updateCapture();
+	}
 }
 
 void AudioCaptureController::onOutputDeviceChanged()
 {
 	LogUtil::logInfo(L"AudioCaptureController: Output device changed.");
-	updateCapture();
+	AudioSource source = _audioSourceManager->getSource();
+	if (source == AudioSourceSystemOutput)
+	{
+		updateCapture();
+	}
 }
 
 void AudioCaptureController::onResamplerChanged()
 {
 	LogUtil::logInfo(L"AudioCaptureController: Audio resampler changed.");
-	updateCapture();
+	AudioSource source = _audioSourceManager->getSource();
+	if (source != AudioSourceNone)
+	{
+		updateCapture();
+	}
 }
 
 void AudioCaptureController::onSourceChanged()
@@ -58,6 +71,7 @@ void AudioCaptureController::updateCapture()
 #ifdef FUZZ_TESTING
 	source = (AudioSource)(rand()%2+1);
 #endif
+	AudioCapture* capture = NULL;
 	switch (source)
 	{
 		case AudioSourceNone:
@@ -67,19 +81,30 @@ void AudioCaptureController::updateCapture()
 		}
 		case AudioSourceSystemOutput:
 		{
-			AudioDevice* device = _audioDeviceProvider->getOutputDevice();
-			AudioCapture* resampler = _audioResamplerFactory->createResampler(device);
-			_audioCaptureManager->setCapture(resampler);
+			capture = _audioDeviceProvider->getOutputDevice();
+			capture = _audioResamplerFactory->createResampler(capture);
 			break;
 		}
 		case AudioSourceMicrophone:
 		{
-			AudioDevice* device = _audioDeviceProvider->getInputDevice();
-			AudioCapture* resampler = _audioResamplerFactory->createResampler(device);
-			_audioCaptureManager->setCapture(resampler);
+			capture = _audioDeviceProvider->getInputDevice();
+			capture = _audioResamplerFactory->createResampler(capture);
 			break;
 		}
 	}
+	if (capture != NULL)
+	{
+		Status status = capture->getStatus();
+		if (!status)
+		{
+			delete capture;
+			_audioSourceManager->setSource(AudioSourceNone);
+			UniquePointer<const wchar_t> errorMessage = StringUtil::formatString(L"Failed to start audio capture!\nError: 0x%08X", status);
+			_mainWindow->showMessageBox(L"Audio error", errorMessage, MB_OK | MB_ICONERROR);
+			return;
+		}
+	}
+	_audioCaptureManager->setCapture(capture);
 	LogUtil::logInfo(L"AudioCaptureController: Updated capture.");
 }
 

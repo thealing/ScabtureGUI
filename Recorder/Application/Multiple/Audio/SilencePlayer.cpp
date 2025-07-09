@@ -39,8 +39,7 @@ SilencePlayer::SilencePlayer(IMMDeviceEnumerator* enumerator, EDataFlow flow, ER
 		}
 		if (_status)
 		{
-			memset(buffer, 0, frameCount * waveFormat->nBlockAlign);
-			_status = _renderClient->ReleaseBuffer(frameCount, 0);
+			_status = _renderClient->ReleaseBuffer(frameCount, AUDCLNT_BUFFERFLAGS_SILENT);
 		}
 	}
 	if (_status)

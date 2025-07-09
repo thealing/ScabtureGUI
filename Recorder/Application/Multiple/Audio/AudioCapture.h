@@ -1,13 +1,15 @@
 #pragma once
 
-class AudioCapture : public FrameSource
+class AudioCapture : public MediaSource
 {
 public:
 
 	virtual ~AudioCapture();
 
-	virtual HRESULT getFormat(IMFMediaType** format) = 0;
+	Status getStatus() const;
 
-	virtual HRESULT getSample(IMFSample** sample) = 0;
+protected:
+
+	Status _status;
 };
 

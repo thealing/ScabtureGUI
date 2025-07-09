@@ -52,7 +52,7 @@ AudioDevice::AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole 
 		if (_status)
 		{
 			REFERENCE_TIME halfPeriod = defaultPeriod / 2;
-			_timer = new Timer(0, halfPeriod / 10000000.0, BIND(AudioDevice, onFrame, this));
+			_timer = new Timer(0, halfPeriod / 10000000.0, BIND(AudioDevice, onTimer, this));
 			if (flow == eRender)
 			{
 				_player = new SilencePlayer(enumerator, flow, role);
@@ -175,7 +175,7 @@ HRESULT AudioDevice::getSample(IMFSample** sample)
 	return result;
 }
 
-void AudioDevice::onFrame()
+void AudioDevice::onTimer()
 {
 	Status result;
 	UINT32 packetSize = 0;

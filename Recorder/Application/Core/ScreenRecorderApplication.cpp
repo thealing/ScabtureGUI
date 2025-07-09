@@ -20,7 +20,7 @@ void ScreenRecorderApplication::run()
 	ResizeController resizeController(resizePanel, &_videoCaptureManager, &_videoSettingsManager);
 	AudioDeviceObserver audioDeviceObserver(&_audioDeviceProvider, &_audioVolumeListener, &_audioResamplerFactory);
 	VideoCaptureController videoCaptureController(&_videoCaptureManager, &_windowCaptureFactory, &_screenCaptureFactory, &_videoResizerFactory, &_videoSourceManager, &_videoSettingsManager, &_keyboardListener);
-	AudioCaptureController audioCaptureController(&_audioCaptureManager, &_audioResamplerFactory, &_audioDeviceProvider, &_audioSourceManager);
+	AudioCaptureController audioCaptureController(&_audioCaptureManager, &_audioResamplerFactory, &_audioDeviceProvider, &_audioSourceManager, &_mainWindow);
 	MainSettingsController mainSettingsController(settingsPanel, &_mainSettingsDialog, &_mainSettingsManager);
 	VideoSettingsController videoSettingsController(sourcePanel, &_videoSettingsDialog, &_videoSettingsManager);
 	AudioSettingsController audioSettingsController(sourcePanel, &_audioSettingsDialog, &_audioSettingsManager);
