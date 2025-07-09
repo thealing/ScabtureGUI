@@ -22,39 +22,19 @@ VideoCapture* WindowCaptureFactory::createCapture(HWND window, RECT rect) const
 	WindowCapture* capture = NULL;
 	switch (settings.method)
 	{
-		case WindowCaptureMethodBitBltGetBitmapBits:
+		case WindowCaptureMethodBitBlt:
 		{
-			capture = new BitBltGetBitmapBitsCapture(window, position, size);
+			capture = new BitBltCapture(window, position, size);
 			break;
 		}
-		case WindowCaptureMethodBitBltGetDIBits:
+		case WindowCaptureMethodPrintWindow:
 		{
-			capture = new BitBltGetDIBitsCapture(window, position, size);
+			capture = new DwmPrintWindowCapture(window);
 			break;
 		}
-		case WindowCaptureMethodBitBltDIBSection:
+		case WindowCaptureMethodSharedSurface:
 		{
-			capture = new BitBltDIBSectionCapture(window, position, size);
-			break;
-		}
-		case WindowCaptureMethodPrintWindowGetBitmapBits:
-		{
-			capture = new PrintWindowGetBitmapBitsCapture(window);
-			break;
-		}
-		case WindowCaptureMethodPrintWindowGetDIBits:
-		{
-			capture = new PrintWindowGetDIBitsCapture(window);
-			break;
-		}
-		case WindowCaptureMethodPrintWindowDIBSection:
-		{
-			capture = new PrintWindowDIBSectionCapture(window);
-			break;
-		}
-		case WindowCaptureMethodDwmGetDxSharedSurface:
-		{
-			capture = new DwmGetDxSharedSurfaceCapture(window, position, size);
+			capture = new DwmSharedSurfaceCapture(window, position, size);
 			break;
 		}
 	}

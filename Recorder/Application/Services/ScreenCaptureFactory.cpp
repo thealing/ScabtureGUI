@@ -14,7 +14,7 @@ bool ScreenCaptureFactory::setSettings(const ScreenCaptureSettings& settings)
 	return _settingsManager.setSettings(settings);
 }
 
-VideoCapture* ScreenCaptureFactory::createCapture(HWND desktop, RECT rect) const
+VideoCapture* ScreenCaptureFactory::createCapture(HWND desktopWindow, RECT rect) const
 {
 	POINT position = RectUtil::getRectPosition(rect);
 	SIZE size = RectUtil::getRectSize(rect);
@@ -22,30 +22,20 @@ VideoCapture* ScreenCaptureFactory::createCapture(HWND desktop, RECT rect) const
 	WindowCapture* capture = NULL;
 	switch (settings.method)
 	{
-		case ScreenCaptureMethodBitBltGetBitmapBits:
+		case ScreenCaptureMethodBitBlt:
 		{
-			capture = new BitBltGetBitmapBitsCapture(desktop, position, size);
+			capture = new BitBltCapture(desktopWindow, position, size);
 			break;
 		}
-		case ScreenCaptureMethodBitBltGetDIBits:
+		case ScreenCaptureMethodDesktopDuplication:
 		{
-			capture = new BitBltGetDIBitsCapture(desktop, position, size);
-			break;
-		}
-		case ScreenCaptureMethodBitBltDIBSection:
-		{
-			capture = new BitBltDIBSectionCapture(desktop, position, size);
-			break;
-		}
-		case ScreenCaptureMethodDXGIOutputDuplication:
-		{
-			capture = new DXGIOutputDuplicationCapture(desktop, position, size);
+			capture = new DXGIOutputDuplicationCapture(desktopWindow, position, size);
 			break;
 		}
 	}
 	if (settings.showCursor)
 	{
-		MouseOverlay* overlay = new MouseOverlay(desktop, position);
+		MouseOverlay* overlay = new MouseOverlay(desktopWindow, position);
 		capture->addOverlay(overlay);
 	}
 	capture->start(settings.frameRate);

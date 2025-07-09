@@ -10,26 +10,20 @@ VideoSettingsDialog::~VideoSettingsDialog()
 
 DialogWindow* VideoSettingsDialog::createWindow(Window* parent)
 {
-	return new DialogWindow(parent, L"Video Options", 400, 28, 10, 5);
+	return new DialogWindow(parent, L"Video Options", 360, 28, 10, 5);
 }
 
 void VideoSettingsDialog::createControls(DialogWindow* window, VideoSettings* settings)
 {
 	const wchar_t* windowCaptureMethodNames[WindowCaptureMethodCount] = {};
-	windowCaptureMethodNames[WindowCaptureMethodBitBltGetBitmapBits] = L"BitBltGetBitmapBits";
-	windowCaptureMethodNames[WindowCaptureMethodBitBltGetDIBits] = L"BitBltGetDIBits";
-	windowCaptureMethodNames[WindowCaptureMethodBitBltDIBSection] = L"BitBltDIBSection";
-	windowCaptureMethodNames[WindowCaptureMethodPrintWindowGetBitmapBits] = L"PrintWindowGetBitmapBits";
-	windowCaptureMethodNames[WindowCaptureMethodPrintWindowGetDIBits] = L"PrintWindowGetDIBits";
-	windowCaptureMethodNames[WindowCaptureMethodPrintWindowDIBSection] = L"PrintWindowDIBSection";
-	windowCaptureMethodNames[WindowCaptureMethodDwmGetDxSharedSurface] = L"DwmGetDxSharedSurface";
-	window->addComboBox(L"Window capture method", 190, (int*)&settings->windowCaptureMethod, windowCaptureMethodNames, ARRAYSIZE(windowCaptureMethodNames));
+	windowCaptureMethodNames[WindowCaptureMethodBitBlt] = L"BitBlt";
+	windowCaptureMethodNames[WindowCaptureMethodPrintWindow] = L"PrintWindow";
+	windowCaptureMethodNames[WindowCaptureMethodSharedSurface] = L"Shared Surface";
+	window->addComboBox(L"Window capture method", 150, (int*)&settings->windowCaptureMethod, windowCaptureMethodNames, ARRAYSIZE(windowCaptureMethodNames));
 	const wchar_t* screenCaptureMethodNames[ScreenCaptureMethodCount] = {};
-	screenCaptureMethodNames[ScreenCaptureMethodBitBltGetBitmapBits] = L"BitBltGetBitmapBits";
-	screenCaptureMethodNames[ScreenCaptureMethodBitBltGetDIBits] = L"BitBltGetDIBits";
-	screenCaptureMethodNames[ScreenCaptureMethodBitBltDIBSection] = L"BitBltDIBSection";
-	screenCaptureMethodNames[ScreenCaptureMethodDXGIOutputDuplication] = L"DXGIOutputDuplication";
-	window->addComboBox(L"Screen capture method", 190, (int*)&settings->screenCaptureMethod, screenCaptureMethodNames, ARRAYSIZE(screenCaptureMethodNames));
+	screenCaptureMethodNames[ScreenCaptureMethodBitBlt] = L"BitBlt";
+	screenCaptureMethodNames[ScreenCaptureMethodDesktopDuplication] = L"Desktop Duplication";
+	window->addComboBox(L"Screen capture method", 150, (int*)&settings->screenCaptureMethod, screenCaptureMethodNames, ARRAYSIZE(screenCaptureMethodNames));
 	window->addCheckBox(L"Exclude application window", 16, &settings->exclude);
 	window->addSeparator();
 	window->addCheckBox(L"Show mouse cursor", 16, &settings->showCursor);

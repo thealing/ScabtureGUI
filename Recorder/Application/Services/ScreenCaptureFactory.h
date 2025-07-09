@@ -10,7 +10,7 @@ public:
 
 	bool setSettings(const ScreenCaptureSettings& settings);
 
-	VideoCapture* createCapture(HWND desktop, RECT rect) const;
+	VideoCapture* createCapture(HWND desktopWindow, RECT rect) const;
 
 private:
 

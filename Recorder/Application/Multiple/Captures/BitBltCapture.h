@@ -1,12 +1,12 @@
 #pragma once
 
-class BitBltGetDIBitsCapture : public WindowCapture
+class BitBltCapture : public WindowCapture
 {
 public:
 
-	BitBltGetDIBitsCapture(HWND window, POINT position, SIZE size);
+	BitBltCapture(HWND window, POINT position, SIZE size);
 
-	~BitBltGetDIBitsCapture();
+	~BitBltCapture();
 
 protected:
 
@@ -18,4 +18,5 @@ private:
 	HDC _sourceContext;
 	HDC _captureContext;
 	HBITMAP _captureBitmap;
+	void* _capturePixels;
 };

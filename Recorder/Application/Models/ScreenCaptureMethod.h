@@ -2,9 +2,7 @@
 
 enum ScreenCaptureMethod : int
 {
-	ScreenCaptureMethodBitBltGetBitmapBits,
-	ScreenCaptureMethodBitBltGetDIBits,
-	ScreenCaptureMethodBitBltDIBSection,
-	ScreenCaptureMethodDXGIOutputDuplication,
+	ScreenCaptureMethodBitBlt,
+	ScreenCaptureMethodDesktopDuplication,
 	ScreenCaptureMethodCount
 };

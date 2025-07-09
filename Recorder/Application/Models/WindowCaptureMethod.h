@@ -2,12 +2,8 @@
 
 enum WindowCaptureMethod : int
 {
-	WindowCaptureMethodBitBltGetBitmapBits,
-	WindowCaptureMethodBitBltGetDIBits,
-	WindowCaptureMethodBitBltDIBSection,
-	WindowCaptureMethodPrintWindowGetBitmapBits,
-	WindowCaptureMethodPrintWindowGetDIBits,
-	WindowCaptureMethodPrintWindowDIBSection,
-	WindowCaptureMethodDwmGetDxSharedSurface,
+	WindowCaptureMethodBitBlt,
+	WindowCaptureMethodPrintWindow,
+	WindowCaptureMethodSharedSurface,
 	WindowCaptureMethodCount
 };
