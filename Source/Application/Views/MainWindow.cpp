@@ -105,5 +105,5 @@ bool MainWindow::canClose()
 
 Vector MainWindow::getMinimumSize()
 {
-	return Vector(890, 145);
+	return Vector(888, 143);
 }

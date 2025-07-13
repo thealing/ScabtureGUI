@@ -30,12 +30,11 @@ void PreviewPresenter::onFrame()
 	if (capture != NULL)
 	{
 		const Buffer* buffer = capture->getBuffer();
-		_previewDisplay->setBuffer(*buffer);
-		_previewDisplay->setActive(true);
+		_previewDisplay->setBuffer(buffer);
 	}
 	else
 	{
-		_previewDisplay->setActive(false);
+		_previewDisplay->setBuffer(NULL);
 	}
 	_videoCaptureManager->unlockCapture();
 	_previewDisplay->draw();
@@ -44,5 +43,5 @@ void PreviewPresenter::onFrame()
 
 void PreviewPresenter::onError()
 {
-	_previewDisplay->setActive(false);
+	_previewDisplay->setBuffer(NULL);
 }
