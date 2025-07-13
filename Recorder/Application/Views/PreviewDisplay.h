@@ -10,15 +10,13 @@ public:
 
 	void draw();
 
-	void setActive(bool active);
-
 	void setDisabled(bool disabled);
 
 	void setHighQuality(bool highQuality);
 
 	void setUpscale(bool upscale);
 
-	void setBuffer(const Buffer& buffer);
+	void setBuffer(const Buffer* buffer);
 
 private:
 
@@ -38,9 +36,8 @@ private:
 
 private:
 
-	ExclusiveLock _lock;
+	ReadWriteLock _lock;
 	bool _dirty;
-	bool _active;
 	bool _disabled;
 	bool _highQuality;
 	bool _upscale;
