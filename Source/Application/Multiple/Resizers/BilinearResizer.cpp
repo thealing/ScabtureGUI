@@ -9,7 +9,7 @@ BilinearResizer::BilinearResizer(Vector inputSize, Vector outputSize, const Rect
 	int outputWidth = outputRect.upper.x - outputRect.lower.x;
 	int outputHeight = outputRect.upper.y - outputRect.lower.y;
 	__m128 weightFactor = _mm_set_ps1(32.0f);
-	__m128i weightMask = _mm_set_epi8(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 12, 8, 4, 0);
+	__m128i weightMask = _mm_set_epi8(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 4, 8, 12);
 	__m128i offsetX = _mm_set1_epi32(inputRect.lower.x);
 	__m128i offsetY = _mm_set1_epi32(inputRect.lower.y);
 	__m128i stride = _mm_set1_epi32(inputSize.x);
