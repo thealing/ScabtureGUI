@@ -177,7 +177,6 @@ void PreviewDisplay::drawPreview(Graphics& graphics)
 	HDC context = graphics.getHandle();
 	SetStretchBltMode(context, _highQuality ? HALFTONE : COLORONCOLOR);
 	StretchDIBits(context, 0, 0, displaySize.x, displaySize.y, 0, 0, _width, _height, _pixels, &bitmapInfo, DIB_RGB_COLORS, SRCCOPY);
-	leaveBlock();
 }
 
 void PreviewDisplay::drawPreviewDisabled(Graphics& graphics)

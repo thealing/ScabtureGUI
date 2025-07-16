@@ -27,7 +27,7 @@ void MainSettingsDialog::createControls(DialogWindow* window, MainSettings* sett
 	window->addCheckBox(L"High quality preview", 16, &settings->highQualityPreview);
 	window->addCheckBox(L"Disable preview while recording", 16, &settings->disablePreviewDuringRecording);
 	window->addSeparator();
-	window->addCheckBox(L"Use hardware-accelerated encoders", 16, &settings->useHardwareEncoders);
+	window->addCheckBox(L"Use hardware encoders", 16, &settings->useHardwareEncoders);
 	window->addCheckBox(L"Low latency mode", 16, &settings->lowLatencyMode);
 	window->addSeparator();
 	window->addHotkeyEdit(L"Start recording", 120, &settings->startHotkey);
