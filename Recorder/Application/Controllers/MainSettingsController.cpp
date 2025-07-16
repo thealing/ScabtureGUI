@@ -33,5 +33,8 @@ void MainSettingsController::onSettingsChanged()
 	{
 		LogUtil::logInfo(L"MainSettingsController: Settings changed.");
 	}
-	_settingsPanel->setEnabled(true);
+	if (!_mainSettingsDialog->isOpen())
+	{
+		_settingsPanel->setEnabled(true);
+	}
 }

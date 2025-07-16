@@ -33,6 +33,12 @@ Settings SettingsDialog<Settings>::getSettings() const
 }
 
 template<class Settings>
+bool SettingsDialog<Settings>::isOpen() const
+{
+	return _window != NULL;
+}
+
+template<class Settings>
 SettingsDialog<Settings>::~SettingsDialog()
 {
 }

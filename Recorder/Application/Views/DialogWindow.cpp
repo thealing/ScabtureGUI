@@ -63,9 +63,9 @@ void DialogWindow::addHotkeyEdit(const wchar_t* labelText, int controlWidth, Hot
 
 void DialogWindow::addSeparator()
 {
-	_bottom += _spacing * 2;
+	_bottom += 8;
 	Control* control = DialogUtil::createSeparator(this, _margin, _bottom, _width - _margin * 2, 1);
-	_bottom += _spacing + 1;
+	_bottom += 4;
 	_controls.store(control);
 }
 

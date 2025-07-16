@@ -11,6 +11,8 @@ public:
 
 	Settings getSettings() const;
 
+	bool isOpen() const;
+
 	virtual ~SettingsDialog();
 
 protected:

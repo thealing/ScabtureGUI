@@ -234,7 +234,6 @@ void RecordingController::updateControls(bool recording)
 	SourcePanel* sourcePanel = _mainWindow->getSourcePanel();
 	ResizePanel* resizePanel = _mainWindow->getResizePanel();
 	QualityPanel* qualityPanel = _mainWindow->getQualityPanel();
-	PreviewDisplay* previewDisplay = _mainWindow->getPreviewDisplay();
 	sourcePanel->setDisabled(recording);
 	resizePanel->setDisabled(recording);
 	qualityPanel->setDisabled(recording);
