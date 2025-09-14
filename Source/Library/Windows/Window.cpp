@@ -10,6 +10,14 @@ Window::Window()
 	_backgroundColor = 255;
 }
 
+Window::~Window()
+{
+	removeCallback(windowProc);
+	destroyRenderObjects();
+	ReleaseDC(_handle, _context);
+	DestroyWindow(_handle);
+}
+
 void Window::show()
 {
 	showState(SW_SHOW);
@@ -220,14 +228,6 @@ bool Window::getExcludedFromCapture() const
 	return getExcludedFromCapture(_handle);
 }
 
-Window::~Window()
-{
-	removeCallback(windowProc);
-	destroyRenderObjects();
-	ReleaseDC(_handle, _context);
-	DestroyWindow(_handle);
-}
-
 void Window::create(const wchar_t* className, const wchar_t* windowName)
 {
 	create(className, windowName, 0, NULL);
@@ -371,7 +371,6 @@ LRESULT Window::windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lPar
 			DefSubclassProc(window, WM_PAINT, (WPARAM)instance->_renderContext, 0);
 			Graphics graphics(instance->_renderContext);
 			instance->doPaint(graphics);
-			excludeChildren(window, context);
 			BitBlt(context, 0, 0, rect.right, rect.bottom, instance->_renderContext, 0, 0, SRCCOPY);
 			EndPaint(window, &paint);
 			instance->postMessage(WM_UPDATEUISTATE, MAKELONG(UIS_SET, UISF_HIDEFOCUS), 0);
@@ -470,20 +469,6 @@ LRESULT Window::windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lPar
 	return DefSubclassProc(window, message, wParam, lParam);
 }
 
-void Window::excludeChildren(HWND parent, HDC context)
-{
-	SelectClipRgn(context, NULL);
-	HWND child = GetWindow(parent, GW_CHILD);
-	while (child)
-	{
-		RECT rect;
-		GetWindowRect(child, &rect);
-		MapWindowPoints(HWND_DESKTOP, parent, (LPPOINT)&rect, 2);
-		ExcludeClipRect(context, rect.left, rect.top, rect.right, rect.bottom);
-		child = GetNextWindow(child, GW_HWNDNEXT);
-	}
-}
-
 BOOL Window::excludeFromCaptureProc(HWND window, LPARAM lParam)
 {
 	setExcludedFromCapture(window, (BOOL)lParam);
@@ -493,7 +478,7 @@ BOOL Window::excludeFromCaptureProc(HWND window, LPARAM lParam)
 void Window::setExcludedFromCapture(HWND window, BOOL excluded)
 {
 	// Using SetWindowDisplayAffinity would create artifacts on the screen!
-	// This however only excludes the window from Desktop Duplication.
+	// This however only excludes the window from Desktop Duplication and not BitBlt.
 	WINDOWCOMPOSITIONATTRIBDATA data = {};
 	data.Attrib = WCA_EXCLUDED_FROM_DDA;
 	data.pvData = &excluded;

@@ -326,10 +326,10 @@
     <None Include="Application\Multiple\MouseOverlay.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="Application\Multiple\Resizers\BaseResizer.cpp">
+    <None Include="Application\Multiple\Resizers\AbstractResizer.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Application\Multiple\Resizers\BaseResizer.h">
+    <None Include="Application\Multiple\Resizers\AbstractResizer.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="Application\Multiple\Resizers\BilinearResizer.cpp">
@@ -374,10 +374,10 @@
     <None Include="Application\Multiple\Video\WindowCapture.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="Application\Multiple\BaseEventDispatcher.cpp">
+    <None Include="Application\Multiple\EventDispatcherBase.cpp">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Application\Multiple\BaseEventDispatcher.h">
+    <None Include="Application\Multiple\EventDispatcherBase.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="Application\Multiple\Buffer.cpp">
@@ -1129,6 +1129,12 @@
     </None>
     <None Include="Application\Multiple\MediaSource.cpp">
       <Filter>Source Files</Filter>
+    </None>
+    <None Include="Library\Utils\Virtual.cpp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Library\Utils\Virtual.h">
+      <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
 </Project>

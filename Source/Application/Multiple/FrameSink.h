@@ -1,12 +1,12 @@
 #pragma once
 
-class FrameSink : NonCopyable
+class FrameSink : Virtual
 {
 public:
 
 	FrameSink(FrameSource* source);
 
-	virtual ~FrameSink();
+	~FrameSink();
 
 protected:
 

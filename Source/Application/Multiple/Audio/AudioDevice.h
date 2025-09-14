@@ -6,7 +6,7 @@ public:
 
 	AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole role);
 
-	virtual ~AudioDevice();
+	~AudioDevice();
 
 	virtual HRESULT getFormat(IMFMediaType** format) override;
 

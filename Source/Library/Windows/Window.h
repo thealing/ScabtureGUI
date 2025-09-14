@@ -1,10 +1,12 @@
 #pragma once
 
-class Window : NonCopyable
+class Window : Virtual
 {
 public:
 
 	Window();
+
+	~Window();
 
 	void show();
 
@@ -74,8 +76,6 @@ public:
 
 	bool getExcludedFromCapture() const;
 
-	virtual ~Window();
-
 protected:
 
 	void create(const wchar_t* className, const wchar_t* windowName);
@@ -120,8 +120,6 @@ private:
 	static Window* fromHandle(HWND handle);
 
 	static LRESULT CALLBACK windowProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam, UINT_PTR subclassId, DWORD_PTR data);
-
-	static void excludeChildren(HWND parent, HDC context);
 
 	static BOOL CALLBACK excludeFromCaptureProc(HWND window, LPARAM lParam);
 

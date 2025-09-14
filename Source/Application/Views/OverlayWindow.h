@@ -1,14 +1,14 @@
 #pragma once
 
-class OverlayWindow : NonCopyable
+class OverlayWindow : Virtual
 {
 public:
 
 	OverlayWindow(const wchar_t* title);
 
-	void run();
+	~OverlayWindow();
 
-	virtual ~OverlayWindow();
+	void run();
 
 protected:
 

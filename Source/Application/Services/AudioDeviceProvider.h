@@ -1,12 +1,12 @@
 #pragma once
 
-class AudioDeviceProvider : IMMNotificationClient, NonCopyable
+class AudioDeviceProvider : IMMNotificationClient, Virtual
 {
 public:
 
 	AudioDeviceProvider();
 
-	virtual ~AudioDeviceProvider();
+	~AudioDeviceProvider();
 
 	const Event* getInputChangeEvent();
 

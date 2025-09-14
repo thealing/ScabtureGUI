@@ -1,7 +1,7 @@
 #pragma once
 
 template<class Settings>
-class SettingsDialog : NonCopyable
+class SettingsDialog : Virtual
 {
 public:
 
@@ -12,8 +12,6 @@ public:
 	Settings getSettings() const;
 
 	bool isOpen() const;
-
-	virtual ~SettingsDialog();
 
 protected:
 
