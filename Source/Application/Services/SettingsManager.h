@@ -1,7 +1,7 @@
 #pragma once
 
 template<class Settings>
-class SettingsManager : NonCopyable
+class SettingsManager : Virtual
 {
 public:
 
@@ -12,8 +12,6 @@ public:
 	bool setSettings(const Settings& settings);
 
 	Settings getSettings() const;
-
-	virtual ~SettingsManager();
 
 protected:
 
@@ -27,5 +25,6 @@ private:
 
 	const wchar_t* _name;
 	Settings _settings;
+	LatchEvent _initEvent;
 	EventPool _changeEventPool;
 };
