@@ -9,11 +9,11 @@ public:
 
 	WeakPointer(Type* object);
 
-	operator Type*() const;
-
 	Type& operator*() const;
 
 	Type* operator->() const;
+
+	operator Type*() const;
 
 private:
 

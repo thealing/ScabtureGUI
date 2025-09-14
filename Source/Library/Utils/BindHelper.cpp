@@ -9,6 +9,6 @@ Callback BindHelper<Class, Method>::bind(Class* instance)
 template<class Class, void(Class::* Method)()>
 void BindHelper<Class, Method>::method(void* argument)
 {
-	Class* instance = static_cast<Class*>(argument);
+	Class* instance = (Class*)argument;
 	(instance->*Method)();
 }

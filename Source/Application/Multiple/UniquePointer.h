@@ -17,13 +17,11 @@ public:
 
 	UniquePointer& operator=(UniquePointer& other);
 
-	Type* get() const;
-
-	operator Type*() const;
-
 	Type& operator*() const;
 
 	Type* operator->() const;
+
+	operator Type*() const;
 
 private:
 

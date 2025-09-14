@@ -13,12 +13,6 @@ WeakPointer<Type>::WeakPointer(Type* object)
 }
 
 template<class Type>
-WeakPointer<Type>::operator Type*() const 
-{
-	return _object;
-}
-
-template<class Type>
 Type& WeakPointer<Type>::operator*() const 
 {
 	return *_object;
@@ -26,6 +20,12 @@ Type& WeakPointer<Type>::operator*() const
 
 template<class Type>
 Type* WeakPointer<Type>::operator->() const 
+{
+	return _object;
+}
+
+template<class Type>
+WeakPointer<Type>::operator Type*() const 
 {
 	return _object;
 }

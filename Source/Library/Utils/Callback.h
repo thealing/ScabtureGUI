@@ -27,5 +27,5 @@ public:
 private:
 
 	Function* _function;
-	void* _argument;
+	Argument _argument;
 };
