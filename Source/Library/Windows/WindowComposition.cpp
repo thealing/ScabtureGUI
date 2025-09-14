@@ -1,5 +1,8 @@
 #include "WindowComposition.h"
 
+typedef BOOL (WINAPI* GetWindowCompositionAttribute)(HWND, WINDOWCOMPOSITIONATTRIBDATA*);
+typedef BOOL (WINAPI* SetWindowCompositionAttribute)(HWND, WINDOWCOMPOSITIONATTRIBDATA*);
+
 BOOL getWindowCompositionAttribute(HWND window, WINDOWCOMPOSITIONATTRIBDATA* data)
 {
 	static DynamicLibrary user32("user32.dll");
