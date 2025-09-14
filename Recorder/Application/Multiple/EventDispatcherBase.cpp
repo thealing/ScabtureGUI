@@ -1,6 +1,6 @@
-#include "BaseEventDispatcher.h"
+#include "EventDispatcherBase.h"
 
-BaseEventDispatcher::BaseEventDispatcher()
+EventDispatcherBase::EventDispatcherBase()
 {
 #ifdef FUZZ_TESTING
 	delete _stopEvent._DEBUG_TIMER;
@@ -11,27 +11,27 @@ BaseEventDispatcher::BaseEventDispatcher()
 	_events[0] = &_stopEvent;
 }
 
-BaseEventDispatcher::~BaseEventDispatcher()
+EventDispatcherBase::~EventDispatcherBase()
 {
 	assert(_thread == NULL);
 	delete[] _events;
 }
 
-void BaseEventDispatcher::start()
+void EventDispatcherBase::start()
 {
 	assert(_thread == NULL);
 	_stopEvent.reset();
-	_thread = new Thread(BIND(BaseEventDispatcher, threadProc, this));
+	_thread = new Thread(BIND(EventDispatcherBase, threadProc, this));
 }
 
-void BaseEventDispatcher::stop()
+void EventDispatcherBase::stop()
 {
 	assert(_thread != NULL);
 	_stopEvent.set();
 	_thread = NULL;
 }
 
-int BaseEventDispatcher::getThreadId() const
+int EventDispatcherBase::getThreadId() const
 {
 	if (_thread == NULL)
 	{
@@ -40,7 +40,7 @@ int BaseEventDispatcher::getThreadId() const
 	return _thread->getId();
 }
 
-int BaseEventDispatcher::addEntry(const Event* event)
+int EventDispatcherBase::addEntry(const Event* event)
 {
 	assert(_thread == NULL);
 	assert(_count < Capacity);
@@ -49,7 +49,7 @@ int BaseEventDispatcher::addEntry(const Event* event)
 	return _count - 1;
 }
 
-void BaseEventDispatcher::threadProc()
+void EventDispatcherBase::threadProc()
 {
 	while (true)
 	{

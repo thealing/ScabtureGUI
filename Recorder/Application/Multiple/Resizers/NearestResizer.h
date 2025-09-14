@@ -1,6 +1,6 @@
 #pragma once
 
-class NearestResizer : public BaseResizer
+class NearestResizer : public AbstractResizer
 {
 public:
 

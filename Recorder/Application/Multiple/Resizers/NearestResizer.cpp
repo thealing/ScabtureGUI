@@ -1,6 +1,6 @@
 #include "NearestResizer.h"
 
-NearestResizer::NearestResizer(Vector inputSize, Vector outputSize, const Rect& inputRect, const Rect& outputRect) : BaseResizer(outputSize, outputRect)
+NearestResizer::NearestResizer(Vector inputSize, Vector outputSize, const Rect& inputRect, const Rect& outputRect) : AbstractResizer(outputSize, outputRect)
 {
 	_indexBuffer = BufferUtil::allocateBuffer<int>(outputSize.x * outputSize.y);
 	for (int y = outputRect.lower.y; y < outputRect.upper.y; y++)

@@ -1,6 +1,6 @@
 #pragma once
 
-class EventDispatcher : public BaseEventDispatcher
+class EventDispatcher : public EventDispatcherBase
 {
 public:
 

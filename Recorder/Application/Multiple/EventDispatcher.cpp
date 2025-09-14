@@ -12,7 +12,7 @@ EventDispatcher::~EventDispatcher()
 
 void EventDispatcher::addEntry(const Event* event, const Callback& callback)
 {
-	int index = BaseEventDispatcher::addEntry(event);
+	int index = EventDispatcherBase::addEntry(event);
 	_callbacks[index] = callback;
 }
 

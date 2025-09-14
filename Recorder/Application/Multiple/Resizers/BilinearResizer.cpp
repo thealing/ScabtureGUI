@@ -1,6 +1,6 @@
 #include "BilinearResizer.h"
 
-BilinearResizer::BilinearResizer(Vector inputSize, Vector outputSize, const Rect& inputRect, const Rect& outputRect) : BaseResizer(outputSize, outputRect)
+BilinearResizer::BilinearResizer(Vector inputSize, Vector outputSize, const Rect& inputRect, const Rect& outputRect) : AbstractResizer(outputSize, outputRect)
 {
 	_indexBuffer = BufferUtil::allocateBuffer<int>(outputSize.x * outputSize.y * 4);
 	_weightBuffer = BufferUtil::allocateBuffer<int>(outputSize.x * outputSize.y);

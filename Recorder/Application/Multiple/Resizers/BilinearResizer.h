@@ -1,6 +1,6 @@
 #pragma once
 
-class BilinearResizer : public BaseResizer
+class BilinearResizer : public AbstractResizer
 {
 public:
 
