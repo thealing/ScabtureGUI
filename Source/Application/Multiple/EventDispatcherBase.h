@@ -1,16 +1,12 @@
 #pragma once
 
-class BaseEventDispatcher : NonCopyable
+class EventDispatcherBase : Virtual
 {
 public:
 
-	static const int Capacity = 16;
+	EventDispatcherBase();
 
-public:
-
-	BaseEventDispatcher();
-
-	virtual ~BaseEventDispatcher();
+	~EventDispatcherBase();
 
 	void start();
 
@@ -27,6 +23,10 @@ protected:
 private:
 
 	void threadProc();
+
+protected:
+
+	static const int Capacity = 16;
 
 private:
 

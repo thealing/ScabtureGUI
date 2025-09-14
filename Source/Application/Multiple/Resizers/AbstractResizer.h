@@ -1,10 +1,10 @@
 #pragma once
 
-class BaseResizer : public Resizer
+class AbstractResizer : public Resizer
 {
 public:
 
-	BaseResizer(Vector outputSize, const Rect& outputRect);
+	AbstractResizer(Vector outputSize, const Rect& outputRect);
 
 	virtual Vector getOutputSize() const override;
 
