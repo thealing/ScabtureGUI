@@ -193,6 +193,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="Library\Utils\Virtual.h" />
     <None Include="Library\Windows\WindowComposition.h" />
     <None Include="Application\Services\ScreenCaptureFactory.h" />
     <None Include="Application\Utils\StringUtil.h" />
@@ -255,7 +256,7 @@
     <None Include="Application\Multiple\Audio\AudioEncoder.h" />
     <None Include="Application\Multiple\Audio\AudioResampler.h" />
     <None Include="Application\Multiple\Audio\AudioVolumeMeter.h" />
-    <None Include="Application\Multiple\BaseEventDispatcher.h" />
+    <None Include="Application\Multiple\EventDispatcherBase.h" />
     <None Include="Application\Multiple\Buffer.h" />
     <None Include="Application\Multiple\CaptureLock.h" />
     <None Include="Application\Multiple\MouseOverlay.h" />
@@ -266,7 +267,7 @@
     <None Include="Application\Multiple\FpsCounter.h" />
     <None Include="Application\Multiple\FrameSource.h" />
     <None Include="Application\Multiple\PropVariant.h" />
-    <None Include="Application\Multiple\Resizers\BaseResizer.h" />
+    <None Include="Application\Multiple\Resizers\AbstractResizer.h" />
     <None Include="Application\Multiple\Resizers\BilinearResizer.h" />
     <None Include="Application\Multiple\Resizers\NearestResizer.h" />
     <None Include="Application\Multiple\Resizers\Resizer.h" />
@@ -391,6 +392,7 @@
     <ClInclude Include="Resources\Resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Library\Utils\Virtual.cpp" />
     <None Include="Library\Windows\WindowComposition.cpp" />
     <None Include="Application\Services\ScreenCaptureFactory.cpp" />
     <None Include="Application\Utils\StringUtil.cpp" />
@@ -427,7 +429,7 @@
     <None Include="Application\Multiple\Audio\AudioEncoder.cpp" />
     <None Include="Application\Multiple\Audio\AudioResampler.cpp" />
     <None Include="Application\Multiple\Audio\AudioVolumeMeter.cpp" />
-    <None Include="Application\Multiple\BaseEventDispatcher.cpp" />
+    <None Include="Application\Multiple\EventDispatcherBase.cpp" />
     <None Include="Application\Multiple\Buffer.cpp" />
     <None Include="Application\Multiple\CaptureLock.cpp" />
     <None Include="Application\Multiple\MouseOverlay.cpp" />
@@ -438,7 +440,7 @@
     <None Include="Application\Multiple\FpsCounter.cpp" />
     <None Include="Application\Multiple\FrameSource.cpp" />
     <None Include="Application\Multiple\PropVariant.cpp" />
-    <None Include="Application\Multiple\Resizers\BaseResizer.cpp" />
+    <None Include="Application\Multiple\Resizers\AbstractResizer.cpp" />
     <None Include="Application\Multiple\Resizers\BilinearResizer.cpp" />
     <None Include="Application\Multiple\Resizers\NearestResizer.cpp" />
     <None Include="Application\Multiple\Resizers\Resizer.cpp" />

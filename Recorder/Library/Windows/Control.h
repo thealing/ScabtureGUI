@@ -22,6 +22,8 @@ public:
 
 	Control();
 
+	~Control();
+
 	void setAnchor(Anchor anchor);
 
 	void setBounds(const Rect& bounds);
@@ -37,8 +39,6 @@ public:
 	const Event* getResizeEvent() const;
 
 	const Event* getChangeEvent() const;
-
-	virtual ~Control();
 
 protected:
 

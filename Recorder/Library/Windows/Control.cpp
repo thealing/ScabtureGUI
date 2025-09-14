@@ -7,6 +7,11 @@ Control::Control()
 	_bounds = {};
 }
 
+Control::~Control()
+{
+	removeCallback(controlProc);
+}
+
 void Control::setAnchor(Anchor anchor)
 {
 	_anchor = anchor;
@@ -49,11 +54,6 @@ const Event* Control::getResizeEvent() const
 const Event* Control::getChangeEvent() const
 {
 	return &_changeEvent;
-}
-
-Control::~Control()
-{
-	removeCallback(controlProc);
 }
 
 void Control::create(const wchar_t* className, const wchar_t* windowName, long style, Window* parent)

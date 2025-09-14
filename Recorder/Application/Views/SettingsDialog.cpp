@@ -39,11 +39,6 @@ bool SettingsDialog<Settings>::isOpen() const
 }
 
 template<class Settings>
-SettingsDialog<Settings>::~SettingsDialog()
-{
-}
-
-template<class Settings>
 void SettingsDialog<Settings>::onConfirmed()
 {
 	assert(_window != NULL);

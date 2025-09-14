@@ -15,6 +15,13 @@ OverlayWindow::OverlayWindow(const wchar_t* title)
 	_alpha = 0;
 }
 
+OverlayWindow::~OverlayWindow()
+{
+	DestroyWindow(_handle);
+	DeleteDC(_context);
+	DeleteObject(_bitmap);
+}
+
 void OverlayWindow::run()
 {
 	MSG msg = {};
@@ -23,13 +30,6 @@ void OverlayWindow::run()
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
-}
-
-OverlayWindow::~OverlayWindow()
-{
-	DestroyWindow(_handle);
-	DeleteDC(_context);
-	DeleteObject(_bitmap);
 }
 
 void OverlayWindow::setAlpha(BYTE alpha)

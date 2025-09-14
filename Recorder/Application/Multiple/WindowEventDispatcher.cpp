@@ -8,12 +8,12 @@ WindowEventDispatcher::WindowEventDispatcher()
 void WindowEventDispatcher::start(Window* window)
 {
 	_window = window;
-	BaseEventDispatcher::start();
+	EventDispatcherBase::start();
 }
 
 void WindowEventDispatcher::stop()
 {
-	BaseEventDispatcher::stop();
+	EventDispatcherBase::stop();
 	_window = NULL;
 }
 
