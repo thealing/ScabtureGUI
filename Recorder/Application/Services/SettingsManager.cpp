@@ -16,9 +16,13 @@ const Event* SettingsManager<Settings>::getChangeEvent()
 template<class Settings>
 bool SettingsManager<Settings>::setSettings(const Settings& settings)
 {
-	if (MemoryUtil::areEqual(_settings, settings))
+	// Must always signal a change for the first setting!
+	if (!_initEvent.set())
 	{
-		return false;
+		if (MemoryUtil::areEqual(_settings, settings))
+		{
+			return false;
+		}
 	}
 	_settings = settings;
 	validate(_settings);
@@ -31,11 +35,6 @@ template<class Settings>
 Settings SettingsManager<Settings>::getSettings() const
 {
 	return _settings;
-}
-
-template<class Settings>
-SettingsManager<Settings>::~SettingsManager()
-{
 }
 
 template<class Settings>
