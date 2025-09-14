@@ -99,7 +99,7 @@ void AudioCaptureController::updateCapture()
 		{
 			delete capture;
 			_audioSourceManager->setSource(AudioSourceNone);
-			UniquePointer<const wchar_t> errorMessage = StringUtil::formatString(L"Failed to start audio capture!\nError: 0x%08X", status);
+			UniquePointer<const wchar_t> errorMessage = StringUtil::formatString(L"Failed to start audio capture!\nError: 0x%08X", (HRESULT)status);
 			_mainWindow->showMessageBox(L"Audio error", errorMessage, MB_OK | MB_ICONERROR);
 			return;
 		}

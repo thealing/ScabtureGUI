@@ -23,12 +23,12 @@ AudioDevice::AudioDevice(IMMDeviceEnumerator* enumerator, EDataFlow flow, ERole 
 		if (flow == eRender)
 		{
 			UniquePointer<const wchar_t> format = _waveFormat.toString();
-			LogUtil::logInfo(L"Output device format: %ls.", format);
+			LogUtil::logInfo(L"Output device format: %ls.", (const wchar_t*)format);
 		}
 		if (flow == eCapture)
 		{
 			UniquePointer<const wchar_t> format = _waveFormat.toString();
-			LogUtil::logInfo(L"Input device format: %ls.", format);
+			LogUtil::logInfo(L"Input device format: %ls.", (const wchar_t*)format);
 		}
 		DWORD flags = 0;
 		if (flow == eRender)
