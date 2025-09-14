@@ -127,7 +127,7 @@ void RecordingController::startRecording()
 		delete outputPath;
 		_videoCaptureManager->unlockCapture();
 		_audioCaptureManager->unlockCapture();
-		UniquePointer<const wchar_t> errorMessage = StringUtil::formatString(L"Failed to start recording!\nError: 0x%08X", status);
+		UniquePointer<const wchar_t> errorMessage = StringUtil::formatString(L"Failed to start recording!\nError: 0x%08X", (HRESULT)status);
 		_mainWindow->showMessageBox(L"Recording error", errorMessage, MB_OK | MB_ICONERROR);
 	}
 }

@@ -65,7 +65,7 @@ void Logger::logMessage(const wchar_t* label, const wchar_t* format, va_list arg
 	UniquePointer<const wchar_t> message = StringUtil::formatString(format, args);
 	Date date = getDate();
 	DWORD threadId = GetCurrentThreadId();
-	logFormat(L"[%02i:%02i:%02i.%03i] Thread %u: %ls: %ls\n", date.hour, date.minute, date.second, date.millisecond, threadId, label, message);
+	logFormat(L"[%02i:%02i:%02i.%03i] Thread %u: %ls: %ls\n", date.hour, date.minute, date.second, date.millisecond, threadId, label, (const wchar_t*)message);
 }
 
 void Logger::logMessage(const wchar_t* label, const wchar_t* format, ...)
