@@ -4,6 +4,8 @@ class Timer : NonCopyable
 {
 public:
 
+	static double setResolution(double resolution);
+
 	Timer(double delay, double interval, const Callback& callback);
 
 	~Timer();
@@ -23,10 +25,6 @@ private:
 	HANDLE _timerHandle;
 	HANDLE _eventHandle;
 	HANDLE _threadHandle;
-
-public:
-
-	static double setResolution(double resolution);
 
 private:
 
