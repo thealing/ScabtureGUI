@@ -18,12 +18,13 @@ bool DynamicLibrary::isLoaded() const
 	return _module != NULL;
 }
 
-void* DynamicLibrary::getFunction(const char* functionName) const
+template<typename Function>
+Function* DynamicLibrary::getFunction(const char* functionName) const
 {
-	if (!isLoaded())
+	if (isLoaded())
 	{
-		return NULL;
+		FARPROC functionAddress = GetProcAddress(_module, functionName);
+		return (Function*)functionAddress;
 	}
-	FARPROC functionAddress = GetProcAddress(_module, functionName);
-	return (void*)functionAddress;
+	return NULL;
 }

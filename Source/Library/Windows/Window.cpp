@@ -483,7 +483,7 @@ void Window::setExcludedFromCapture(HWND window, BOOL excluded)
 	data.Attrib = WCA_EXCLUDED_FROM_DDA;
 	data.pvData = &excluded;
 	data.cbData = sizeof(excluded);
-	setWindowCompositionAttribute(window, &data);
+	WindowComposition::setAttribute(window, &data);
 	RedrawWindow(window, NULL, NULL, RDW_INVALIDATE | RDW_ERASE | RDW_ERASENOW | RDW_UPDATENOW | RDW_ALLCHILDREN | RDW_FRAME);
 }
 
@@ -494,6 +494,6 @@ BOOL Window::getExcludedFromCapture(HWND window)
 	data.Attrib = WCA_EXCLUDED_FROM_DDA;
 	data.pvData = &excluded;
 	data.cbData = sizeof(excluded);
-	getWindowCompositionAttribute(window, &data);
+	WindowComposition::getAttribute(window, &data);
 	return excluded;
 }
