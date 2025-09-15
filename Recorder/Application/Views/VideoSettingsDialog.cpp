@@ -16,11 +16,13 @@ DialogWindow* VideoSettingsDialog::createWindow(Window* parent)
 void VideoSettingsDialog::createControls(DialogWindow* window, VideoSettings* settings)
 {
 	const wchar_t* windowCaptureMethodNames[WindowCaptureMethodCount] = {};
+	windowCaptureMethodNames[WindowCaptureMethodDefault] = L"Default";
 	windowCaptureMethodNames[WindowCaptureMethodBitBlt] = L"BitBlt";
 	windowCaptureMethodNames[WindowCaptureMethodPrintWindow] = L"PrintWindow";
 	windowCaptureMethodNames[WindowCaptureMethodSharedSurface] = L"Shared Surface";
 	window->addComboBox(L"Window capture method", 150, (int*)&settings->windowCaptureMethod, windowCaptureMethodNames, ARRAYSIZE(windowCaptureMethodNames));
 	const wchar_t* screenCaptureMethodNames[ScreenCaptureMethodCount] = {};
+	screenCaptureMethodNames[ScreenCaptureMethodDefault] = L"Default";
 	screenCaptureMethodNames[ScreenCaptureMethodBitBlt] = L"BitBlt";
 	screenCaptureMethodNames[ScreenCaptureMethodDesktopDuplication] = L"Desktop Duplication";
 	window->addComboBox(L"Screen capture method", 150, (int*)&settings->screenCaptureMethod, screenCaptureMethodNames, ARRAYSIZE(screenCaptureMethodNames));

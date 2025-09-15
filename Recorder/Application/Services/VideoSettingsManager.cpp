@@ -8,8 +8,6 @@ VideoSettingsManager::VideoSettingsManager() : SettingsManager(L"Video Settings"
 VideoSettings VideoSettingsManager::getDefault() const
 {
 	VideoSettings settings = {};
-	settings.windowCaptureMethod = WindowCaptureMethodBitBlt;
-	settings.screenCaptureMethod = ScreenCaptureMethodBitBlt;
 	settings.showCursor = true;
 	settings.frameRate = 60;
 	settings.bitRate = 16000;
@@ -25,12 +23,12 @@ void VideoSettingsManager::validate(VideoSettings& settings) const
 	if (settings.windowCaptureMethod < 0 || settings.windowCaptureMethod >= WindowCaptureMethodCount)
 	{
 		LogUtil::logWarning(L"VideoSettingsManager: Found invalid window capture method %i.", settings.windowCaptureMethod);
-		settings.windowCaptureMethod = WindowCaptureMethodBitBlt;
+		settings.windowCaptureMethod = WindowCaptureMethodDefault;
 	}
 	if (settings.screenCaptureMethod < 0 || settings.screenCaptureMethod >= ScreenCaptureMethodCount)
 	{
 		LogUtil::logWarning(L"VideoSettingsManager: Found invalid screen capture method %i.", settings.screenCaptureMethod);
-		settings.screenCaptureMethod = ScreenCaptureMethodBitBlt;
+		settings.screenCaptureMethod = ScreenCaptureMethodDefault;
 	}
 	if (settings.encodeFormat < 0 || settings.encodeFormat >= EncodeFormatCount)
 	{

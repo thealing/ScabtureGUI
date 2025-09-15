@@ -32,6 +32,11 @@ VideoCapture* ScreenCaptureFactory::createCapture(HWND desktopWindow, RECT rect)
 			capture = new DXGIOutputDuplicationCapture(desktopWindow, position, size);
 			break;
 		}
+		default:
+		{
+			capture = new BitBltCapture(desktopWindow, position, size);
+			break;
+		}
 	}
 	if (settings.showCursor)
 	{
