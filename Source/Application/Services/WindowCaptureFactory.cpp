@@ -37,6 +37,11 @@ VideoCapture* WindowCaptureFactory::createCapture(HWND window, RECT rect) const
 			capture = new DwmSharedSurfaceCapture(window, position, size);
 			break;
 		}
+		default:
+		{
+			capture = new BitBltCapture(window, position, size);
+			break;
+		}
 	}
 	if (settings.showCursor)
 	{
