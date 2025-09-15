@@ -14,7 +14,7 @@ protected:
 
 private:
 
-	typedef HRESULT (WINAPI* DwmGetDxSharedSurface)(HWND, HANDLE*, LUID*, ULONG*, ULONG*, ULONGLONG*);
+	typedef HRESULT WINAPI DwmGetDxSharedSurface(HWND, HANDLE*, LUID*, ULONG*, ULONG*, ULONGLONG*);
 
 	POINT _position;
 	Status _status;

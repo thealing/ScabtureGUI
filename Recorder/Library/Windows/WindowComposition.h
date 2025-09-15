@@ -12,6 +12,16 @@ struct WINDOWCOMPOSITIONATTRIBDATA
 	UINT cbData;
 };
 
-BOOL getWindowCompositionAttribute(HWND window, WINDOWCOMPOSITIONATTRIBDATA* data);
+class WindowComposition
+{
+public:
 
-BOOL setWindowCompositionAttribute(HWND window, WINDOWCOMPOSITIONATTRIBDATA* data);
+	static BOOL getAttribute(HWND window, WINDOWCOMPOSITIONATTRIBDATA* data);
+
+	static BOOL setAttribute(HWND window, WINDOWCOMPOSITIONATTRIBDATA* data);
+
+private:
+
+	typedef BOOL WINAPI GetWindowCompositionAttribute(HWND, WINDOWCOMPOSITIONATTRIBDATA*);
+	typedef BOOL WINAPI SetWindowCompositionAttribute(HWND, WINDOWCOMPOSITIONATTRIBDATA*);
+};

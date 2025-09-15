@@ -18,7 +18,7 @@ DwmSharedSurfaceCapture::DwmSharedSurfaceCapture(HWND window, POINT position, SI
 	if (_status)
 	{
 		DynamicLibrary user32("user32");
-		DwmGetDxSharedSurface dwmGetDxSharedSurface = (DwmGetDxSharedSurface)user32.getFunction("DwmGetDxSharedSurface");
+		DwmGetDxSharedSurface* dwmGetDxSharedSurface = user32.getFunction<DwmGetDxSharedSurface>("DwmGetDxSharedSurface");
 		if (dwmGetDxSharedSurface != NULL)
 		{
 			_status = dwmGetDxSharedSurface(window, &surface, NULL, NULL, NULL, NULL);

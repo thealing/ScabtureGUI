@@ -10,7 +10,8 @@ public:
 
 	bool isLoaded() const;
 
-	void* getFunction(const char* functionName) const;
+	template<typename Function>
+	Function* getFunction(const char* functionName) const;
 
 private:
 

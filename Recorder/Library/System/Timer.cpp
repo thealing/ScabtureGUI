@@ -1,26 +1,11 @@
 #include "Timer.h"
 
-typedef NTSTATUS (NTAPI* NtCreateTimer)(PHANDLE, ACCESS_MASK, void*, DWORD);
-typedef NTSTATUS (NTAPI* NtSetTimer)(HANDLE, PLARGE_INTEGER, PVOID, PVOID, BOOLEAN, LONG, PBOOLEAN);
-typedef NTSTATUS (NTAPI* NtClose)(HANDLE);
-typedef NTSTATUS (NTAPI* NtQuerySystemTime)(PLARGE_INTEGER);
-typedef NTSTATUS (NTAPI* NtQueryTimerResolution)(PULONG, PULONG, PULONG);
-typedef NTSTATUS (NTAPI* NtSetTimerResolution)(ULONG, BOOLEAN, PULONG);
-
-static DynamicLibrary _ntDll("ntdll.dll");
-static NtCreateTimer _ntCreateTimer = (NtCreateTimer)_ntDll.getFunction("NtCreateTimer");
-static NtSetTimer _ntSetTimer = (NtSetTimer)_ntDll.getFunction("NtSetTimer");
-static NtClose _ntClose = (NtClose)_ntDll.getFunction("NtClose");
-static NtQuerySystemTime _ntQuerySystemTime = (NtQuerySystemTime)_ntDll.getFunction("NtQuerySystemTime");
-static NtQueryTimerResolution _ntQueryTimerResolution = (NtQueryTimerResolution)_ntDll.getFunction("NtQueryTimerResolution");
-static NtSetTimerResolution _ntSetTimerResolution = (NtSetTimerResolution)_ntDll.getFunction("NtSetTimerResolution");
-
 Timer::Timer(double delay, double interval, const Callback& callback)
 {
 	_delay = (LONGLONG)(delay * 10000000);
 	_interval = (LONGLONG)(interval * 10000000);
 	_callback = callback;
-	_ntCreateTimer(&_timerHandle, TIMER_ALL_ACCESS, NULL, 0);
+	ntCreateTimer(&_timerHandle, TIMER_ALL_ACCESS, NULL, 0);
 	_eventHandle = CreateEvent(NULL, FALSE, FALSE, NULL);
 	_threadHandle = CreateThread(NULL, 0, threadProc, this, 0, NULL);
 }
@@ -31,7 +16,7 @@ Timer::~Timer()
 	WaitForSingleObject(_threadHandle, INFINITE);
 	CloseHandle(_threadHandle);
 	CloseHandle(_eventHandle);
-	_ntClose(_timerHandle);
+	ntClose(_timerHandle);
 }
 
 double Timer::setResolution(double resolution)
@@ -39,11 +24,11 @@ double Timer::setResolution(double resolution)
 	ULONG minResolution = 0;
 	ULONG maxResolution = 0;
 	ULONG currentResolution = 0;
-	_ntQueryTimerResolution(&minResolution, &maxResolution, &currentResolution);
+	ntQueryTimerResolution(&minResolution, &maxResolution, &currentResolution);
 	ULONG newResolution = (ULONG)(resolution * 10000000);
 	newResolution = clamp(newResolution, maxResolution, minResolution);
-	_ntSetTimerResolution(newResolution, TRUE, &currentResolution);
-	_ntQueryTimerResolution(&minResolution, &maxResolution, &currentResolution);
+	ntSetTimerResolution(newResolution, TRUE, &currentResolution);
+	ntQueryTimerResolution(&minResolution, &maxResolution, &currentResolution);
 	return currentResolution / 10000000.0;
 }
 
@@ -56,7 +41,7 @@ DWORD WINAPI Timer::threadProc(PVOID parameter)
 	HANDLE objects[] = { timer->_eventHandle, timer->_timerHandle };
 	while (true)
 	{
-		_ntSetTimer(timer->_timerHandle, &dueTime, NULL, NULL, FALSE, 0, NULL);
+		ntSetTimer(timer->_timerHandle, &dueTime, NULL, NULL, FALSE, 0, NULL);
 		DWORD index = WaitForMultipleObjects(ARRAYSIZE(objects), objects, FALSE, INFINITE);
 		if (index == WAIT_OBJECT_0)
 		{
@@ -75,6 +60,48 @@ DWORD WINAPI Timer::threadProc(PVOID parameter)
 LONGLONG Timer::getSystemTime()
 {
 	LARGE_INTEGER time = {};
-	_ntQuerySystemTime(&time);
+	ntQuerySystemTime(&time);
 	return time.QuadPart;
+}
+
+BOOL Timer::ntClose(HANDLE handle)
+{
+	static DynamicLibrary ntDll("ntdll.dll");
+	static NtClose* function = ntDll.getFunction<NtClose>("NtClose");
+	return function(handle);
+}
+
+BOOL Timer::ntCreateTimer(PHANDLE timerHandle, ACCESS_MASK desiredAccess, void* objectAttributes, DWORD timerType)
+{
+	static DynamicLibrary ntDll("ntdll.dll");
+	static NtCreateTimer* function = ntDll.getFunction<NtCreateTimer>("NtCreateTimer");
+	return function(timerHandle, desiredAccess, objectAttributes, timerType);
+}
+
+BOOL Timer::ntSetTimer(HANDLE timerHandle, PLARGE_INTEGER dueTime, PVOID timerApcRoutine, PVOID timerContext, BOOLEAN resume, LONG period, PBOOLEAN previousState)
+{
+	static DynamicLibrary ntDll("ntdll.dll");
+	static NtSetTimer* function = ntDll.getFunction<NtSetTimer>("NtSetTimer");
+	return function(timerHandle, dueTime, timerApcRoutine, timerContext, resume, period, previousState);
+}
+
+BOOL Timer::ntQuerySystemTime(PLARGE_INTEGER currentTime)
+{
+	static DynamicLibrary ntDll("ntdll.dll");
+	static NtQuerySystemTime* function = ntDll.getFunction<NtQuerySystemTime>("NtQuerySystemTime");
+	return function(currentTime);
+}
+
+BOOL Timer::ntQueryTimerResolution(PULONG minimumResolution, PULONG maximumResolution, PULONG currentResolution)
+{
+	static DynamicLibrary ntDll("ntdll.dll");
+	static NtQueryTimerResolution* function = ntDll.getFunction<NtQueryTimerResolution>("NtQueryTimerResolution");
+	return function(minimumResolution, maximumResolution, currentResolution);
+}
+
+BOOL Timer::ntSetTimerResolution(ULONG desiredResolution, BOOLEAN setResolution, PULONG currentResolution)
+{
+	static DynamicLibrary ntDll("ntdll.dll");
+	static NtSetTimerResolution* function = ntDll.getFunction<NtSetTimerResolution>("NtSetTimerResolution");
+	return function(desiredResolution, setResolution, currentResolution);
 }
