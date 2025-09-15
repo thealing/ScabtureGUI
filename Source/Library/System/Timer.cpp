@@ -1,5 +1,18 @@
 #include "Timer.h"
 
+double Timer::setResolution(double resolution)
+{
+	ULONG minResolution = 0;
+	ULONG maxResolution = 0;
+	ULONG currentResolution = 0;
+	ntQueryTimerResolution(&minResolution, &maxResolution, &currentResolution);
+	ULONG newResolution = (ULONG)(resolution * 10000000);
+	newResolution = clamp(newResolution, maxResolution, minResolution);
+	ntSetTimerResolution(newResolution, TRUE, &currentResolution);
+	ntQueryTimerResolution(&minResolution, &maxResolution, &currentResolution);
+	return currentResolution / 10000000.0;
+}
+
 Timer::Timer(double delay, double interval, const Callback& callback)
 {
 	_delay = (LONGLONG)(delay * 10000000);
@@ -17,19 +30,6 @@ Timer::~Timer()
 	CloseHandle(_threadHandle);
 	CloseHandle(_eventHandle);
 	ntClose(_timerHandle);
-}
-
-double Timer::setResolution(double resolution)
-{
-	ULONG minResolution = 0;
-	ULONG maxResolution = 0;
-	ULONG currentResolution = 0;
-	ntQueryTimerResolution(&minResolution, &maxResolution, &currentResolution);
-	ULONG newResolution = (ULONG)(resolution * 10000000);
-	newResolution = clamp(newResolution, maxResolution, minResolution);
-	ntSetTimerResolution(newResolution, TRUE, &currentResolution);
-	ntQueryTimerResolution(&minResolution, &maxResolution, &currentResolution);
-	return currentResolution / 10000000.0;
 }
 
 DWORD WINAPI Timer::threadProc(PVOID parameter)
