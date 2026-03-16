@@ -38,9 +38,6 @@ int SourcePanel::getVideoSource() const
 
 int SourcePanel::getAudioSource() const
 {
-#ifdef FUZZ_TESTING
-	return rand() % 4;
-#endif
 	return _audioSourceList->getSelection();
 }
 

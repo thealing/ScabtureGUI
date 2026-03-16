@@ -68,9 +68,6 @@ void AudioCaptureController::updateCapture()
 {
 	LogUtil::logInfo(L"AudioCaptureController: Updating capture.");
 	AudioSource source = _audioSourceManager->getSource();
-#ifdef FUZZ_TESTING
-	source = (AudioSource)(rand()%2+1);
-#endif
 	AudioCapture* capture = NULL;
 	switch (source)
 	{

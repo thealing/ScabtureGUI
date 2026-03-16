@@ -210,9 +210,6 @@ void RecordingController::doActionsAfterRecording()
 	}
 	if (settings.askToPlayTheRecording)
 	{
-#ifdef FUZZ_TESTING
-		return;
-#endif
 		int result = _mainWindow->showMessageBox(L"Recording finished", L"Open the recorded video?", MB_YESNO | MB_ICONQUESTION);
 		if (result == IDYES)
 		{

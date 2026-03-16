@@ -1,9 +1,5 @@
 #pragma once
 
-//#define _CRTDBG_MAP_ALLOC
-//#include <crtdbg.h>
-//#define FUZZ_TESTING
-
 // External Headers
 
 #include <stdio.h>

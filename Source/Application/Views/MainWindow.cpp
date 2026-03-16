@@ -41,9 +41,6 @@ void MainWindow::setCloseable(bool closeable)
 
 void MainWindow::setTopMost(bool topMost)
 {
-#ifdef FUZZ_TESTING
-	return;
-#endif
 	HWND handle = getHandle();
 	SetWindowPos(handle, topMost ? HWND_TOPMOST : HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 }
