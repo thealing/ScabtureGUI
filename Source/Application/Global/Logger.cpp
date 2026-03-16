@@ -1,7 +1,7 @@
 #include "Logger.h"
 
 #define LOG_MODE_SETTING_NAME L"Log Mode"
-#define LOG_OUTPUT_FILE_NAME L"CaptureBit Log"
+#define LOG_OUTPUT_FILE_NAME L"CaptureBit"
 
 void Logger::init(bool debug)
 {
@@ -22,14 +22,14 @@ void Logger::init(bool debug)
 		}
 		case LogModeSingleFile:
 		{
-			UniquePointer<const wchar_t> path = StringUtil::formatString(L"%ls.txt", LOG_OUTPUT_FILE_NAME);
+			UniquePointer<const wchar_t> path = StringUtil::formatString(L"%ls.log", LOG_OUTPUT_FILE_NAME);
 			_file = _wfopen(path, L"w");
 			break;
 		}
 		case LogModeTimeStampedFiles:
 		{
 			Date date = getDate();
-			UniquePointer<const wchar_t> path = StringUtil::formatString(L"%ls %04i.%02i.%02i. %02i.%02i.%02i.%03i.txt", LOG_OUTPUT_FILE_NAME, date.year, date.month, date.day, date.hour, date.minute, date.second, date.millisecond);
+			UniquePointer<const wchar_t> path = StringUtil::formatString(L"%ls %04i.%02i.%02i. %02i.%02i.%02i.%03i.log", LOG_OUTPUT_FILE_NAME, date.year, date.month, date.day, date.hour, date.minute, date.second, date.millisecond);
 			_file = _wfopen(path, L"w");
 			break;
 		}
