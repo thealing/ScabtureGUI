@@ -12,7 +12,7 @@ AudioCaptureController::AudioCaptureController(AudioCaptureManager* audioCapture
 	_eventDispatcher.addEntry(audioDeviceProvider->getOutputChangeEvent(), BIND(AudioCaptureController, onOutputDeviceChanged, this));
 	_eventDispatcher.addEntry(audioSourceManager->getChangeEvent(), BIND(AudioCaptureController, onSourceChanged, this));
 	_eventDispatcher.addEntry(audioCaptureManager->getErrorEvent(), BIND(AudioCaptureController, onCaptureError, this));
-	_eventDispatcher.start();
+	_eventDispatcher.start(mainWindow);
 	LogUtil::logDebug(L"AudioCaptureController: Started on thread %i.", _eventDispatcher.getThreadId());
 }
 

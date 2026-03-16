@@ -24,7 +24,7 @@ private:
 
 private:
 
-	EventDispatcher _eventDispatcher;
+	WindowEventDispatcher _eventDispatcher;
 	WeakPointer<AudioCaptureManager> _audioCaptureManager;
 	WeakPointer<AudioResamplerFactory> _audioResamplerFactory;
 	WeakPointer<AudioDeviceProvider> _audioDeviceProvider;
