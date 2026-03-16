@@ -22,4 +22,4 @@ A high-performance, low resource usage Windows application for real-time screen 
 - CPU and memory usage display 
 - Convenience features
 ## Screenshots
-![scabture2](https://github.com/user-attachments/assets/9cfc0a80-9106-4a4e-b98d-d6dac2ddd94f)
+<img width="1920" height="1040" alt="CaptureBit" src="https://github.com/user-attachments/assets/16c88451-badc-43c9-abfe-0e1cc24ca043" />
