@@ -1,21 +1,22 @@
 # Capture Bit
-This is a Windows GUI program that records the screen content and the system or microphone audio, and saves the resulting video as an .mp4 file.
+A high-performance, low resource usage Windows application for real-time screen and audio recording.
 ## Features
-- Selectable video sources
+- Video sources
   - Fullscreen
   - Rectangle area on the screen
   - Window or child window
-- Selectable audio sources
+- Audio sources
   - System output
   - Microphone
-- Resize to any resolution
+- Resize options
   - Nearest-neighbor interpolation: Low quality
   - Bilinear interpolation: High quality for up-to 2x downscaling
 - Multiple screen capture methods
+- Hardware-accelerated encoding
 - Custom video frame rate
 - Custom audio sampling rate
 - Custom bitrate
-- Record mouse cursor
+- Mouse cursor overlay
 - Live video preview
 - Live audio volume levels
 - CPU and memory usage display 
